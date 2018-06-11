@@ -112,5 +112,5 @@ There is one very useful command that can show a file page by page, which does n
 
     less all_counts.txt
 
-While stay inside the command, we can search for any pattern that we are interested in, such as a specific gene (ATCG01090). We can do it by issue the command ***\/ATCG01090***.
+While stay inside the command, we can search for any pattern that we are interested in, such as a specific gene (ATCG01090). We can do it by issue the command ***/ATCG01090***.
 
