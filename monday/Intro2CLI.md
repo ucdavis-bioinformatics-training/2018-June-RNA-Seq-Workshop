@@ -63,8 +63,9 @@ One can also use ***cat*** command to concatenate a few files into one file:
 
     cat art.part1.txt art.part2.txt art.part3.txt > oliver.art.txt
 
-Here we see a new thing *>*. This means that the output of the command on the left (before the > ) is written in the file whoes name is given on the right: to re-direct the output of the command before it into a file. Otherwise, the output, by default, is to be the standard output (on screen). For example, if we use the command below, it simply show the content of the file on screen.
+Here we see a new thing: *>*. This means that the output of the command on the left (before the > ) is written in the file whoes name is given on the right: to re-direct the output of the command before it into a file. Otherwise, the output, by default, is to be the standard output (on screen). For example, if we use the command below, it simply show the content of the file on screen.
 
     cat oliver.art.txt
 
-Since we have sine the 
+Since we have sine one way to redirect the output of a command to a file, there is another related method, by using *>>*. The difference between these two ways is that: *>* takes the standard ouput and write into a file. If the file already exist, it will overwrite the original content. While *>>* will take the standard output and append it into the file.
+
