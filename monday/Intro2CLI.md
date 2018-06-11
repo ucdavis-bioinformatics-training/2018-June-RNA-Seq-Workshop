@@ -29,6 +29,8 @@ Alternatively, you could have created both directories at once, using ***mkdir t
     wget https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/monday/art.part2.txt
     wget https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/monday/art.part3.txt
     wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/all_counts.txt
+    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/all_counts.csv
+    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/pattern.txt
 
 These are three files that we are going to use later in the tutorial.
 
@@ -140,11 +142,11 @@ The result of this command is all the lines that match any of the patterns in ou
 
 In the field of bioinformatics, we have to frequently extract specific columns from a file that has a delimitor to separate the columns. We can easily achieve the goal by using the command ***cut***.
 
-    cut -f2,4:10 all_counts.txt
+    cut -f2,4-10 all_counts.txt
 
-The command above extracts the column 2,4 to 10 from the file "all_counts.txt". By default, the command ***cut*** uses tab as the delimitor. If the file is formated using a different delimitor, we can add the option of **-d** to specify the specific delimitor of the file. For example, for a file that uses comma as the delimitor, one would add the option of ***-d','***.
+The command above extracts the column 2,4 to 10 from the file "all_counts.txt". By default, the command ***cut*** uses tab as the delimitor. If the file is formated using a different delimitor, we can add the option of **-d** to specify the specific delimitor of the file. For example, for a file that uses comma as the delimitor, one would add the option of **-d','**.
 
-   cut -d',' -f2,4:10 all_counts.csv
+   cut -d',' -f2,4-10 all_counts.csv
 
 
 
