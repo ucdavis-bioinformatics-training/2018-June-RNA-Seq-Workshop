@@ -96,7 +96,7 @@ Since we have sine one way to redirect the output of a command to a file, there 
 
 Now that we have learned how to create a file, the next step is to learn a few commands that will alow us to manipulate a file.
 
-**7\.** Commands to manipulate a file
+**7\.** Commands to look at a file
 
 First, in many cases, we could like to take a look at just the first a few lines of a big files. To open the file using a text editor is always one way to do it. But when the size of a file gets bigger, it takes time to open a file using a text editor. The way to do it fast is to use the command ***head***.
 
@@ -112,5 +112,39 @@ There is one very useful command that can show a file page by page, which does n
 
     less all_counts.txt
 
-While stay inside the command, we can search for any pattern that we are interested in, such as a specific gene (ATCG01090). We can do it by issue the command ***/ATCG01090***.
+While stay inside the command, we can search for any pattern that we are interested in, such as a specific gene (ATCG01090). We can do it by issue the command ***/ATCG01090***, followed by hitting the enter key on your keyboard. In order to get out of looking at the file, we simply type **q**. This will give us back the prompt and we can then issue a new command.
+
+---
+
+**8\.** Search for a pattern in a file
+
+In many cases, we want to find all the appearances of a certain pattern. The command we can use is grep.
+
+    grep 'ATCG01090' all_counts.txt
+
+The result of this command is all the lines that match the pattern.
+
+In the case where we have a few patterns that we are interested, we can use an option in grep ***-E***.
+
+    grep -E "ATCG01090|AT1G03997" all_counts.txt
+
+The option ***-E*** tells ***grep*** to use an Extended Regular Expression, where **|** is an logical operator of OR, meaning that we want to search any line that matches the pattern "ATCG01090", or "AT1G03997". The result of this command is the two lines that each matching one pattern. The command ***egrep*** is exactly the same as ***grep -E***.
+
+This command is very good at finding matches for a few patterns. However, sometimes, we might have many more patterns that we want to search. Under this situation, we can use a different option ***-F*** and provide a file that have all the patterns that we are interested in.
+
+    grep -F -f pattern.txt all_counts.txt
+
+The result of this command is all the lines that match any of the patterns in our list in the file pattern.txt. The command ***fgrep*** is the same as ***grep -F***.
+
+**9\.** Extract specific fields from a file
+
+In the field of bioinformatics, we have to frequently extract specific columns from a file that has a delimitor to separate the columns. We can easily achieve the goal by using the command ***cut***.
+
+    cut -f2,4:10 all_counts.txt
+
+The command above extracts the column 2,4 to 10 from the file "all_counts.txt". By default, the command ***cut*** uses tab as the delimitor. If the file is formated using a different delimitor, we can add the option of **-d** to specify the specific delimitor of the file. For example, for a file that uses comma as the delimitor, one would add the option of ***-d','***.
+
+   cut -d',' -f2,4:10 all_counts.csv
+
+
 
