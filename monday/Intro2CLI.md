@@ -63,4 +63,4 @@ One can also use ***cat*** command to concatenate a few files into one file:
 
     cat test test2.txt > test3.txt
 
-Here we see a new thing, ***>***. This means that the output of the command on the left (before the > ) is written in the file whoes name is given on the right: to re-direct the output of the command before it into a file. Otherwise, the output, by default, is to be the standard output (on screen).
+Here we see a new thing ***>***. This means that the output of the command on the left (before the > ) is written in the file whoes name is given on the right: to re-direct the output of the command before it into a file. Otherwise, the output, by default, is to be the standard output (on screen).
