@@ -47,11 +47,20 @@ You will see that you went into the directory ***test***, then changed to be ins
 
     nano
 
-After you give this command, you will see an interface look like ![nano.1](./nano.1.png)
+After you give this command, you will see an interface looking like ![nano.1](./nano.1.png)
 
-At the bottom of the terminal, you see all the commands that are available. To write any text, you just need to start typing. When you are finished, simply use the ***Exit*** command, which is to press the control key and X at the same time. You will be asked whether you want to save the file. Say ***yes***, and then you will have created a new file.
+At the bottom of the terminal, you see all the commands that are available. To write any text, you just need to start typing. When you are finished, simply use the ***Exit*** command, which is to press the control key and X at the same time. You will be asked whether you want to save the file. Say ***yes***, and then give the name ***test.txt***, hit return and you will have created a new file.
 
 ---
 
+**5\.** Other ways to create files
 
+    cp test.txt test2.txt
 
+One may use ***cp*** command to copy a file to another.
+
+    cat test test2.txt > test3.txt
+
+One can also use ***cat*** command to concatenate a few files into one file.
+
+Here we see a new thing: ***>***. This means to re-direct the output of the command before it into a file. Otherwise, the output, by default, is to be the standard output (on screen).
