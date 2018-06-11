@@ -55,12 +55,12 @@ At the bottom of the terminal, you see all the commands that are available. To w
 
 **5\.** Other ways to create files
 
+One may use ***cp*** command to copy a file to another:
+
     cp test.txt test2.txt
 
-One may use ***cp*** command to copy a file to another.
+One can also use ***cat*** command to concatenate a few files into one file:
 
     cat test test2.txt > test3.txt
 
-One can also use ***cat*** command to concatenate a few files into one file.
-
-Here we see a new thing: ***>***. This means to re-direct the output of the command before it into a file. Otherwise, the output, by default, is to be the standard output (on screen).
+Here we see a new thing, ***>***. This means that the output of the command on the left (before the > ) is written in the file whoes name is given on the right: to re-direct the output of the command before it into a file. Otherwise, the output, by default, is to be the standard output (on screen).
