@@ -30,7 +30,7 @@ If, for some reason, your jobs did not finish or something else went wrong, plea
 
     ftp://ftp.ensemblgenomes.org/pub/plants/release-39/
 
-Navigate through the directories to find a GTF (**NOT** GFF3) annotation file for Arabidopsis thaliana, as well as a complete genome. The genome file is "Arabidopsis_thaliana.TAIR10.dna.toplevel.fa.gz" and the annotation file is "Arabidopsis_thaliana.TAIR10.36.gtf.gz". When you find those files, copy the location links and use wget to add them to your ref directory:
+Navigate through the directories to find a GTF (**NOT** GFF3) annotation file for Arabidopsis thaliana, as well as a complete genome. The genome file is "Arabidopsis_thaliana.TAIR10.dna.toplevel.fa.gz" and the annotation file is "Arabidopsis_thaliana.TAIR10.39.gtf.gz". When you find those files, copy the location links and use wget to add them to your ref directory:
 
     cd ~/rnaseq_example/ref
     wget <link to genome>
@@ -39,11 +39,11 @@ Navigate through the directories to find a GTF (**NOT** GFF3) annotation file fo
 Finally, you will need to use gunzip to uncompress the files:
 
     gunzip Arabidopsis_thaliana.TAIR10.dna.toplevel.fa.gz
-    gunzip Arabidopsis_thaliana.TAIR10.36.gtf.gz
+    gunzip Arabidopsis_thaliana.TAIR10.39.gtf.gz
 
 Take a look at the GTF file:
 
-    less Arabidopsis_thaliana.TAIR10.36.gtf
+    less Arabidopsis_thaliana.TAIR10.39.gtf
 
 Press 'q' to exit this screen.
 
@@ -66,7 +66,7 @@ We are going to use an aligner called 'STAR' to align the data, but in order to 
     --runMode genomeGenerate \
     --genomeDir star_index \
     --genomeFastaFiles Arabidopsis_thaliana.TAIR10.dna.toplevel.fa \
-    --sjdbGTFfile Arabidopsis_thaliana.TAIR10.36.gtf \
+    --sjdbGTFfile Arabidopsis_thaliana.TAIR10.39.gtf \
     --sjdbOverhang 99
 
 This step will take 5 minutes. You can look at the [STAR documentation](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) while you wait. All of the output files will be written to the star_index directory. 
@@ -84,7 +84,7 @@ and let's run STAR on just one pair of files. Make sure you run this on a comput
     --sjdbOverhang 99 \
     --genomeDir ../ref/star_index \
     --sjdbGTFtagExonParentGene gene_id \
-    --sjdbGTFfile ../ref/Arabidopsis_thaliana.TAIR10.36.gtf \
+    --sjdbGTFfile ../ref/Arabidopsis_thaliana.TAIR10.39.gtf \
     --outSAMtype BAM Unsorted SortedByCoordinate \
     --outReadsUnmapped Fastx \
     --quantMode GeneCounts \
