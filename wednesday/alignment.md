@@ -28,7 +28,7 @@ If, for some reason, your jobs did not finish or something else went wrong, plea
 
 **2\.** To align our data we will need the genome and annotation for Arabidopsis thaliana. There are many places to find them, but we are going to get them from the Ensembl Genomes FTP site. In a browser, go to here:
 
-    ftp://ftp.ensemblgenomes.org/pub/plants/release-36/
+    ftp://ftp.ensemblgenomes.org/pub/plants/release-39/
 
 Navigate through the directories to find a GTF (**NOT** GFF3) annotation file for Arabidopsis thaliana, as well as a complete genome. The genome file is "Arabidopsis_thaliana.TAIR10.dna.toplevel.fa.gz" and the annotation file is "Arabidopsis_thaliana.TAIR10.36.gtf.gz". When you find those files, copy the location links and use wget to add them to your ref directory:
 
