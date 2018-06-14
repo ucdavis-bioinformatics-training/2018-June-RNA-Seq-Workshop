@@ -220,13 +220,13 @@ It will give you a warning about not having an index file. Click "Go" to create 
     cd ~/rnaseq_example/03-alignment
     ln -s ../01-Trimming/samples.txt
 
-Next, download a slurm task array file called star.sh:
+Next, download a slurm task array file called star.slurm:
 
-    wget https://ucdavis-bioinformatics-training.github.io/2017-June-RNA-Seq-Workshop/wednesday/star.sh
+    wget https://ucdavis-bioinformatics-training.github.io/2017-June-RNA-Seq-Workshop/wednesday/star.slurm
 
 This file is not complete. The variables for the reference directory and the GTF annotation file are blank. You need to use nano (the text editor) to add the full paths of the reference directory and the GTF annotation file. Once you do that and save the file, you can move on to the final step.
 
-    nano star.sh
+    nano star.slurm
 
 Find the paths you need and add them to the correct spots in the script. You may need to open another terminal. Save the file and exit nano.
 
@@ -234,11 +234,11 @@ Find the paths you need and add them to the correct spots in the script. You may
 
 **15\.** First, take look at the file:
 
-    cat star.sh
+    cat star.slurm
 
 It looks very similar to our previous task array file, except we are running STAR, so we are using a few more variables. If everything is set up properly, then all you have to do is use sbatch:
 
-    sbatch star.sh
+    sbatch star.slurm
 
 You will want to use 'squeue' to make sure that your jobs are actually running. If your jobs finish quickly, then something went wrong.
 
