@@ -3,7 +3,7 @@ Monday
 
 * [Introduction](monday/Introduction.pdf)
 * [Logging In and transferring files](monday/logging-in)
-* [Intro to command-line](monday/intro)
+* [Intro to command-line](monday/Intro2CLI)
 * [Advanced command-line](monday/advanced-command-line)
 * [What is Bioinformatics?](monday/What_is_Bioinformatics.pdf) (talk)
 * [Running jobs on the Cluster and using modules](monday/cluster)
