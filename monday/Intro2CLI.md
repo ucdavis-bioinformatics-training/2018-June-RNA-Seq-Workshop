@@ -140,13 +140,24 @@ The result of this command is all the lines that match any of the patterns in ou
 
 **9\.** Extract specific fields from a file
 
-In the field of bioinformatics, we have to frequently extract specific columns from a file that has a delimitor to separate the columns. We can easily achieve the goal by using the command ***cut***.
+In the field of bioinformatics, we have to frequently extract specific columns from a file that has a delimiter to separate the columns. We can easily achieve the goal by using the command ***cut***.
 
     cut -f2,4-10 all_counts.txt
 
-The command above extracts the column 2,4 to 10 from the file "all_counts.txt". By default, the command ***cut*** uses tab as the delimitor. If the file is formated using a different delimitor, we can add the option of **-d** to specify the specific delimitor of the file. For example, for a file that uses comma as the delimitor, one would add the option of **-d','**.
+The command above extracts the column 2,4 to 10 from the file "all_counts.txt". By default, the command ***cut*** uses tab as the delimiter. If the file is formated using a different delimiter, we can add the option of **-d** to specify the specific delimiter of the file. For example, for a file that uses comma as the delimiter, one would add the option of **-d','**.
 
-   cut -d',' -f2,4-10 all_counts.csv
+   cut -d',' -f2,4-10 all_counts.txt
 
+**10\.** Counting words and lines in a file
 
+Another thing that we do often is count the number of lines in a file. We can use the ***wc*** command to do this with the **-l** option:
 
+    wc -l all_counts.txt
+
+This will give us the number of lines.
+
+**11\.** We will also be using pipes for some of our analysis. Pipes are a construct used on the command-line to send the output of one command to the input of another command. The basic syntax is to uses the pipe symbol (\|) inbetween commands. So for example:
+
+    grep ATCG01090 all_counts.txt | wc -l
+
+This command will use grep to get all the lines that match "ATCG01090" in the all_counts.txt file, and then that output will get "piped" to the wc command which will count the lines coming in. So, when you don't give wc a file to work on, it takes its input from the pipe.

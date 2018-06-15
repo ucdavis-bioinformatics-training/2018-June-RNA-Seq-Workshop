@@ -13,7 +13,7 @@ In this exercise, we will learn how to preprocess our data for alignment. We wil
 **2\.** Next, go into that directory and link to the directory for your raw data. This data comes from an Arabidopsis RNA-Seq project that we did:
 
     cd rnaseq_example
-    ln -s ln -s /share/biocore/workshops/2018_June_RNAseq/00-RawData .
+    ln -s /share/biocore/workshops/2018_June_RNAseq/00-RawData .
 
 ---
 
@@ -30,7 +30,7 @@ In this exercise, we will learn how to preprocess our data for alignment. We wil
 
 ---
 
-**5\.** Pick a directory and go into it. Look at one of the files using the 'zless' command:
+**5\.** Pick a directory and go into it. Look at one of the files using the 'zless' command (which is just the 'less' command for gzipped files):
 
     cd I894/
     zless I894_S90_L006_R1_001.fastq.gz
@@ -55,6 +55,7 @@ This will give you the length of the read. See if you can figure out how this co
 
     cd ~/rnaseq_example
     mkdir 01-HTS_Preproc
+    cd 01-HTS_Preproc
 
 ---
 
