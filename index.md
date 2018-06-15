@@ -24,7 +24,6 @@ Wednesday
 
 * [Intro to Sequencing, Lutz Froenicke](wednesday/Bioinformatics_Workshop_2017_RNA_s_o_Sequencing.pdf) (talk)
 * [Aligners](wednesday/aligners) (talk)
-* [Contamination detection](wednesday/contamination)
 * [Tag-Seq vs. RNA-Seq](wednesday/TagSeqVSRnaSeq.pdf) (talk)
 * [Aligning Data and IGV](wednesday/alignment)
 

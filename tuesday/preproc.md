@@ -71,9 +71,44 @@ Now we'll run the first step ... hts_Stats.
     hts_Stats -1 C61_R1.subset.fastq.gz \
               -2 C61_R2.subset.fastq.gz \
               -L C61.log -f -g -p C61.stats
-    
 
-**8\.** We're going to blaze through the rest of the steps now, and then collect the stats of the reads at the end of the process. 
+---
+
+**8\.** In order to run the next commands, we need to find sequences of ribosomal RNA. We will use these sequences to eliminate rRNA contamination in our reads, which are from Arabidopsis thaliana. One way to do that is to go to [NCBI](https://www.ncbi.nlm.nih.gov/) and search for them. First, go to NCBI and in the Search dropdown select "Taxonomy" and search for "arabidopsis".
+
+![ncbi](ncbi01.png)
+
+Click on "Arabidopsis":
+
+![ncbi](ncbi02.png)
+
+Click on "Arabidopsis" again:
+
+![ncbi](ncbi03.png)
+
+Click on the "Subtree links" for Nucleotide:
+
+![ncbi](ncbi04.png)
+
+Under Molecule Types, click on "rRNA":
+
+![ncbi](ncbi05.png)
+
+Click on "Send", choose "File", choose Format "FASTA", and click on "Create File".
+
+![ncbi](ncbi06.png)
+
+![ncbi](ncbi07.png)
+
+Save this file to your computer, and rename it to 'rrna.fa'. Now, make a directory in your "rnaseq_example" directory called "ref":
+
+    mkdir ~/rnaseq_example/ref
+
+Upload your rrna.fa file to this ref directory on the cluster using either **scp** or FileZilla.
+
+---
+
+**9\.** We're going to blaze through the rest of the steps now, and then collect the stats of the reads at the end of the process. 
 
     hts_SeqScreener -1 C61.stats_R1.fastq.gz -2 C61.stats_R2.fastq.gz -A -L C61.log -f -g -p C61.seqscreener
     hts_SuperDeduper -1 C61.seqscreener_R1.fastq.gz -2 C61.seqscreener_R2.fastq.gz -A -L C61.log -f -g -p C61.superdeduper
@@ -91,11 +126,11 @@ Notice the patterns? In every step we read in reads (-1 and -2), append (-A) sta
 
 ---
 
-**9\.** Matt's json visualization? ###########################################################################
+**10\.** Matt's json visualization? ###########################################################################
 
 ---
 
-**10\.** Alternatively, it's cleaner to stream data from one HTStream component to the next, not save the intermediate files, but still log stats from each step. We'll use a SLURM script that we should take a look at now.
+**11\.** Alternatively, it's cleaner to stream data from one HTStream component to the next, not save the intermediate files, but still log stats from each step. We'll use a SLURM script that we should take a look at now.
 
     cd ../  # We'll run this from the main directory
     cp /share/biocore/workshops/2018_June_RNAseq/hts_preproc.slurm .
@@ -112,7 +147,7 @@ We can watch the progress of our task array using the 'squeue' command:
 
 ---
 
-**11\.** Once that is done, let's take a look at the differences between the input and output files. First look at the input file:
+**12\.** Once that is done, let's take a look at the differences between the input and output files. First look at the input file:
 
     zless 00-RawData/I894/I894_S90_L006_R1_001.fastq.gz
 
