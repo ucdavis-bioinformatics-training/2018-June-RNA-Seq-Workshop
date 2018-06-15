@@ -7,7 +7,7 @@ Monday
 * [Advanced command-line](monday/advanced-command-line)
 * [What is Bioinformatics?](monday/What_is_Bioinformatics.pdf) (talk)
 * [Running jobs on the Cluster and using modules](monday/cluster)
-* [Cheat Sheets](monday/cheat_sheets)
+* [Cheat Sheets](monday/cheat-sheets)
 
 
 Tuesday
