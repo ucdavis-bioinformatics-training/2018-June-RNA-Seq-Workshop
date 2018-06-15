@@ -5,8 +5,8 @@ In this section we will align reads to the genome, view some alignments, and ass
 
 **1\.** First, let's make sure that your jobs from yesterday completed. Go back to your '01-Trimming' directory and first check all the "arrayJob\*.out" and "arrayJob\*.err" files:
 
-    cd ~/rnaseq_example/01-Trimming
-    cat arrayJob*.out
+    cd ~/rnaseq_example
+    cat slurmout/arrayJob*.out
 
 Look through the output and make sure you don't see any errors. Now do the same for the err files:
 
@@ -14,13 +14,13 @@ Look through the output and make sure you don't see any errors. Now do the same 
 
 Also, check the output files. First check the number of forward and reverse output files (should be 24 each):
 
-    ls *.sickle.R1.fastq | wc -l
-    ls *.sickle.R2.fastq | wc -l
+    cd 01-HTS_Preproc
+    ls */*R1* | wc -l
+    ls */*R2* | wc -l
 
 Check the sizes of the files as well. Make sure there are no zero or near-zero size files and also make sure that the size of the files are in the same ballpark as each other:
 
-    ls -lh *.sickle.R1.fastq
-    ls -lh *.sickle.R2.fastq
+    ls -lh *
 
 If, for some reason, your jobs did not finish or something else went wrong, please let one of us know and we can get you caught up.
 
@@ -49,19 +49,14 @@ Press 'q' to exit this screen.
 
 ---
 
-**2\.** Now, let's make an alignment directory and link all of our sickle paired-end files (we are not going to use the singletons) into the directory:
-
-    cd ~/rnaseq_example
-    mkdir 03-alignment
-    cd 03-alignment
-    ln -s ../01-Trimming/*sickle.R*.fastq .
-
-We are going to use an aligner called 'STAR' to align the data, but in order to use star we need to index the genome for star. So go back to your ref directory and let's do the indexing (**Note that the STAR command below has been put on multiple lines for readability**). We specify 4 threads, the output directory, the fasta file for the genome, the annotation file (GTF), and the overhang parameter, which is calculated by subtracting 1 from the read length.
+**2\.** We are going to use an aligner called 'STAR' to align the data, but in order to use star we need to index the genome for star. So go back to your ref directory and let's do the indexing (**Note that the STAR command below has been put on multiple lines for readability**). We specify 4 threads, the output directory, the fasta file for the genome, the annotation file (GTF), and the overhang parameter, which is calculated by subtracting 1 from the read length.
 
     cd ../ref
     module load star
     mkdir star_index
     
+Now, generate the index:
+
     STAR --runThreadN 4 \
     --runMode genomeGenerate \
     --genomeDir star_index \
@@ -73,12 +68,13 @@ This step will take 5 minutes. You can look at the [STAR documentation](https://
 
 ---
 
-**3\.** We are now ready to try an alignment of one of our samples' reads. Let's go back to our 03-alignment directory and make an output directory for STAR:
+**3\.** We are now ready to try an alignment. Let's create an output directory for STAR:
 
-    cd ../03-alignment
-    mkdir I864_S78_star_alignment
+    cd ~/rnaseq_example
+    mkdir 02-STAR_alignment
+    cd 02-STAR_alignment
 
-and let's run STAR on just one pair of files. Make sure you run this on a compute node using 8Gb of memory. It will take about 30 minutes to run (**Again, the command is on multiple lines for readability**):
+and let's run STAR on the pair of subset files we created before. (**Again, the command is on multiple lines for readability**):
 
     STAR --runThreadN 8 \
     --sjdbOverhang 99 \
@@ -88,14 +84,15 @@ and let's run STAR on just one pair of files. Make sure you run this on a comput
     --outSAMtype BAM Unsorted SortedByCoordinate \
     --outReadsUnmapped Fastx \
     --quantMode GeneCounts \
-    --outFileNamePrefix I864_S78_star_alignment/I864_S78_ \
-    --readFilesIn I864_S78.sickle.R1.fastq I864_S78.sickle.R2.fastq
+    --outFileNamePrefix C61.subset. \
+    --readFilesCommand zcat \
+    --readFilesIn ../01-HTS_Preproc/C61.final_R1.fastq.gz ../01-HTS_Preproc/C61.final_R2.fastq.gz
 
-For this command, we are giving it the overhang like from the previous step, the genome index directory we created in the last step, an identifier name from the GTF file that identifies genes, the annotation file, the output file type, outputting unmapped reads, telling it to count reads on a gene level, the prefix for all the output files, and finally, the input files.
+For this command, we are giving it the overhang like from the previous step, the genome index directory we created in the last step, an identifier name from the GTF file that identifies genes, the annotation file, the output file type, outputting unmapped reads, telling it to count reads on a gene level, the prefix for all the output files, the command to unzip the files, and finally, the input files.
 
 ---
 
-**4\.** While that is running, let's take a look at an alignment in IGV. We are going to take an already done alignment and cut it down so that it is small enough to download easily. First, let's take just the chromosome 5 portion of the alignment for the I864_S78 sample. We will use 'samtools' for this step, which is a program to manipulate SAM/BAM files. Take a look at the options for samtools and 'samtools view':
+**4\.** Now let's take a look at an alignment in IGV. We are going to take an alignment that was run using full read set, but cut it down so that it is small enough to download easily. First, let's take just the chromosome 5 portion of the alignment for the I864 sample. We will use 'samtools' for this step, which is a program to manipulate SAM/BAM files. Take a look at the options for samtools and 'samtools view':
 
     module load samtools
     samtools
@@ -103,7 +100,7 @@ For this command, we are giving it the overhang like from the previous step, the
 
 Now, use the 'samtools view' command to extract just chromosome 5 of an already completed alignment:
 
-    samtools view -b -@ 8 -o chr5.bam /home/class1/rnaseq_example/03-alignment/I864_S78_star_alignment/I864_S78_Aligned.sortedByCoord.out.bam 5
+    samtools view -b -@ 8 -o chr5.bam /share/biocore/workshops/2018_June_RNAseq/02-STAR_alignment/I864/I864_Aligned.sortedByCoord.out.bam 5
 
 We need to index the new BAM file:
 
@@ -215,14 +212,13 @@ It will give you a warning about not having an index file. Click "Go" to create 
 
 ---
 
-**14\.** Ok, let's go back to the command-line. If your STAR job hasn't finished, just open another terminal and log into cabernet. Now we are going to run all of the STAR alignments on the cluster. This is something to run at the end of the day. The first thing to do is to link to our samples.txt file:
+**14\.** Ok, let's go back to the command-line. Now we are going to run all of the STAR alignments on the cluster. We will run the script from the base directory:
 
-    cd ~/rnaseq_example/03-alignment
-    ln -s ../01-Trimming/samples.txt
+    cd ~/rnaseq_example
+    
+Next, copy a slurm task array file called "star.slurm":
 
-Next, download a slurm task array file called star.slurm:
-
-    wget https://ucdavis-bioinformatics-training.github.io/2017-June-RNA-Seq-Workshop/wednesday/star.slurm
+    cp /share/biocore/workshops/2018_June_RNAseq/star.slurm .
 
 This file is not complete. The variables for the reference directory and the GTF annotation file are blank. You need to use nano (the text editor) to add the full paths of the reference directory and the GTF annotation file. Once you do that and save the file, you can move on to the final step.
 

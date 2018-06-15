@@ -100,7 +100,7 @@ Click on "Send", choose "File", choose Format "FASTA", and click on "Create File
 
 ![ncbi](ncbi07.png)
 
-Save this file to your computer, and rename it to 'rrna.fa'. Now, make a directory in your "rnaseq_example" directory called "ref":
+Save this file to your computer, and rename it to 'rrna.fasta'. Now, make a directory in your "rnaseq_example" directory called "ref":
 
     mkdir ~/rnaseq_example/ref
 
@@ -112,8 +112,7 @@ Upload your rrna.fa file to this ref directory on the cluster using either **scp
 
     hts_SeqScreener -1 C61.stats_R1.fastq.gz -2 C61.stats_R2.fastq.gz -A -L C61.log -f -g -p C61.seqscreener
     hts_SuperDeduper -1 C61.seqscreener_R1.fastq.gz -2 C61.seqscreener_R2.fastq.gz -A -L C61.log -f -g -p C61.superdeduper
-    cp /share/biocore/workshops/2018_June_RNAseq/rrna.fasta .  # grab rRNA sequences - source: NCBI?
-    hts_SeqScreener -s rrna.fasta -1 C61.superdeduper_R1.fastq.gz -2 C61.superdeduper_R2.fastq.gz \
+    hts_SeqScreener -s ../ref/rrna.fasta -1 C61.superdeduper_R1.fastq.gz -2 C61.superdeduper_R2.fastq.gz \
                     -A -L C61.log -f -g -p C61.seqscreener.rRNA
     hts_AdapterTrimmer -n -1 C61.seqscreener.rRNA_R1.fastq.gz -2 C61.seqscreener.rRNA_R2.fastq.gz -f -g -p C61.adaptertrimmer
     hts_QWindowTrim -n -1 C61.adaptertrimmer_R1.fastq.gz -2 C61.adaptertrimmer_R2.fastq.gz -A -L C61.log -f -g -p C61.qtrim
@@ -132,8 +131,9 @@ Notice the patterns? In every step we read in reads (-1 and -2), append (-A) sta
 
 **11\.** Alternatively, it's cleaner to stream data from one HTStream component to the next, not save the intermediate files, but still log stats from each step. We'll use a SLURM script that we should take a look at now.
 
-    cd ../  # We'll run this from the main directory
+    cd ~/rnaseq_example  # We'll run this from the main directory
     cp /share/biocore/workshops/2018_June_RNAseq/hts_preproc.slurm .
+    cat hts_preproc.slurm
 
 After looking at the script, let's run it. First we'll need to produce a list of samples for the script to work on.
 
