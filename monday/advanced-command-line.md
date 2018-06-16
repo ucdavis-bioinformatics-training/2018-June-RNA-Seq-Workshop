@@ -61,7 +61,7 @@ You'll notice there might be a letter missing... why would that be?
 
 Now let's look at some fastq files. Link a few files into the advanced directory:
 
-    ln -s /share/biocore-archive/Leveau_J_UCD/RNASeq_Arabidopsis_2016/00-RawData/C61_S67_L006/C61_S67_L006_R*_001.fastq.gz .
+    ln -s /share/biocore/workshops/2018_June_RNAseq/00-RawData/C61/C61_S67_L006_R*_001.fastq.gz .
     
 Since the files are gzipped files we need to use "zcat" to look at them. zcat is just like cat except for gzipped files:
 
@@ -143,19 +143,19 @@ Or, imagining a file that contains the filenames (one per line) of samples' sequ
 
 Now, let's use a for loop on some fastq files. You can specify all the parts of the for loop on one line, separated by semi-colons. First let's just echo all the names of the fastq files in a directory:
 
-    for x in /share/biocore-archive/Leveau_J_UCD/RNASeq_Arabidopsis_2016/00-RawData/*/*; do echo $x; done
+    for x in /share/biocore/workshops/2018_June_RNAseq/00-RawData/*/*; do echo $x; done
 
 Now, let's use the "basename" command to get just the filename for each file:
 
-    for x in /share/biocore-archive/Leveau_J_UCD/RNASeq_Arabidopsis_2016/00-RawData/*/*; do basename $x; done
+    for x in /share/biocore/workshops/2018_June_RNAseq/00-RawData/*/*; do basename $x; done
 
 We can also assign the output of a command to a new variable by using the backtick character (\`). We put the command we want inside backticks and then assign it to the variable NAME. Then we can use $NAME in the next command:
 
-    for x in /share/biocore-archive/Leveau_J_UCD/RNASeq_Arabidopsis_2016/00-RawData/*/*; do NAME=`basename $x`; echo $NAME is a file; done
+    for x in /share/biocore/workshops/2018_June_RNAseq/00-RawData/*/*; do NAME=`basename $x`; echo $NAME is a file; done
 
-We can also use the backticks to generate the list for the for loop. Let's say we wanted to iterate over just the sample names in /share/biocore-archive/Leveau_J_UCD/RNASeq_Arabidopsis_2016/00-RawData. First, let's generate a list of the sample names and put them in a file:
+We can also use the backticks to generate the list for the for loop. Let's say we wanted to iterate over just the sample names in /share/biocore/workshops/2018_June_RNAseq/00-RawData. First, let's generate a list of the sample names and put them in a file:
 
-    ls -d /share/biocore-archive/Leveau_J_UCD/RNASeq_Arabidopsis_2016/00-RawData/*_L006 | cut -f7 -d/ > samples.txt
+    ls -d /share/biocore/workshops/2018_June_RNAseq/00-RawData/* | cut -f7 -d/ > samples.txt
 
 This command gets the directories ending in "\_L006" and then cuts out the 7th field using the "/" as the delimiter. Take a look at the file:
 
