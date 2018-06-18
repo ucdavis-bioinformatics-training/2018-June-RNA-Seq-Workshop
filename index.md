@@ -26,6 +26,7 @@ Tuesday
 * [Files and Filetypes for RNA-Seq]() (talk)
 * [Experimental Design and Cost Estimation]() (talk)
 * [Workshop dataset talk](tuesday/Emily-RNA-seq_data.pdf)
+* [Project Setup hands-on]()
 * [Preprocessing Data hands-on]()
 
 
