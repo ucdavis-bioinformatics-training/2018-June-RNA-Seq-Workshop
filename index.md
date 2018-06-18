@@ -12,7 +12,7 @@ Monday
 
 * [Welcome](monday/Introduction.pdf)
 * [Logging In and transferring files](monday/logging-in)
-* [Intro to command-line talk](monday/Intro2CLI.pptx)
+* [Intro to command-line talk](monday/Intro2CLI.pdf)
 * [Intro to command-line walk-through](monday/Intro2CLI)
 * [Intro to command-line files](https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/tree/master/monday/Intro2CLI-files)
 * [Advanced command-line](monday/advanced-command-line)
