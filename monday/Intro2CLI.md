@@ -300,7 +300,7 @@ The command to uncompress the gz files is ***gunzip***.
 
 Creating symbolic link is a way to avoid copying files into multiple locations, which in turn increases the usage of disk space unnecessarily. The command is in the format of ***ln -s [target] [linklocation]***.
 
-    ln -s symlink.txt /home/jli/symlink.txt
+    ln -s /home/jli/symlink.txt symlink.txt
     ls -l symlink.txt
 
 This tells us that the file symlink.txt at the current location is actually pointing to the file with the same name but located in "/home/jli/".
