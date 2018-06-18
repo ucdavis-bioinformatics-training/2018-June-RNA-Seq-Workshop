@@ -343,14 +343,26 @@ It shows all the files in a format with the first field providing permission inf
 
 The way to change the permission of a file is to use the command ***chmod***.
 
-    chmod g+x,o+w test
+    chmod -R g+x,o+w test
 
-The above command adds executable permission to the group and writable permission to all others.
+The above command adds executable permission to the group and writable permission to all others. The option/parameter "-R" tells the command that "test" is a directory. For a file, we simply remove the option "-R".
+
+---
+
+**21\.** Removing files/directories
+
+    rm *
+
+This command removes all files. You will see some messages saying that the directories cannot be deleted. In order to delete the direcotries, we add option "-rf".
+
+    rm -rf *
+
+This is a very dangerous operation, be careful when you use it.
 
 ---
 
 
-**21\.** List help and all options for a command
+**22\.** List help and all options for a command
 
 We may use the man page of a command to learn what exactly a command does, as well as what options/parameters a command takes to modify its function. The way to open the man page of a command is to use the command ***man***.
 
@@ -359,7 +371,7 @@ We may use the man page of a command to learn what exactly a command does, as we
 ---
 
 
-**22\.** Some tricks to make your life much easier
+**23\.** Some tricks to make your life much easier
 First and the most important is the use of TAB key. It auto-completes command names, file path. It saves a lot of trouble of typing every single character in a command. For example, in order to finished a command ***cd /home/username/Intro2CLI/test***, you could type ***cd /h***, then hit TAB key, you will get the auto-completed "cd /home/". Then try to type the first letter of your user name, if your user name is unique at each letter, it will auto-complete. If not, by hitting TAB multiple times, the system will list all possibilities starting with the letter you have typed. Add a couple more letters from your user name, at some point it will auto-complete to the path of your home directory "cd /home/username/". Then type "I", followed by the TAB key, and you should get "cd /home/username/Intro2CLI/". Then type "t", followed by the TAB key, and you should get "cd /home/username/Intro2CLI/test".
 
 Secondly, the command ***history***. It lists every single command that you have used up to a certain number0 It is very useful when one wants to recall what he/she has done.
@@ -390,7 +402,7 @@ This command list all files/directories that start with the letter "t".
 ---
 
 
-**23\.** Some resources
+**24\.** Some resources
 
 A list of frequently used unix commands is at [cheatsheet](https://files.fosswire.com/2007/08/fwunixref.pdf)
 
