@@ -26,6 +26,7 @@ Tuesday
 * [Files and Filetypes for RNA-Seq]() (talk)
 * [Experimental Design and Cost Estimation]() (talk)
 * [Workshop dataset talk](tuesday/Emily-RNA-seq_data.pdf)
+* [Project Setup hands-on]()
 * [Preprocessing Data hands-on]()
 
 
@@ -41,8 +42,9 @@ Thursday
 ==========
 
 * [Intro to R]()
-* [Differential Gene Expression Statistics]() (talk)
-* [DE Analysis: counts to lists of DE genes]()
+* [DE Analysis: counts to lists of DE genes](thursday/DE.html)
+
+  -[The R Markdown file](thursday/DE.Rmd)
 
 
 Friday
