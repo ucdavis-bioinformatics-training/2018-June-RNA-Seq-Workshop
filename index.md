@@ -1,3 +1,7 @@
+---
+title: RNA-Seq Workshop Home
+---
+
 Cheat Sheets
 =======
 
