@@ -168,7 +168,7 @@ In the case where we have a few patterns that we are interested, we can use an o
 
     grep -E "ATCG01090|AT1G03997" all_counts.txt
 
-The option ***-E*** tells ***grep*** to use an Extended Regular Expression, where **\|** is an logical operator of OR, meaning that we want to search any line that matches the pattern "ATCG01090", or "AT1G03997". The result of this command is the two lines that each matching one pattern. The command ***egrep*** is exactly the same as ***grep -E***.
+The option ***-E*** tells ***grep*** to use an Extended Regular Expression, where "|" is an logical operator of OR, meaning that we want to search any line that matches the pattern "ATCG01090", or "AT1G03997". The result of this command is the two lines that each matching one pattern. The command ***egrep*** is exactly the same as ***grep -E***.
 
 This command is very good at finding matches for a few patterns. However, sometimes, we might have many more patterns that we want to search. Under this situation, we can use a different option ***-F*** and provide a file that have all the patterns that we are interested in.
 
@@ -234,7 +234,7 @@ You see that the ***paste*** command has the columns in partial-count-2.txt to p
 
 **13\.** Chaining commands together to avoid intermediate files
 
-We have learned many commands now. In bioinformatics analysis, many commands have to be used and many intermediate files are generated if we simply issue each command individually. One way to avoid generating unnecessary intermediate files is to use the syntax of **\|**. The **\|** allows the output of one command to be the input of another command. For example, we can extract two columns from one file and combine it with another file.
+We have learned many commands now. In bioinformatics analysis, many commands have to be used and many intermediate files are generated if we simply issue each command individually. One way to avoid generating unnecessary intermediate files is to use the syntax of **|**. The **|** allows the output of one command to be the input of another command. For example, we can extract two columns from one file and combine it with another file.
 
     cut -f3 partial-count-2.txt |paste -d'\t' partial-count-1.txt - > pipe.command.txt
 
@@ -298,7 +298,7 @@ The command to uncompress the gz files is ***gunzip***.
 
 **17\.** Create symbolic link
 
-Creating symbolic link is a way to avoid copying files into multiple locations, which in turn increases the usage of disk space unnecessarily. The command is in the format of ***ln -s [linklocation] [target]***.
+Creating symbolic link is a way to avoid copying files into multiple locations, which in turn increases the usage of disk space unnecessarily. The command is in the format of ***ln -s \[linklocation\] \[target\]***.
 
     ln -s /home/jli/symlink.txt symlink.txt
     ls -l symlink.txt
