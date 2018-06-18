@@ -1,6 +1,19 @@
 Introduction to CLI
 =======================
 
+Before we talk about any command, first we have to log into the computing cluster. The ways to achieve this is different for MacOs and Windows. For people who use MacOS, open an application called "Terminal" and then use the following command:
+
+    ssh username@ganesh.genomecenter.ucdavis.edu
+
+For people who use Windows, please open the application called 
+
+After logging in, we are on the head node of the computing cluster. **The one most important thing to remember is that NEVER to run jobs on the head node.** To avoid this, we have to get on to one of the computing nodes, where the jobs are supposed to be run. The following command is how we do it.
+
+    srun --time 4:00:00 -n 1 -mem 8000
+
+Another important command to remember while using command line is ^C (Control key and the letter C at the same time). This helps us to get the prompt back in the case when we want to stop a command.
+
+
 **1\.** Find out where we are
 
     pwd
@@ -25,14 +38,27 @@ Alternatively, you could have created both directories at once, using ***mkdir t
 
 **3\.** Get files from a remote location
 
-    wget https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/monday/art.part1.txt
-    wget https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/monday/art.part2.txt
-    wget https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/monday/art.part3.txt
-    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/all_counts.txt
-    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/all_counts.csv
-    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/pattern.txt
+    wget https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/monday/Intro2CLI-files/art.part1.txt
+    wget https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/monday/Intro2CLI-files/art.part2.txt
+    wget https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/monday/Intro2CLI-files/art.part3.txt
+    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/all_counts.txt
+    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/all_counts.csv
+    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/pattern.txt
+    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/partial-count-1.txt
+    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/partial-count-1.short.txt
+    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/partial-count-2.txt
 
-These are three files that we are going to use later in the tutorial.
+These are files that we are going to use later in the tutorial.
+
+The way to transfer files between your own laptop and the computing cluster that we use is different from Windows to Mac OS. For people who use Mac, it is to use ***scp*** command. The snytax is as following:
+
+    scp files-to-transfer username@ip.address:path2transfer
+
+Where "files-to-transer" is where you put the name of the file that you want to transfer from you Mac to the cluster. "username" is your own user name on the cluster. "ip.address" is defined either by the hostname (in our case it is ganesh.genomecenter.ucdavis.edu); or it is defined by the IP address of the location (in our case the ip address is 192.168.1.89). For example, if I want to transfer a file on my laptop called transfer.test.txt to the cluster and put it just inside my home directory, the command I would use is:
+
+    scp ~/Jessie/Research/Bioinfo/Course/June-2018/transfer.test.txt jli@ganesh.genomecenter.ucdavis.edu:./
+
+For people who use Windows, there is a package called WinSCP that can be used to do the transfer. It requires some of the same information as using scp above: user name and the hostname/IP. WinSCP will create the connect between your laptop and the cluster, so that you may transfer files by simply drag and drop from one place to another.
 
 ---
 
@@ -82,11 +108,11 @@ This is one of the text editors that you may use to edit a text file in command.
 
 **6\.** Other ways to create files
 
-One may use ***cp*** command to copy a file to another:
+First, one may use ***cp*** command to copy a file to another:
 
     cp test.txt test2.txt
 
-One can also use ***cat*** command to concatenate a few files into one file:
+Second, one can also use ***cat*** command to concatenate a few files into one file:
 
     cat art.part1.txt art.part2.txt art.part3.txt > oliver.art.txt
 
@@ -96,7 +122,18 @@ Here we see a new thing: **>**. This means that the output of the command on the
 
 Since we have sine one way to redirect the output of a command to a file, there is another related method, by using **>>**. The difference between these two ways is that: **>** takes the standard ouput and write into a file. If the file already exist, it will overwrite the original content. While **>>** will take the standard output and append it into the file.
 
+A third way of creating a file is to use the command ***echo***. ***echo*** is a built-in command in the ***bash*** shell that writes its arguments to standard output. One may redirect the output to a file, in turn creating a file. For example, the command below writes ***Hello World!*** on the screen.
+
+   echo "Hello World!"
+
+If we redirect the output to a file "hello-world.txt", then we will have a file that is called "hello-world.txt" and have the sentence ***Hello World!*** as the content.
+
+   echo "Hello World!" > hello-world.txt
+
+
 Now that we have learned how to create a file, the next step is to learn a few commands that will alow us to manipulate a file.
+
+---
 
 **7\.** Commands to look at a file
 
@@ -138,26 +175,143 @@ This command is very good at finding matches for a few patterns. However, someti
 
 The result of this command is all the lines that match any of the patterns in our list in the file pattern.txt. The command ***fgrep*** is the same as ***grep -F***.
 
+---
+
 **9\.** Extract specific fields from a file
 
-In the field of bioinformatics, we have to frequently extract specific columns from a file that has a delimiter to separate the columns. We can easily achieve the goal by using the command ***cut***.
+In the field of bioinformatics, we have to frequently extract specific columns from a file that has a delimitor to separate the columns. We can easily achieve the goal by using the command ***cut***.
 
-    cut -f2,4-10 all_counts.txt
+    cut -f2,4-10 all_counts.txt > foo
 
-The command above extracts the column 2,4 to 10 from the file "all_counts.txt". By default, the command ***cut*** uses tab as the delimiter. If the file is formated using a different delimiter, we can add the option of **-d** to specify the specific delimiter of the file. For example, for a file that uses comma as the delimiter, one would add the option of **-d','**.
+The command above extracts the column 2,4 to 10 from the file "all_counts.txt". By default, the command ***cut*** uses tab as the delimitor. If the file is formated using a different delimitor, we can add the option of **-d** to specify the specific delimitor of the file. For example, for a file that uses comma as the delimitor, one would add the option of **-d','**.
 
-   cut -d',' -f2,4-10 all_counts.txt
+    cut -d',' -f2,4-10 all_counts.csv > foo2
 
-**10\.** Counting words and lines in a file
+---
 
-Another thing that we do often is count the number of lines in a file. We can use the ***wc*** command to do this with the **-l** option:
+**10\.** Combine two files side by side
 
-    wc -l all_counts.txt
+In the situation where it is necessary to combine files by column, the command that can be used to achieve the goal is ***paste***. In the following example, the command combines the two files side by side, using TAB as the delimitor, and the output is redircted into a file "combined-count.txt". If the option **-d'\t'** is not specified, the command uses TAB as the delimitor by default.
 
-This will give us the number of lines.
+    paste -d'\t' partial-count-1.txt partial-count-2.txt > combined-count.txt
 
-**11\.** We will also be using pipes for some of our analysis. Pipes are a construct used on the command-line to send the output of one command to the input of another command. The basic syntax is to uses the pipe symbol (\|) inbetween commands. So for example:
+To check what the command has done, we are going to take a look at the first a few lines of the files.
 
-    grep ATCG01090 all_counts.txt | wc -l
+    head -5 partial-count-1.txt
+    head -5 partial-count-2.txt
+    head -5 combined-count.txt
 
-This command will use grep to get all the lines that match "ATCG01090" in the all_counts.txt file, and then that output will get "piped" to the wc command which will count the lines coming in. So, when you don't give wc a file to work on, it takes its input from the pipe.
+You see that the ***paste*** command has the columns in partial-count-2.txt to partial-count-1.txt. One thing to point out is that ***paste*** does not require the two files to have the same number of rows. For example, I have created a file (partial-count-1.short.txt) from partial-count-1.txt by deleting the last 10 rows. When we paste this shorter file with partial-count-2.txt, the last 10 rows have less number of columns.
+
+    paste -d'\t' partial-count-1.short.txt partial-count-2.txt > combined-count.mixed.txt
+    tail -n 15 combined-count.mixed.txt
+
+![mixed.png](./mixed.png)
+
+---
+
+**11\.** Chaining commands together to avoid intermediate files
+
+We have learned many commands now. In bioinformatics analysis, many commands have to be used and many intermediate files are generated if we simply issue each command individually. One way to avoid generating unnecessary intermediate files is to use the syntax of **|**. The **|** allows the output of one command to be the input of another command. For example, we can extract two columns from one file and combine it with another file.
+
+    cut -f3 partial-count-2.txt |paste -d'\t' partial-count-1.txt - > pipe.command.txt
+
+Or we can simply extract a list of genes from a subset of samples from the raw count table.
+
+    cut -f3,5-7 all_counts.txt |grep -E "ATCG01090|AT1G03997" - > genes.of.interest.txt
+
+---
+
+**12\.** For loop
+
+It is very useful to use a for loop when we want to carry out the same command multiple times or on multiple files.
+
+    for i in {1..12}
+    do
+      echo $i
+    done
+
+
+    for file in all_counts.txt partial-count-1.txt
+    do
+      head -n 2 $file
+    done
+
+
+---
+
+**13\.** Archive files
+
+In data analysis, there is constant need to archive files for the purpose of storage and sharing. By using the archive command, one may package multiple files/directories all into one.
+
+    tar -cvzf all_counts.txt partial-count-1.txt partial-count-2.txt archive-counts.txt
+
+**14\.** Compression
+
+There are many methods for compression. All methods aim to reduce the size of the file so that it's easier to store files or sharing them. Different command produces different level of compression. We have been using ***bzip2***, which produces very good level of compression.
+
+    ls -l all_counts.txt
+    bzip2 all_counts.txt
+    ls -l all_counts.txt.bz2
+
+The command to uncompress the bz2 files is ***bunzip2***
+
+    bunzip2 all_counts.txt.bz2
+
+Another commonly used compression method is gzip, which produces less compression than bzip2.
+
+    ls -l all_counts.txt
+    gzip all_counts.txt
+    ls -l all_counts.txt.gz
+
+The command to uncompress the gz files is ***gunzip***.
+
+    gunzip all_counts.txt.gz
+
+
+---
+
+**15\.** Create symbolic link
+
+Creating symbolic link is a way to avoid copying files into multiple locations, which in turn increases the usage of disk space unnecessarily. The command is in the format of ***ln -s [target] [linklocation]***.
+
+    ln -s symlink.txt /home/jli/symlink.txt
+    ls -l symlink.txt
+
+This tells us that the file symlink.txt at the current location is actually pointing to the file with the same name but located in "/home/jli/".
+
+---
+
+**16\.** Some tricks to make your life much easier
+
+First and the most important is the use of TAB key. It auto-completes command names, file path. It saves a lot of trouble of typying every single character in a command. For example, in order to finishe a command ***cd /home/username/Intro2CLI/test***, you could type ***cd /h***, then hit TAB key, you will get the auto-completed "cd /home/". Then try to type the first letter of your user name, if your user name is unique at each letter, it will auto-complete. If not, by hitting TAB multiple times, the system will list all possibilities starting with the letter you have typed. Add a couple more letters from your user name, at some point it will auto-complete to the path of your home directory "cd /home/username/". Then type "I", followed by the TAB key, and you should get "cd /home/username/Intro2CLI/". Then type "t", followed by the TAB key, and you should get "cd /home/username/Intro2CLI/test".
+
+Secondly, the command ***history***. It lists every single command that you have used up to the last 500. It is very useful when one wants to recall what he/she has done.
+
+    history > history.txt
+    less history.txt
+
+Thirdly, the UP and DOWN arrows on your keyboard. It recalls your previous commands one by one in order, in the case that you want to redo a recent command.
+
+Another thing to remember is that most unix commands have many options/parameters that one may specify. For example, one can recall the last 20 commands in the history by using:
+
+    history 20
+
+Another example is the command ***tail***. The two following commands have only one small difference, but produce completely different results.
+
+    tail -n 20 all_counts.txt
+    tail -n +20 all_counts.txt
+
+The first command above produces the last 20 lines of the file "all_counts.txt". The second command produces the part of the same file starting from the 20th line to the end.
+
+The last is the use of wildcard (*). It stands for any character, including letters, numbers, and special characters. For example, if we want to show all the files that starts with "t", we can use the following command:
+
+    ls t*
+
+This command list all files/directories that start with the letter "t".
+
+
+---
+
+
+
