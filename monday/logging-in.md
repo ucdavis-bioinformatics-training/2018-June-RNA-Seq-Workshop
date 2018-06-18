@@ -24,8 +24,14 @@ Replace '[class#]' with your username and replace '[full path to file]' with the
 
 For Windows - Logging In
 -------------------------
+Windows needs a terminal to connect with, you have a few options:
 
-1. Open up PuTTY. If you haven't installed PuTTY, get it [here](http://www.putty.org/).
+1. [Ubuntu for Windows 10](https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/)
+2. [MobaXterm](https://mobaxterm.mobatek.net/)
+3. [PuTTY](http://www.putty.org/)
+
+Then,
+1. Open up terminal (putty, mobaxterm, or ubuntu).
 2. In the Host Name field, type **ganesh.genomecenter.ucdavis.edu**
 3. Make sure the Connection Type is SSH.
 4. Press "Open". It will ask you for your username and password.
@@ -39,4 +45,3 @@ For Windows - Transferring files
 2. Type in your username and password.
 3. Make sure the File Protocol is SFTP.
 4. Press "Login".
-

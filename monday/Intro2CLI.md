@@ -5,11 +5,11 @@ Before we talk about any command, I just want to reiterate the process to log in
 
     ssh username@ganesh.genomecenter.ucdavis.edu
 
-For people who use Windows, please open the application called "PuTTY" and go through the set up accordingly.
+For people who use Windows, please open the application called "PuTTY" (or MobaXterm, or Linux bash shell on Windows 10),  and go through the set up accordingly.
 
 After logging in, we are on the head node of the computing cluster. **The one most important thing to remember is that NEVER to run jobs on the head node.** To avoid this, we have to get on to one of the computing nodes, where the jobs are supposed to be run. The following command is how we do it.
 
-    srun --time 4:00:00 -n 1 -mem 8000
+    srun --time 4:00:00 --reservation=workshop -n 1 --mem 1000 --pty /bin/bash
 
 Another important command to remember while using command line is ^C (Control key and the letter C at the same time). This helps us to get the prompt back in the case when we want to stop a command.
 
@@ -50,11 +50,11 @@ Alternatively, you could have created both directories at once, using ***mkdir t
 
 These are files that we are going to use later in the tutorial.
 
-The way to transfer files between your own laptop and the computing cluster that we use is different from Windows to Mac OS. For people who use Mac, it is to use ***scp*** command. The snytax is as following:
+The way to transfer files between your own laptop and the computing cluster that we use is different from Windows to Mac OS. For people who use Mac, it is to use ***scp*** command. The syntax is as following:
 
     scp files-to-transfer username@ip.address:path2transfer
 
-Where "files-to-transer" is where you put the name of the file that you want to transfer from you Mac to the cluster. "username" is your own user name on the cluster. "ip.address" is defined either by the hostname (in our case it is ganesh.genomecenter.ucdavis.edu); or it is defined by the IP address of the location (in our case the ip address is 192.168.1.89). For example, if I want to transfer a file on my laptop called transfer.test.txt to the cluster and put it just inside my home directory, the command I would use is:
+Where "files-to-transfer" is where you put the name of the file that you want to transfer from you Mac to the cluster. "username" is your own user name on the cluster. "ip.address" is defined either by the hostname (in our case it is ganesh.genomecenter.ucdavis.edu); or it is defined by the IP address of the location (in our case the ip address is 192.168.1.89). For example, if I want to transfer a file on my laptop called transfer.test.txt to the cluster and put it just inside my home directory, the command I would use is:
 
     scp ~/Jessie/Research/Bioinfo/Course/June-2018/transfer.test.txt jli@ganesh.genomecenter.ucdavis.edu:./
 
@@ -116,11 +116,11 @@ Second, one can also use ***cat*** command to concatenate a few files into one f
 
     cat art.part1.txt art.part2.txt art.part3.txt > oliver.art.txt
 
-Here we see a new thing: **>**. This means that the output of the command on the left (before the > ) is written in the file whoes name is given on the right: to re-direct the output of the command before it into a file. Otherwise, the output, by default, is to be the standard output (on screen). For example, if we use the command below, it simply show the content of the file on screen.
+Here we see a new thing: **>**. This means that the output of the command on the left (before the > ) is written in the file whose name is given on the right: to re-direct the output of the command before it into a file. Otherwise, the output, by default, is to be the standard output (on screen). For example, if we use the command below, it simply show the content of the file on screen.
 
     cat oliver.art.txt
 
-Since we have sine one way to redirect the output of a command to a file, there is another related method, by using **>>**. The difference between these two ways is that: **>** takes the standard ouput and write into a file. If the file already exist, it will overwrite the original content. While **>>** will take the standard output and append it into the file.
+Since we have sine one way to redirect the output of a command to a file, there is another related method, by using **>>**. The difference between these two ways is that: **>** takes the standard output and write into a file. If the file already exist, it will overwrite the original content. While **>>** will take the standard output and append it into the file.
 
 A third way of creating a file is to use the command ***echo***. ***echo*** is a built-in command in the ***bash*** shell that writes its arguments to standard output. One may redirect the output to a file, in turn creating a file. For example, the command below writes ***Hello World!*** on the screen.
 
@@ -131,7 +131,7 @@ If we redirect the output to a file "hello-world.txt", then we will have a file 
    echo "Hello World!" > hello-world.txt
 
 
-Now that we have learned how to create a file, the next step is to learn a few commands that will alow us to manipulate a file.
+Now that we have learned how to create a file, the next step is to learn a few commands that will allow us to manipulate a file.
 
 ---
 
@@ -141,13 +141,13 @@ First, in many cases, we could like to take a look at just the first a few lines
 
     head -n 10 oliver.art.txt
 
-The option **-n** followd by a number (N) tells the command to show the first N lines of a file.
+The option **-n** followed by a number (N) tells the command to show the first N lines of a file.
 
 As one can imagine, there is a command to look at the last number of lines of a file, which is ***tail***.
 
     tail -n 10 oliver.art.txt
 
-There is one very useful command that can show a file page by page, which does not have to read the entire file before displaying, therefore it has advantage when looking at a hugh file.
+There is one very useful command that can show a file page by page, which does not have to read the entire file before displaying, therefore it has advantage when looking at a huge file.
 
     less all_counts.txt
 
@@ -179,11 +179,11 @@ The result of this command is all the lines that match any of the patterns in ou
 
 **9\.** Manipulate a file
 
-The most straightforward way to manipulate a file is to open it in a text editor, such as nano, and make the necessary modification, and then save it. However, when the file is getting big, this way of manipulating a file is very inefficient. Therefore, we are going to use the command ***sed*** to accomplish the goal. "sed" is short for "stream editor". It allows the user to filter and tranform the text. The syntax of a sed command is ***sed [OPTIONS] [SCRIPT] [INPUT]***. For example:
+The most straightforward way to manipulate a file is to open it in a text editor, such as nano, and make the necessary modification, and then save it. However, when the file is getting big, this way of manipulating a file is very inefficient. Therefore, we are going to use the command ***sed*** to accomplish the goal. "sed" is short for "stream editor". It allows the user to filter and transform the text. The syntax of a sed command is ***sed [OPTIONS] [SCRIPT] [INPUT]***. For example:
 
     sed 's/\t/,/' sed.txt
 
-This command changes the first occurence of a TAB to a comma. In order to change all occurence of a TAB to a comma, we would use the following command:
+This command changes the first occurence of a TAB to a comma. In order to change all occurrence of a TAB to a comma, we would use the following command:
 
     sed 's/\t/,/g' sed.txt
 
@@ -191,11 +191,11 @@ This command changes the first occurence of a TAB to a comma. In order to change
 
 **10\.** Extract specific fields from a file
 
-In the field of bioinformatics, we have to frequently extract specific columns from a file that has a delimitor to separate the columns. We can easily achieve the goal by using the command ***cut***.
+In the field of bioinformatics, we have to frequently extract specific columns from a file that has a delimiter to separate the columns. We can easily achieve the goal by using the command ***cut***.
 
     cut -f2,4-10 all_counts.txt > foo
 
-The command above extracts the column 2,4 to 10 from the file "all_counts.txt". By default, the command ***cut*** uses tab as the delimitor. If the file is formated using a different delimitor, we can add the option of **-d** to specify the specific delimitor of the file. For example, for a file that uses comma as the delimitor, one would add the option of **-d','**.
+The command above extracts the column 2,4 to 10 from the file "all_counts.txt". By default, the command ***cut*** uses tab as the delimiter. If the file is formatted using a different delimiter, we can add the option of **-d** to specify the specific delimiter of the file. For example, for a file that uses comma as the delimiter, one would add the option of **-d','**.
 
     cut -d',' -f2,4-10 all_counts.csv > foo2
 
@@ -203,7 +203,7 @@ The command above extracts the column 2,4 to 10 from the file "all_counts.txt". 
 
 **11\.** Combine two files side by side
 
-In the situation where it is necessary to combine files by column, the command that can be used to achieve the goal is ***paste***. In the following example, the command combines the two files side by side, using TAB as the delimitor, and the output is redircted into a file "combined-count.txt". If the option **-d'\t'** is not specified, the command uses TAB as the delimitor by default.
+In the situation where it is necessary to combine files by column, the command that can be used to achieve the goal is ***paste***. In the following example, the command combines the two files side by side, using TAB as the delimiter, and the output is redirected into a file "combined-count.txt". If the option **-d'\t'** is not specified, the command uses TAB as the delimiter by default.
 
     paste -d'\t' partial-count-1.txt partial-count-2.txt > combined-count.txt
 
@@ -254,7 +254,7 @@ It is very useful to use a for loop when we want to carry out the same command m
 
 **14\.** Archive files
 
-In data analysis, there is constant need to archive files for the purpose of storage and sharing. By using the archive command, one may package multiple files/directories all into one. (the synatx is ***tar -cvzf tar.name files)
+In data analysis, there is constant need to archive files for the purpose of storage and sharing. By using the archive command, one may package multiple files/directories all into one. (the syntax is ***tar -cvzf tar.name files)
 
     tar -cvzf archive-counts.tgz all_counts.txt partial-count-1.txt partial-count-2.txt
 
@@ -309,7 +309,7 @@ This will allow the job to be run, at the same time we have the prompt back for 
 
 **18\.** Redirect standard error message
 
-Standard error message is similar to standard output, by default, it is displayed on the screen. We can redirect it to a file to keep a record of it. For example, if we use the command ***cat*** on a non-exsistant file, an error message will be displayed.
+Standard error message is similar to standard output, by default, it is displayed on the screen. We can redirect it to a file to keep a record of it. For example, if we use the command ***cat*** on a non-existent file, an error message will be displayed.
 
     cat myfile.txt
 
@@ -350,7 +350,7 @@ We may use the man page of a command to learn what exactly a command does, as we
 
 
 **21\.** Some tricks to make your life much easier
-First and the most important is the use of TAB key. It auto-completes command names, file path. It saves a lot of trouble of typying every single character in a command. For example, in order to finishe a command ***cd /home/username/Intro2CLI/test***, you could type ***cd /h***, then hit TAB key, you will get the auto-completed "cd /home/". Then try to type the first letter of your user name, if your user name is unique at each letter, it will auto-complete. If not, by hitting TAB multiple times, the system will list all possibilities starting with the letter you have typed. Add a couple more letters from your user name, at some point it will auto-complete to the path of your home directory "cd /home/username/". Then type "I", followed by the TAB key, and you should get "cd /home/username/Intro2CLI/". Then type "t", followed by the TAB key, and you should get "cd /home/username/Intro2CLI/test".
+First and the most important is the use of TAB key. It auto-completes command names, file path. It saves a lot of trouble of typing every single character in a command. For example, in order to finished a command ***cd /home/username/Intro2CLI/test***, you could type ***cd /h***, then hit TAB key, you will get the auto-completed "cd /home/". Then try to type the first letter of your user name, if your user name is unique at each letter, it will auto-complete. If not, by hitting TAB multiple times, the system will list all possibilities starting with the letter you have typed. Add a couple more letters from your user name, at some point it will auto-complete to the path of your home directory "cd /home/username/". Then type "I", followed by the TAB key, and you should get "cd /home/username/Intro2CLI/". Then type "t", followed by the TAB key, and you should get "cd /home/username/Intro2CLI/test".
 
 Secondly, the command ***history***. It lists every single command that you have used up to a certain number0 It is very useful when one wants to recall what he/she has done.
 
@@ -385,6 +385,3 @@ This command list all files/directories that start with the letter "t".
 A list of frequently used unix commands is at [cheatsheet](https://files.fosswire.com/2007/08/fwunixref.pdf)
 
 ---
-
-
-

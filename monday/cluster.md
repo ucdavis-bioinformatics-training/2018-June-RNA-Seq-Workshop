@@ -15,7 +15,7 @@ The basic architecture of a compute cluster consists of a "head node", which is 
 
 The way we have set up our cluster requires that you specify a time limit and maximum memory size for your job. If your job exceeds these limits, then it will be terminated. So try running the following to log into a node:
 
-    srun -t 1440 -c 4 -n 1 --mem 8000 --reservation workshop --pty /bin/bash
+    srun -t 4:00:00 -c 4 -n 1 --mem 8000 --reservation workshop --pty /bin/bash
 
 This command is requesting a compute node with a time limit of 1440 minutes (i.e. 24 hours), one processor, a max memory of 8000Mb (i.e. 8Gb), using a compute reservation for this workshop (an option you would not normally use), and then finally, specifying a shell to run in a terminal ("--pty" option). Run this command to get to a compute node when you want to run jobs on the command-line directly.
 
@@ -66,11 +66,11 @@ You can get more information about each command by typing "<command> --help" or 
 This is a list of all the software (with different versions) that you can access. Now try running the 'scythe' software:
 
     scythe
-    
-You should get an error saying that the command was not found. Take a look at your PATH variable. 
+
+You should get an error saying that the command was not found. Take a look at your PATH variable.
 
     echo $PATH
-    
+
 These are the directories (colon separated) that are searched for anything you run on the command-line. In order to access a piece of software that is not in one of these default directories, we need to use the 'module load' command:
 
     module load scythe

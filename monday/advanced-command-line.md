@@ -18,11 +18,11 @@ Take a look at the file:
 
     cat BSD
 
-Now, let's change every occurence of the word "Redistribution" into "Mangling":
+Now, let's change every occurrence of the word "Redistribution" into "Mangling":
 
     cat BSD | sed 's/Redistribution/Mangling/gi'
 
-Let's break down the argument to sed (within the single quotes)... The "s" means "substitute", the word between the 1st and 2nd forward slashes (i.e. /) is the word the substitute for, the word between the 2nd and 3rd slashes is the word to substitute with, and finally the "gi" at the end are flags for global substitution (i.e. substituting along an entire line instead of just the first occurence on a line), and for case insenstivity (i.e. it will ignore the case of the letters when doing the substitution).
+Let's break down the argument to sed (within the single quotes)... The "s" means "substitute", the word between the 1st and 2nd forward slashes (i.e. /) is the word the substitute for, the word between the 2nd and 3rd slashes is the word to substitute with, and finally the "gi" at the end are flags for global substitution (i.e. substituting along an entire line instead of just the first occurrence on a line), and for case insensitivity (i.e. it will ignore the case of the letters when doing the substitution).
 
 Note that this **doesn't** change the file itself, it is simply piping the output of the cat command to sed and outputting to the screen. If you wanted to change the file itself, you could use the "-i" option to sed:
 
@@ -53,7 +53,7 @@ These are all the home directories on the system. Now let's say we wanted to fin
 
     ls /home | cut -c1
 
-In order to do the counting, we first need to sort the data and then send it to the "uniq" command to keep only the unique occurences of a letter. The "-c" option counts up the number of occurences:
+In order to do the counting, we first need to sort the data and then send it to the "uniq" command to keep only the unique occurrences of a letter. The "-c" option counts up the number of occurrences:
 
     ls /home | cut -c1 | sort | uniq -c
 
@@ -62,7 +62,7 @@ You'll notice there might be a letter missing... why would that be?
 Now let's look at some fastq files. Link a few files into the advanced directory:
 
     ln -s /share/biocore/workshops/2018_June_RNAseq/00-RawData/C61/C61_S67_L006_R*_001.fastq.gz .
-    
+
 Since the files are gzipped files we need to use "zcat" to look at them. zcat is just like cat except for gzipped files:
 
     zcat C61_S67_L006_R1_001.fastq.gz | head
@@ -233,7 +233,7 @@ Grep is a very powerful tool that has many applications. Grep can be used to fin
 
     zcat C61_S67_L006_R1_001.fastq.gz | grep -B1 -A2 CACAATGTTTCTGCTGCCTGAACC
 
-This looks for the sequence "CACAATGTTTCTGCTGCCTGAACC" in the fastq file and then also prints the line before and two lines after each match. 
+This looks for the sequence "CACAATGTTTCTGCTGCCTGAACC" in the fastq file and then also prints the line before and two lines after each match.
 
 Another thing grep can do is regular expressions. Regular expressions are a way of specifying a search pattern. Two very useful characters in regular expressions are "^" and "$". The "^" symbol specifies the beginning of a line and the "$" specifies the end of a line. So, for example, if you wanted to find just the lines that began with "TTCCAACACA" you would do this:
 
@@ -307,4 +307,3 @@ Take a look at the [awk manual](https://www.gnu.org/software/gawk/manual/gawk.ht
 
 **HARD CHALLENGE**:
 Go through the list of genomes (as in the Find section) and this time only search down a maximum of 6 directories and also follow symbolic links in the search. Then extract only those files that are part of either the zebrafish or C. elegans genomes. For each of those files, get the number of characters in the file and then only print files whose character count is greater than 10000. You will have to probably use find, grep, xargs, wc, and awk. You will need to look at the manual pages for each of those commands. You should be able to do this just using pipes and the commands (i.e. no intermediate files).
-
