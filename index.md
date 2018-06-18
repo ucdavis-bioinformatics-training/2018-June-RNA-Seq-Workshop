@@ -41,8 +41,9 @@ Thursday
 ==========
 
 * [Intro to R]()
-* [Differential Gene Expression Statistics]() (talk)
-* [DE Analysis: counts to lists of DE genes]()
+* [DE Analysis: counts to lists of DE genes](thursday/DE.html)
+
+  -[The R Markdown file](thursday/DE.Rmd)
 
 
 Friday

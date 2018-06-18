@@ -1,11 +1,39 @@
-Preprocessing Data
+Data Setup
 ===================
 
-In this exercise, we will learn how to preprocess our data for alignment. We will be doing adapter trimming and quality trimming. Make sure you are logged into a compute node, not the head node (cabernet): use the 'srun' command to do this.
+Let's set up a project directory for the week, and talk a bit about project philosophy..
 
-**1\.** Pick a sample directory within your raw data and go into it. Look at one of the files using the 'zless' command (which is just the 'less' command for gzipped files):
+**1\.** First, create a directory for the project example in your home directory:
 
-    cd ~/rnaseq_example/00-RawData/
+    cd
+    mkdir rnaseq_example
+
+---
+
+**2\.** Next, go into that directory, create a data directory, and link to the directory for your raw data.
+
+    cd rnaseq_example
+    mkdir 00-RawData
+    cd 00-RawData/
+    ln -s /share/biocore/workshops/2018_June_RNAseq/00-RawData/* .
+    for i in [CI]*; do echo $i; done > samples  # collect directory / sample names into a file
+
+---
+
+**3\.** Now, take a look inside that directory.
+
+    ls
+
+--- 
+
+**4\.** You will see a list of directories and some other files. Take a look at all the files in all of the directories:
+
+    ls *
+
+---
+
+**5\.** Pick a directory and go into it. Look at one of the files using the 'zless' command (which is just the 'less' command for gzipped files):
+
     cd I894/
     zless I894_S90_L006_R1_001.fastq.gz
 
@@ -17,7 +45,7 @@ Divide this number by 4 and you have the number of reads in this file. One more 
 
     zcat I894_S90_L006_R1_001.fastq.gz | head -4
 
-Then, copy and paste the sequence line into the following command (replace [sequence] with the line):
+Note the header lines (1st and 3rd line) and sequence and quality lines (2nd and 4th) in each 4-line fastq block. Then, copy and paste the sequence line into the following command (replace [sequence] with the line):
 
     echo -n [sequence] | wc -c
 
@@ -25,15 +53,17 @@ This will give you the length of the read. See if you can figure out how this co
 
 ---
 
-**2\.** Now go back to your 'rnaseq_example' directory and create another directory called '01-HTS_Preproc':
+**6\.** Now go back to your 'rnaseq_example' directory and create another directory called '01-HTS_Preproc':
 
-    cd ~/rnaseq_example/
+    cd ~/rnaseq_example
     mkdir 01-HTS_Preproc
     cd 01-HTS_Preproc
 
+The results of our preprocessing steps will be put into the 01-HTS_Preproc directory. The next step after that will go into a "02-..." directory, etc. You can collect scripts that perform each step, and notes and metadata relevant for each step, in the directory for that step. This way anyone looking to replicate your analysis has limited places to search for the commands you used. In addition, you may want to change the permissions on your original 00-RawData directory to "read only", so that you can never corrupt your raw data. (We won't worry about this here, because we've linked in sample folders and this would complicate things).
+
 ---
 
-**3\.** Let's run the first step of our HTStream preprocessing pipeline, which is always to gather basic stats on the read files. For now, we're only going to run one sample through the pipeline. So let's take a sample of those reads, just so our trial run through the pipeline goes really quickly.
+**7\.** Let's run the first step of our HTStream preprocessing pipeline, which is always to gather basic stats on the read files. For now, we're only going to run one sample through the pipeline. So let's take a sample of those reads, just so our trial run through the pipeline goes really quickly.
 
     zcat ../00-RawData/C61/C61_S67_L006_R1_001.fastq.gz | head -400000 | gzip > C61_R1.subset.fastq.gz
     zcat ../00-RawData/C61/C61_S67_L006_R2_001.fastq.gz | head -400000 | gzip > C61_R2.subset.fastq.gz
@@ -48,7 +78,7 @@ Now we'll run the first step ... hts_Stats.
 
 ---
 
-**4\.** In order to run the next commands, we need to find sequences of ribosomal RNA. We will use these sequences to eliminate rRNA contamination in our reads, which are from Arabidopsis thaliana. One way to do that is to go to [NCBI](https://www.ncbi.nlm.nih.gov/) and search for them. First, go to NCBI and in the Search dropdown select "Taxonomy" and search for "arabidopsis".
+**8\.** In order to run the next commands, we need to find sequences of ribosomal RNA. We will use these sequences to eliminate rRNA contamination in our reads, which are from Arabidopsis thaliana. One way to do that is to go to [NCBI](https://www.ncbi.nlm.nih.gov/) and search for them. First, go to NCBI and in the Search dropdown select "Taxonomy" and search for "arabidopsis".
 
 ![ncbi](ncbi01.png)
 
@@ -82,7 +112,7 @@ Upload your rrna.fa file to this ref directory on the cluster using either **scp
 
 ---
 
-**5\.** We're going to blaze through the rest of the steps now, and then collect the stats of the reads at the end of the process. 
+**9\.** We're going to blaze through the rest of the steps now, and then collect the stats of the reads at the end of the process. 
 
     hts_SeqScreener -1 C61.stats_R1.fastq.gz -2 C61.stats_R2.fastq.gz -A -L C61.log -f -g -p C61.seqscreener
     hts_SuperDeduper -1 C61.seqscreener_R1.fastq.gz -2 C61.seqscreener_R2.fastq.gz -A -L C61.log -f -g -p C61.superdeduper
@@ -99,11 +129,11 @@ Notice the patterns? In every step we read in reads (-1 and -2), append (-A) sta
 
 ---
 
-**6\.** Matt's json visualization? ###########################################################################
+**10\.** Matt's json visualization? ###########################################################################
 
 ---
 
-**7\.** Alternatively, it's cleaner to stream data from one HTStream component to the next, not save the intermediate files, but still log stats from each step. We'll use a SLURM script that we should take a look at now.
+**11\.** Alternatively, it's cleaner to stream data from one HTStream component to the next, not save the intermediate files, but still log stats from each step. We'll use a SLURM script that we should take a look at now.
 
     cd ~/rnaseq_example  # We'll run this from the main directory
     cp /share/biocore/workshops/2018_June_RNAseq/hts_preproc.slurm .
@@ -111,8 +141,9 @@ Notice the patterns? In every step we read in reads (-1 and -2), append (-A) sta
 
 After looking at the script, let's run it. First we'll need to produce a list of samples for the script to work on.
 
+    cd ~/rnaseq_example
     ls 00-RawData > 00-RawData/samples.txt
-    cat samples.txt  # should just list each sample, one per line
+    cat 00-RawData/samples.txt  # should just list each sample, one per line
     sbatch hts_preproc.slurm  # moment of truth!
 
 We can watch the progress of our task array using the 'squeue' command:
@@ -121,7 +152,7 @@ We can watch the progress of our task array using the 'squeue' command:
 
 ---
 
-**8\.** Once that is done, let's take a look at the differences between the input and output files. First look at the input file:
+**12\.** Once that is done, let's take a look at the differences between the input and output files. First look at the input file:
 
     zless 00-RawData/I894/I894_S90_L006_R1_001.fastq.gz
 
