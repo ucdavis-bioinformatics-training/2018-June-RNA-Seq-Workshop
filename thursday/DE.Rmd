@@ -20,6 +20,8 @@ Together they allow fast, flexible, and powerful analyses of RNA-Seq data.  Limm
 
 # 1. Setup
 
+Input data for this example is on the course [github](https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/thursday/all_counts.txt) page.
+
 First, install the edgeR package if not already installed (which installs limma as a dependency)
 ```{r}
 # source("https://bioconductor.org/biocLite.R")
