@@ -47,6 +47,7 @@ Alternatively, you could have created both directories at once, using ***mkdir t
     wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/partial-count-1.txt
     wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/partial-count-1.short.txt
     wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/partial-count-2.txt
+    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/DE.txt
 
 These are files that we are going to use later in the tutorial.
 
@@ -201,7 +202,16 @@ The command above extracts the column 2,4 to 10 from the file "all_counts.txt". 
 
 ---
 
-**11\.** Combine two files side by side
+**11\.** Sort a file based on column(s)
+
+In many cases, we would like to sort the rows of a file based on a column, or multiple columns. The command to accomplish this is ***sort***. The example file we have is the result of a differential expression analysis. The first column is the gene names, the second column is the log-fold change, the last column is the adjusted p-value. We are going to sort the file based on two columns: the last field first so that the adjusted p-values are from the smallest to the largest, then the second field so that the fold change is from largest to smallest.
+
+    sort -k5,5n -k2,2rn DE.txt > sorted.DE.txt
+
+---
+
+
+**12\.** Combine two files side by side
 
 In the situation where it is necessary to combine files by column, the command that can be used to achieve the goal is ***paste***. In the following example, the command combines the two files side by side, using TAB as the delimiter, and the output is redirected into a file "combined-count.txt". If the option **-d'\t'** is not specified, the command uses TAB as the delimiter by default.
 
@@ -222,7 +232,7 @@ You see that the ***paste*** command has the columns in partial-count-2.txt to p
 
 ---
 
-**12\.** Chaining commands together to avoid intermediate files
+**13\.** Chaining commands together to avoid intermediate files
 
 We have learned many commands now. In bioinformatics analysis, many commands have to be used and many intermediate files are generated if we simply issue each command individually. One way to avoid generating unnecessary intermediate files is to use the syntax of **|**. The **|** allows the output of one command to be the input of another command. For example, we can extract two columns from one file and combine it with another file.
 
@@ -234,7 +244,7 @@ Or we can simply extract a list of genes from a subset of samples from the raw c
 
 ---
 
-**13\.** For loop
+**14\.** For loop
 
 It is very useful to use a for loop when we want to carry out the same command multiple times or on multiple files.
 
@@ -252,7 +262,7 @@ It is very useful to use a for loop when we want to carry out the same command m
 
 ---
 
-**14\.** Archive files
+**15\.** Archive files
 
 In data analysis, there is constant need to archive files for the purpose of storage and sharing. By using the archive command, one may package multiple files/directories all into one. (the syntax is ***tar -cvzf tar.name files)
 
@@ -261,7 +271,7 @@ In data analysis, there is constant need to archive files for the purpose of sto
 ---
 
 
-**15\.** Compression
+**16\.** Compression
 
 There are many methods for compression. All methods aim to reduce the size of the file so that it's easier to store files or sharing them. Different command produces different level of compression. We have been using ***bzip2***, which produces very good level of compression.
 
@@ -286,7 +296,7 @@ The command to uncompress the gz files is ***gunzip***.
 
 ---
 
-**16\.** Create symbolic link
+**17\.** Create symbolic link
 
 Creating symbolic link is a way to avoid copying files into multiple locations, which in turn increases the usage of disk space unnecessarily. The command is in the format of ***ln -s [target] [linklocation]***.
 
@@ -297,7 +307,7 @@ This tells us that the file symlink.txt at the current location is actually poin
 
 ---
 
-**17\.** Running commands in the background
+**18\.** Running commands in the background
 
 So far, we have been running a command and wait for it to finish. However, many commands involved in bioinformatics analysis take a long time to finish. In this case, we would like to be able to have the prompt back while the commands are running, so that we can do other things in the meanwhile. The way to have a command to run in the background is to use the following syntax:
 
@@ -307,7 +317,7 @@ This will allow the job to be run, at the same time we have the prompt back for 
 
 ---
 
-**18\.** Redirect standard error message
+**19\.** Redirect standard error message
 
 Standard error message is similar to standard output, by default, it is displayed on the screen. We can redirect it to a file to keep a record of it. For example, if we use the command ***cat*** on a non-existent file, an error message will be displayed.
 
@@ -323,7 +333,7 @@ We can redirect both the standard output and the standard error message from a c
 
 ---
 
-**19\.** File permission
+**20\.** File permission
 
 Each file in the linux system has its permissions set up for the user, the group that the use belongs to, and all the others. For example,
 
@@ -340,7 +350,7 @@ The above command adds executable permission to the group and writable permissio
 ---
 
 
-**20\.** List help and all options for a command
+**21\.** List help and all options for a command
 
 We may use the man page of a command to learn what exactly a command does, as well as what options/parameters a command takes to modify its function. The way to open the man page of a command is to use the command ***man***.
 
@@ -349,7 +359,7 @@ We may use the man page of a command to learn what exactly a command does, as we
 ---
 
 
-**21\.** Some tricks to make your life much easier
+**22\.** Some tricks to make your life much easier
 First and the most important is the use of TAB key. It auto-completes command names, file path. It saves a lot of trouble of typing every single character in a command. For example, in order to finished a command ***cd /home/username/Intro2CLI/test***, you could type ***cd /h***, then hit TAB key, you will get the auto-completed "cd /home/". Then try to type the first letter of your user name, if your user name is unique at each letter, it will auto-complete. If not, by hitting TAB multiple times, the system will list all possibilities starting with the letter you have typed. Add a couple more letters from your user name, at some point it will auto-complete to the path of your home directory "cd /home/username/". Then type "I", followed by the TAB key, and you should get "cd /home/username/Intro2CLI/". Then type "t", followed by the TAB key, and you should get "cd /home/username/Intro2CLI/test".
 
 Secondly, the command ***history***. It lists every single command that you have used up to a certain number0 It is very useful when one wants to recall what he/she has done.
@@ -380,7 +390,7 @@ This command list all files/directories that start with the letter "t".
 ---
 
 
-**22\.** Some resources
+**23\.** Some resources
 
 A list of frequently used unix commands is at [cheatsheet](https://files.fosswire.com/2007/08/fwunixref.pdf)
 
