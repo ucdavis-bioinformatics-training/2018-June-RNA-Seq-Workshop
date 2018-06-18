@@ -185,7 +185,7 @@ The most straightforward way to manipulate a file is to open it in a text editor
 
 This command changes the first occurence of a TAB to a comma. In order to change all occurence of a TAB to a comma, we would use the following command:
 
-    sed 's/\t/,/' sed.txt
+    sed 's/\t/,/g' sed.txt
 
 ---
 
@@ -254,9 +254,12 @@ It is very useful to use a for loop when we want to carry out the same command m
 
 **14\.** Archive files
 
-In data analysis, there is constant need to archive files for the purpose of storage and sharing. By using the archive command, one may package multiple files/directories all into one.
+In data analysis, there is constant need to archive files for the purpose of storage and sharing. By using the archive command, one may package multiple files/directories all into one. (the synatx is ***tar -cvzf tar.name files)
 
-    tar -cvzf all_counts.txt partial-count-1.txt partial-count-2.txt archive-counts.txt
+    tar -cvzf archive-counts.tgz all_counts.txt partial-count-1.txt partial-count-2.txt
+
+---
+
 
 **15\.** Compression
 
@@ -381,6 +384,7 @@ This command list all files/directories that start with the letter "t".
 
 A list of frequently used unix commands is at [cheatsheet](https://files.fosswire.com/2007/08/fwunixref.pdf)
 
-A complete list of all linux CLI commands is 
+---
+
 
 
