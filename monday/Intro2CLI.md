@@ -206,7 +206,7 @@ The command above extracts the column 2,4 to 10 from the file "all_counts.txt". 
 
 In many cases, we would like to sort the rows of a file based on a column, or multiple columns. The command to accomplish this is ***sort***. The example file we have is the result of a differential expression analysis. The first column is the gene names, the second column is the log-fold change, the last column is the adjusted p-value. We are going to sort the file based on two columns: the last field first so that the adjusted p-values are from the smallest to the largest, then the second field so that the fold change is from largest to smallest.
 
-    sort -k5,5n -k2,2rn DE.txt > sorted.DE.txt
+    sort -k5,5g -k2,2rn DE.txt > sorted.DE.txt
 
 ---
 
