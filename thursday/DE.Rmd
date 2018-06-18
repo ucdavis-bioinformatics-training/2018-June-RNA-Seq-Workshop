@@ -1,0 +1,340 @@
+---
+title: "Differential Expression with Limma-Voom"
+output: html_document
+keep_md: true
+---
+
+# 0. Intro
+
+limma is an R package that was originally developed for differential expression (DE) analysis of microarray data.
+
+voom is a function in the limma package that modifies RNA-Seq data for use with limma.
+
+Together they allow fast, flexible, and powerful analyses of RNA-Seq data.  Limma-voom is our tool of choice for DE analyses because it:
+
+* Allows for incredibly flexible model specification (you can include multiple categorical and continuous variables, allowing incorporation of almost any kind of metadata)
+
+* Based on simulation studies, maintains the false discovery rate at or below the nominal rate, unlike some other packages
+
+* Empirical Bayes smoothing of gene-wise standard deviations provides increased power.  
+
+# 1. Setup
+
+First, install the edgeR package if not already installed (which installs limma as a dependency)
+```{r}
+# source("https://bioconductor.org/biocLite.R")
+# biocLite("edgeR")
+```
+
+Load the edgeR package (which loads limma as a dependency)
+```{r}
+library(edgeR)
+```
+
+Read in the counts table
+```{r}
+counts <- read.delim("all_counts.txt", row.names = 1)
+head(counts)
+```
+
+Create DGEList object
+```{r}
+d0 <- DGEList(counts)
+```
+
+# 2. Preprocessing
+
+Calculate normalization factors
+```{r}
+d0 <- calcNormFactors(d0)
+d0
+```
+
+Note: calcNormFactors doesn't _normalize_ the data, it just calculates normalization factors for use downstream.
+
+Filter low-expressed genes
+```{r}
+cutoff <- 1
+drop <- which(apply(cpm(d0), 1, max) < cutoff)
+d <- d0[-drop,] 
+dim(d) # number of genes left
+```
+
+"Low-expressed" is subjective and depends on the dataset.
+
+Derive experiment information from the sample names
+
+Our experiment has two factors, cultivar ("C", "I5", or "I8") and time (6 or 9)
+
+The sample names are the cultivar, followed by the time, followed by the replicate
+```{r}
+snames <- colnames(counts) # Sample names
+snames
+cultivar <- substr(snames, 1, nchar(snames) - 2) 
+time <- substr(snames, nchar(snames) - 1, nchar(snames) - 1)
+cultivar
+time
+```
+Create a new variable "group" that combines cultivar and time
+```{r}
+group <- interaction(cultivar, time)
+group
+```
+
+Note: you can also enter group information manually, or read it in from an external file.  If you do this, it is $very, very, very$ important that you make sure the metadata is in the same order as the column names of the counts table.
+
+Multidimensional scaling (MDS) plot 
+```{r}
+plotMDS(d, col = as.numeric(group))
+```
+
+# 3. Voom transformation and calculation of variance weights
+
+Specify the model to be fitted.  We do this before using voom since voom uses variances of the model residuals (observed - fitted)
+```{r}
+mm <- model.matrix(~0 + group)
+```
+The above specifies a model where each coefficient corresponds to a group mean
+
+Voom
+```{r}
+y <- voom(d, mm, plot = T)
+```
+
+What is voom doing?
+
+1. Counts are transformed to log2 counts per million reads (CPM), where "per million reads" is defined based on the normalization factors we calculated earlier
+2. A linear model is fitted to the log2 CPM for each gene, and the residuals are calculated
+3. A smoothed curve is fitted to the sqrt(residual standard deviation) by average expression
+(see red line in plot above)
+4. The smoothed curve is used to obtain weights for each gene and sample that are passed into limma along with the log2 CPMs.
+
+More details at
+https://genomebiology.biomedcentral.com/articles/10.1186/gb-2014-15-2-r29
+
+The above is a "good" voom plot.  If your voom plot looks like the below, you might want to filter more:
+```{r}
+tmp <- voom(d0, mm, plot = T)
+```
+
+
+# 4. Fitting linear models in limma
+
+lmFit fits a linear model using weighted least squares for each gene:
+```{r}
+fit <- lmFit(y, mm)
+head(coef(fit))
+```
+
+Comparisons between groups (log fold-changes) are obtained as _contrasts_ of these fitted linear models:
+
+Specify which groups to compare:
+
+Comparison between times 6 and 9 for cultivar I5
+```{r}
+contr <- makeContrasts(groupI5.9 - groupI5.6, levels = colnames(coef(fit)))
+contr
+```
+Estimate contrast for each gene
+```{r}
+tmp <- contrasts.fit(fit, contr)
+```
+Empirical Bayes smoothing of standard errors (shrinks standard errors that are much larger or smaller than those from other genes towards the average standard error) (see https://www.degruyter.com/doi/10.2202/1544-6115.1027)
+```{r}
+tmp <- eBayes(tmp)
+```
+What genes are most differentially expressed?
+```{r}
+top.table <- topTable(tmp, sort.by = "P", n = Inf)
+head(top.table, 20)
+```
+* logFC: log2 fold change of I5.9/I5.6 
+* AveExpr: Average expression across all samples, in log2 CPM
+* t: logFC divided by its standard error 
+* P.Value: Raw p-value (based on t) from test that logFC differs from 0
+* adj.P.Val: Benjamini-Hochberg false discovery rate adjusted p-value
+* B: log-odds that gene is DE (arguably less useful than the other columns)
+
+AT5G37260 has higher expression at time 9 than at time 6 (logFC is positive).  AT2G29500 has lower expression at time 9 than at time 6 (logFC is negative).
+
+How many DE genes are there?
+```{r}
+length(which(top.table$adj.P.Val < 0.05))
+```
+
+Write top.table to a file 
+```{r}
+write.table(top.table, file = "time9_v_time6_I5.txt", row.names = F, sep = "\t", quote = F)
+```
+
+Let's say we want to compare cultivars C and I5 at time 6.  The only thing we have to change is the call to makeContrasts:
+```{r}
+contr <- makeContrasts(groupI5.6 - groupC.6, levels = colnames(coef(fit)))
+tmp <- contrasts.fit(fit, contr)
+tmp <- eBayes(tmp)
+top.table <- topTable(tmp, sort.by = "P", n = Inf)
+head(top.table, 20)
+length(which(top.table$adj.P.Val < 0.05)) # number of DE genes
+write.table(top.table, file = "I5_v_C_time6.txt", row.names = F, sep = "\t", quote = F)
+```
+
+What if we refit our model as a two-factor model (rather than using the group variable)?
+
+Create new model matrix:
+```{r}
+mm <- model.matrix(~cultivar*time)
+```
+We are specifying that model includes effects for cultivar, time, and the cultivar-time interaction (which allows the differences between cultivars to differ across time)
+
+```{r}
+colnames(mm)
+```
+```{r}
+y <- voom(d, mm, plot = F)
+fit <- lmFit(y, mm)
+head(coef(fit))
+```
+* The coefficient cultivarI5 represents the difference in mean expression between cultivar I5 and the reference cultivar (cultivar C), _for time 6_ (the reference level for time)
+* The coefficient time9 represents the difference in mean expression between time 9 and time 6, _for cultivar C_
+* The coefficient cultivarI5:time9 is the difference between times 9 and 6 of the differences between cultivars I5 and C (interaction effect)
+
+Let's estimate the difference between cultivars I5 and C at time 6
+```{r}
+tmp <- contrasts.fit(fit, coef = 2) # Directly test second coefficient
+tmp <- eBayes(tmp)
+top.table <- topTable(tmp, sort.by = "P", n = Inf)
+head(top.table, 20)
+length(which(top.table$adj.P.Val < 0.05)) # number of DE genes
+```
+We get the same results as with the model where each coefficient corresponded to a group mean.  In essence, these are the _same_ model, so use whichever is most convenient for what you are estimating.
+
+The interaction effects cultivarI5:time9 and cultivarI8:time9 are easier to estimate and test in this setup
+```{r}
+head(coef(fit))
+```
+```{r}
+tmp <- contrasts.fit(fit, coef = 5) # Test cultivarI5:time9
+tmp <- eBayes(tmp)
+top.table <- topTable(tmp, sort.by = "P", n = Inf)
+head(top.table, 20)
+length(which(top.table$adj.P.Val < 0.05)) 
+```
+
+The log fold change here is the difference between cultivarI5 and cultivar C in the log fold changes between times 9 and 6.
+It is ALSO the difference between times 9 and 6 in the log fold changes between cultivarI5 and cultivar C.
+
+A gene for which this interaction effect is significant is one for which the effect of time differs between cultivars, and for which the effect of cultivar differs between times.
+
+# 5. More complicated models
+Specifying a different model is simply a matter of changing the calls to model.matrix (and possibly to contrasts.fit).
+
+Let's say we have information on the RNA extraction batch:
+```{r}
+batch <- factor(rep(rep(1:2, each = 2), 6))
+batch
+```
+
+To adjust for batch in the analysis, add batch to the end of the call to model matrix.  Everything else about the code stays the same:
+```{r}
+mm <- model.matrix(~0 + group + batch)
+y <- voom(d, mm, plot = F)
+fit <- lmFit(y, mm)
+contr <- makeContrasts(groupI5.6 - groupC.6, levels = colnames(coef(fit)))
+tmp <- contrasts.fit(fit, contr)
+tmp <- eBayes(tmp)
+top.table <- topTable(tmp, sort.by = "P", n = Inf)
+head(top.table, 20)
+length(which(top.table$adj.P.Val < 0.05))
+```
+
+What if we want to adjust for a continuous variable like RIN score:
+```{r}
+# Generate example RIN data
+set.seed(99)
+RIN <- rnorm(n = 24, mean = 7.5, sd = 1)
+RIN
+```
+
+Model adjusting for RIN score
+```{r}
+mm <- model.matrix(~0 + group + RIN)
+y <- voom(d, mm, plot = F)
+fit <- lmFit(y, mm)
+contr <- makeContrasts(groupI5.6 - groupC.6, levels = colnames(coef(fit)))
+tmp <- contrasts.fit(fit, contr)
+tmp <- eBayes(tmp)
+top.table <- topTable(tmp, sort.by = "P", n = Inf)
+head(top.table, 20)
+length(which(top.table$adj.P.Val < 0.05))
+```
+
+What if we want to look at the correlation of gene expression with a continuous variable like pH?
+```{r}
+# Generate example pH data
+set.seed(99)
+pH <- rnorm(n = 24, mean = 8, sd = 1.5)
+pH
+```
+
+Specify model matrix:
+```{r}
+mm <- model.matrix(~pH)
+head(mm)
+```
+
+```{r}
+y <- voom(d, mm, plot = F)
+fit <- lmFit(y, mm)
+tmp <- contrasts.fit(fit, coef = 2) # test "pH" coefficient
+tmp <- eBayes(tmp)
+top.table <- topTable(tmp, sort.by = "P", n = Inf)
+head(top.table, 20)
+length(which(top.table$adj.P.Val < 0.05))
+```
+
+In this case, limma is fitting a linear regression model, which in this case is a straight line fit, with the slope and intercept defined by the model coefficients:
+```{r}
+AT1G60030 <- y$E["AT1G60030",]
+plot(AT1G60030 ~ pH, ylim = c(0, 3.5))
+intercept <- coef(fit)["AT1G60030", "(Intercept)"]
+slope <- coef(fit)["AT1G60030", "pH"]
+abline(a = intercept, b = slope)
+```
+
+In this example, the log fold change logFC is the slope of the line, or the change in gene expression (on the log2 CPM scale) for each unit increase in pH.
+
+Here, a logFC of -0.19 means a 0.19 log2 CPM decrease in gene expression for each unit increase in pH, or a 14% decrease on the CPM scale (2^0.19 = 1.14).
+
+
+# 6. A bit more on linear models
+Limma fits a linear model to each gene.
+
+Linear models include analysis of variance (ANOVA) models, linear regression, and any model of the form
+
+$$Y = \beta_0 + \beta_{1}X_{1} + \beta_{2}X_{2} + \dots + \beta_{p}X_{p} + \epsilon$$
+The covariates X can be:
+
+* a continuous variable (pH, RIN score, age, weight, temperature, etc.)
+* Dummy variables coding a categorical covariate (like cultivar, time, and group)
+
+The $\beta$'s are unknown parameters to be estimated.
+
+In limma, the $\beta$'s are the log fold changes.  
+
+The error (residual) term $\epsilon$ is assumed to be normally distributed with a variance that is constant across the range of the data.
+
+Normally distributed means the residuals come from a distribution that looks like this:
+```{r, echo = F}
+hist(rnorm(n = 10000), main = "Normally Distributed Data")
+```
+
+The log2 transformation that voom applies to the counts makes the data "normal enough", but doesn't completely stabilize the variance:
+```{r}
+tmp <- voom(d, mm, plot = T)
+```
+
+The log2 counts per million are more variable at lower expression levels.  The variance weights calculated by voom address this situation.
+
+```{r}
+sessionInfo()
+```
