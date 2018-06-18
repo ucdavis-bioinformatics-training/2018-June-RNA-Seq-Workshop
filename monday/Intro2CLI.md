@@ -1,11 +1,11 @@
 Introduction to CLI
 =======================
 
-Before we talk about any command, first we have to log into the computing cluster. The ways to achieve this is different for MacOs and Windows. For people who use MacOS, open an application called "Terminal" and then use the following command:
+Before we talk about any command, I just want to reiterate the process to log into the computing cluster. The ways to achieve this is different for MacOs and Windows. For people who use MacOS, open an application called "Terminal" and then use the following command:
 
     ssh username@ganesh.genomecenter.ucdavis.edu
 
-For people who use Windows, please open the application called 
+For people who use Windows, please open the application called "PuTTY" and go through the set up accordingly.
 
 After logging in, we are on the head node of the computing cluster. **The one most important thing to remember is that NEVER to run jobs on the head node.** To avoid this, we have to get on to one of the computing nodes, where the jobs are supposed to be run. The following command is how we do it.
 
@@ -38,9 +38,9 @@ Alternatively, you could have created both directories at once, using ***mkdir t
 
 **3\.** Get files from a remote location
 
-    wget https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/monday/Intro2CLI-files/art.part1.txt
-    wget https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/monday/Intro2CLI-files/art.part2.txt
-    wget https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/monday/Intro2CLI-files/art.part3.txt
+    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/art.part1.txt
+    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/art.part2.txt
+    wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/art.part3.txt
     wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/all_counts.txt
     wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/all_counts.csv
     wget https://raw.github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/monday/Intro2CLI-files/pattern.txt
@@ -177,7 +177,19 @@ The result of this command is all the lines that match any of the patterns in ou
 
 ---
 
-**9\.** Extract specific fields from a file
+**9\.** Manipulate a file
+
+The most straightforward way to manipulate a file is to open it in a text editor, such as nano, and make the necessary modification, and then save it. However, when the file is getting big, this way of manipulating a file is very inefficient. Therefore, we are going to use the command ***sed*** to accomplish the goal. "sed" is short for "stream editor". It allows the user to filter and tranform the text. The syntax of a sed command is ***sed [OPTIONS] [SCRIPT] [INPUT]***. For example:
+
+    sed 's/\t/,/' sed.txt
+
+This command changes the first occurence of a TAB to a comma. In order to change all occurence of a TAB to a comma, we would use the following command:
+
+    sed 's/\t/,/' sed.txt
+
+---
+
+**10\.** Extract specific fields from a file
 
 In the field of bioinformatics, we have to frequently extract specific columns from a file that has a delimitor to separate the columns. We can easily achieve the goal by using the command ***cut***.
 
@@ -189,7 +201,7 @@ The command above extracts the column 2,4 to 10 from the file "all_counts.txt". 
 
 ---
 
-**10\.** Combine two files side by side
+**11\.** Combine two files side by side
 
 In the situation where it is necessary to combine files by column, the command that can be used to achieve the goal is ***paste***. In the following example, the command combines the two files side by side, using TAB as the delimitor, and the output is redircted into a file "combined-count.txt". If the option **-d'\t'** is not specified, the command uses TAB as the delimitor by default.
 
@@ -210,7 +222,7 @@ You see that the ***paste*** command has the columns in partial-count-2.txt to p
 
 ---
 
-**11\.** Chaining commands together to avoid intermediate files
+**12\.** Chaining commands together to avoid intermediate files
 
 We have learned many commands now. In bioinformatics analysis, many commands have to be used and many intermediate files are generated if we simply issue each command individually. One way to avoid generating unnecessary intermediate files is to use the syntax of **|**. The **|** allows the output of one command to be the input of another command. For example, we can extract two columns from one file and combine it with another file.
 
@@ -222,7 +234,7 @@ Or we can simply extract a list of genes from a subset of samples from the raw c
 
 ---
 
-**12\.** For loop
+**13\.** For loop
 
 It is very useful to use a for loop when we want to carry out the same command multiple times or on multiple files.
 
@@ -240,13 +252,13 @@ It is very useful to use a for loop when we want to carry out the same command m
 
 ---
 
-**13\.** Archive files
+**14\.** Archive files
 
 In data analysis, there is constant need to archive files for the purpose of storage and sharing. By using the archive command, one may package multiple files/directories all into one.
 
     tar -cvzf all_counts.txt partial-count-1.txt partial-count-2.txt archive-counts.txt
 
-**14\.** Compression
+**15\.** Compression
 
 There are many methods for compression. All methods aim to reduce the size of the file so that it's easier to store files or sharing them. Different command produces different level of compression. We have been using ***bzip2***, which produces very good level of compression.
 
@@ -271,7 +283,7 @@ The command to uncompress the gz files is ***gunzip***.
 
 ---
 
-**15\.** Create symbolic link
+**16\.** Create symbolic link
 
 Creating symbolic link is a way to avoid copying files into multiple locations, which in turn increases the usage of disk space unnecessarily. The command is in the format of ***ln -s [target] [linklocation]***.
 
@@ -282,11 +294,62 @@ This tells us that the file symlink.txt at the current location is actually poin
 
 ---
 
-**16\.** Some tricks to make your life much easier
+**17\.** Running commands in the background
 
+So far, we have been running a command and wait for it to finish. However, many commands involved in bioinformatics analysis take a long time to finish. In this case, we would like to be able to have the prompt back while the commands are running, so that we can do other things in the meanwhile. The way to have a command to run in the background is to use the following syntax:
+
+    nohup [command] &
+
+This will allow the job to be run, at the same time we have the prompt back for other use. The ***nohup*** at the beginning makes sure that commands are not going to be killed if we log out of the computing node.
+
+---
+
+**18\.** Redirect standard error message
+
+Standard error message is similar to standard output, by default, it is displayed on the screen. We can redirect it to a file to keep a record of it. For example, if we use the command ***cat*** on a non-exsistant file, an error message will be displayed.
+
+    cat myfile.txt
+
+We can redirect the standard error message to a file, by using the following command:
+
+    cat myfile.txt 2> std.err
+
+We can redirect both the standard output and the standard error message from a command to separate files:
+
+    cat myfile.txt > myfile.copy.txt 2> std.err
+
+---
+
+**19\.** File permission
+
+Each file in the linux system has its permissions set up for the user, the group that the use belongs to, and all the others. For example,
+
+    ls -l *
+
+It shows all the files in a format with the first field providing permission information. Three categories of permission are available: readable, writable, executable. In the first field, the first position shows whether it is a directory (d), or not (-). The second to fourth positions show the three permissions for the user (r:readable, w:writable, x:executable). The next three positions show permissions for the group. The final three positions show the permission for all others.
+
+The way to change the permission of a file is to use the command ***chmod***.
+
+    chmod g+x,o+w test
+
+The above command adds executable permission to the group and writable permission to all others.
+
+---
+
+
+**20\.** List help and all options for a command
+
+We may use the man page of a command to learn what exactly a command does, as well as what options/parameters a command takes to modify its function. The way to open the man page of a command is to use the command ***man***.
+
+    man ls
+
+---
+
+
+**21\.** Some tricks to make your life much easier
 First and the most important is the use of TAB key. It auto-completes command names, file path. It saves a lot of trouble of typying every single character in a command. For example, in order to finishe a command ***cd /home/username/Intro2CLI/test***, you could type ***cd /h***, then hit TAB key, you will get the auto-completed "cd /home/". Then try to type the first letter of your user name, if your user name is unique at each letter, it will auto-complete. If not, by hitting TAB multiple times, the system will list all possibilities starting with the letter you have typed. Add a couple more letters from your user name, at some point it will auto-complete to the path of your home directory "cd /home/username/". Then type "I", followed by the TAB key, and you should get "cd /home/username/Intro2CLI/". Then type "t", followed by the TAB key, and you should get "cd /home/username/Intro2CLI/test".
 
-Secondly, the command ***history***. It lists every single command that you have used up to the last 500. It is very useful when one wants to recall what he/she has done.
+Secondly, the command ***history***. It lists every single command that you have used up to a certain number0 It is very useful when one wants to recall what he/she has done.
 
     history > history.txt
     less history.txt
@@ -313,5 +376,11 @@ This command list all files/directories that start with the letter "t".
 
 ---
 
+
+**22\.** Some resources
+
+A list of frequently used unix commands is at [cheatsheet](https://files.fosswire.com/2007/08/fwunixref.pdf)
+
+A complete list of all linux CLI commands is 
 
 
