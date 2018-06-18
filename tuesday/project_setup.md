@@ -16,7 +16,7 @@ Let's set up a project directory for the week, and talk a bit about project phil
     mkdir 00-RawData
     cd 00-RawData/
     ln -s /share/biocore/workshops/2018_June_RNAseq/00-RawData/* .
-    ls -1 . > samples.txt  # collect directory / sample names into a file
+    for i in [CI]*; do echo $i; done > samples  # collect directory / sample names into a file
 
 ---
 
@@ -45,7 +45,7 @@ Divide this number by 4 and you have the number of reads in this file. One more 
 
     zcat I894_S90_L006_R1_001.fastq.gz | head -4
 
-Then, copy and paste the sequence line into the following command (replace [sequence] with the line):
+Note the header lines (1st and 3rd line) and sequence and quality lines (2nd and 4th) in each 4-line fastq block. Then, copy and paste the sequence line into the following command (replace [sequence] with the line):
 
     echo -n [sequence] | wc -c
 
