@@ -74,7 +74,7 @@ So we zcat (uncompress and send to screen), pipe to head (param -400000) then pi
 
 **1b\.** Now we'll run our first preprocessing step ... hts_Stats, first loading the module and then looking at help.
 
-    cd ~/rnaseq_example/HTS_test
+    cd ~/rnaseq_example/HTS_testing
     module load htstream/0.3.1
     hts_Stats --help
 
