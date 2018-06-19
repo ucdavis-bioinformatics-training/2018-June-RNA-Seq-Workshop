@@ -395,6 +395,7 @@ Consider the three scenarios below
 **Insert size > length of the number of cycles**
 
 <img src="preproc_figures/overlap_pairs.png" alt="overlap_pairs" width="500px"/>
+
 hts_AdapterTrimmer product: original pairs
 
 hts_Overlapper product: original pairs
@@ -402,6 +403,7 @@ hts_Overlapper product: original pairs
 **Insert size < length of the number of cycles (10bp min)**
 
 <img src="preproc_figures/overlap_single.png" alt="overlap_single" width="500px"/>
+
 hts_AdapterTrimmer product: original pairs
 
 hts_Overlapper product: extended, single
@@ -409,6 +411,7 @@ hts_Overlapper product: extended, single
 **Insert size < length of the read length**
 
 <img src="preproc_figures/overlap_adapter.png" alt="overlap_adapter" width="500px"/>
+
 hts_AdapterTrimmer product: adapter trimmed, pairs
 
 hts_Overlapper product: adapter trimmed, single
