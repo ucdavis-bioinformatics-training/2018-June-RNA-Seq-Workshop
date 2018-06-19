@@ -492,8 +492,34 @@ I’ve found it best to perform QA/QC on both the run as a whole (poor samples c
 Reports such as Basespace for Illumina, are great ways to evaluate the run as a whole, the sequencing provider usually does this for you.
 PCA/MDS plots of the preprocessing summary are a great way to look for technical bias across your experiment. Poor quality samples often appear as outliers on the MDS plot and can ethically be removed due to identified technical issues.
 
-**8.** Once that is done, let's take a look at the differences between the input and output files. First look at the input file:
+**8\.** Let's make sure that all jobs completed successfully.
 
+Lets first check all the "htstream_%\*.out" and "htstream_%\*.err" files:
+
+    cd ~/rnaseq_example
+    cat slurmout/htstream_*.out
+
+Look through the output and make sure you don't see any errors. Now do the same for the err files:
+
+    cat slurmout/htstream_*.err
+
+Also, check the output files. First check the number of forward and reverse output files (should be 24 each):
+
+    cd 01-HTS_Preproc
+    ls */*R1* | wc -l
+    ls */*R2* | wc -l
+
+Check the sizes of the files as well. Make sure there are no zero or near-zero size files and also make sure that the size of the files are in the same ballpark as each other:
+
+    ls -lh *
+
+If, for some reason, your jobs did not finish or something else went wrong, please let one of us know and we will help.
+
+---
+
+**9.** Let's take a look at the differences between the input and output files. First look at the input file:
+
+    cd ~/rnaseq_example
     zless 00-RawData/I894/I894_S90_L006_R1_001.fastq.gz
 
 Let's search for the adapter sequence. Type '/' (a forward slash), and then type **AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC** (the first part of the forward adapter). Press Enter. This will search for the sequence in the file and highlight each time it is found. You can now type "n" to cycle through the places where it is found. When you are done, type "q" to exit.
@@ -506,7 +532,7 @@ If you scroll through the data (using the spacebar), you will see that some of t
 
 ---
 
-**9.** QA/QC Summary table of the json files.
+**10.** QA/QC Summary table of the json files.
 
 I've created a small R script to read in each json file, pull out some relevant stats and write out a table for all samples.
 
