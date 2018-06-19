@@ -540,7 +540,7 @@ I've created a small R script to read in each json file, pull out some relevant 
     cp /share/biocore/workshops/2018_June_RNAseq/summarize_stats.R .
 
     R CMD BATCH summarize_stats.R
-    cat hts_summary.txt
+    cat summary_hts.txt
 
 Lets move this file to our computer, using scp or winSCP, or copy/paste from cat [sometimes doesn't work], open in excel (or excel like application), you may have to move the header column 1 cell to the right, and lets review.
 
