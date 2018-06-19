@@ -25,7 +25,8 @@ Tuesday
 * [Intro to Sequencing, Lutz Froenicke]() (talk)
 * [Files and Filetypes for RNA-Seq](tuesday/Filetypes.pdf) (talk)
 * [Project Setup hands-on](tuesday/project_setup.md)
-* [Workshop dataset](tuesday/Emily-RNA-seq_data.pdf)
+* [Workshop dataset](tuesday/Emily-RNA-seq_data.pdf) (talk)
+* Lunch and Learn - Kapa Biosystems
 * [Preprocessing Data hands-on](tuesday/preproc.md)
 * [Experimental Design and Cost Estimation](tuesday/ExperimentalDesign.pdf) (talk)
 
@@ -33,6 +34,7 @@ Tuesday
 Wednesday
 ==========
 
+* [More Files and Filetypes for RNA-Seq](tuesday/Filetypes.pdf) (talk)
 * [Aligners]() (talk)
 * [Aligning Data and IGV]()
 * [Alignments to Counts]()
