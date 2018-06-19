@@ -419,7 +419,7 @@ Both hts_AdapterTrimmer and hts_Overlapper employ this principle to identify and
 
 As a sequencing run progresses the quality scores tend to get worse, so its common to trim of the worst quality bases.
 
-![Qwindowtrim](preproc_figures/qwindowtrim.png)
+![Qwindowtrim](preproc_figures/Qwindowtrim.png)
 
 This is how reads commonly look, the start at "good" quality, increase to "excellent" and degrade to "poor", with R2 always looking worse (except when they don't) than R1 and get worse as the number of cycles increases.
 
