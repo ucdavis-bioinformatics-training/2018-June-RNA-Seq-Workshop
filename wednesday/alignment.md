@@ -54,7 +54,7 @@ Press 'q' to exit this screen.
     cd ../ref
     module load star
     mkdir star_index
-    
+
 Now, generate the index:
 
     STAR --runThreadN 4 \
@@ -64,7 +64,7 @@ Now, generate the index:
     --sjdbGTFfile Arabidopsis_thaliana.TAIR10.39.gtf \
     --sjdbOverhang 99
 
-This step will take 5 minutes. You can look at the [STAR documentation](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) while you wait. All of the output files will be written to the star_index directory. 
+This step will take 5 minutes. You can look at the [STAR documentation](https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf) while you wait. All of the output files will be written to the star_index directory.
 
 ---
 
@@ -81,7 +81,7 @@ and let's run STAR on the pair of subset files we created before. (**Again, the 
     --genomeDir ../ref/star_index \
     --sjdbGTFtagExonParentGene gene_id \
     --sjdbGTFfile ../ref/Arabidopsis_thaliana.TAIR10.39.gtf \
-    --outSAMtype BAM Unsorted SortedByCoordinate \
+    --outSAMtype BAM SortedByCoordinate \
     --outReadsUnmapped Fastx \
     --quantMode GeneCounts \
     --outFileNamePrefix C61.subset. \
@@ -112,31 +112,31 @@ Now, download chr5.bam and chr5.bam.bai (the index file) to your laptop. You wil
 
 **5\.** Now we are ready to use IGV. Go to the [IGV page at the Broad Institute](http://software.broadinstitute.org/software/igv/) and click on Downloads.
 
-![igv1](igv01.png)
+<img src="alignment_figures/igv01.png" alt="igv1" width="500px"/>
 
 Scroll down the page and under "Java Web Start" click on the "Launch" button with 1.2Gb of memory. This will download a ".jnlp" file which will need to be run using Java Web Start (javaws). If you don't have this on your computer, you will need to install it.
 
-![igv2](igv02.png)
+<img src="alignment_figures/igv02.png" alt="igv2" width="500px"/>
 
 ---
 
 **6\.** IGV should start up automatically. The first thing we want to do is load our Arabidopsis genome. Click on "Genomes" in the menu and choose "Load Genome from File":
 
-![igv3](igv03.png)
+<img src="alignment_figures/igv03.png" alt="igv3" width="500px"/>
 
 Find your genome file on your laptop and choose that:
 
-![igv4](igv04.png)
+<img src="alignment_figures/igv04.png" alt="igv4" width="500px"/>
 
 ---
 
 **7\.** Now let's load the alignment. Click on "File" and choose "Load from File":
 
-![igv5](igv05.png)
+<img src="alignment_figures/igv05.png" alt="igv5" width="500px"/>
 
 Choose your chr5.bam file. Make sure the chr.bam.bai file is in the same directory as the BAM file.
 
-![igv6](igv06.png)
+<img src="alignment_figures/igv06.png" alt="igv6" width="500px"/>
 
 Now your alignment is loaded. Any loaded file aligned to a genome is called a "track".
 
@@ -144,39 +144,39 @@ Now your alignment is loaded. Any loaded file aligned to a genome is called a "t
 
 **8\.** Choose chromosome 5 from the chromosome dropdown:
 
-![igv7](igv07.png)
+<img src="alignment_figures/igv07.png" alt="igv7" width="500px"/>
 
 You will need to zoom in to see alignments, so click on the plus sign until you see something. You also may have to move around by clicking and dragging in the BAM track window.
 
-![igv8](igv08.png)
+<img src="alignment_figures/igv08.png" alt="igv8" width="500px"/>
 
 You can also zoom in by clicking and dragging across the number line at the top. That section will highlight, and when you release the button, it will zoom into that section.
 
-![igv9](igv09.png)
+<img src="alignment_figures/igv09.png" alt="igv9" width="500px"/>
 
 ---
 
 **9\.** In order to see alignments more easily when zoomed out, we are going to create a coverage track. Click on "Tools" and then choose "Run igvtools".
 
-![igv10](igv10.png)
+<img src="alignment_figures/igv10.png" alt="igv10" width="500px"/>
 
 Choose "Count" as the command, and choose your chr5.bam file as the Input File (the output file path will get created automatically):
 
-![igv11](igv11.png)
+<img src="alignment_figures/igv11.png" alt="igv11" width="500px"/>
 
 Choose a Zoom Level of 10 and then click "Run":
 
-![igv12](igv12.png)
+<img src="alignment_figures/igv12.png" alt="igv12" width="500px"/>
 
 ---
 
 **10\.** Once that is done, there will be a chr5.bam.tdf file in the same directory as your bam file. Click on "File" and "Load from File" and choose that file. This will create a coverage track that is visible even at maximum zoom out.
 
-![igv13](igv13.png)
+<img src="alignment_figures/igv13.png" alt="igv13" width="500px"/>
 
 Click on the minus sign in the upper right to zoom out. Zoom out until you are all the way zoomed out. The alignment track will not show anything, but you will be able to see the coverage track which will show you the locations of the alignments.
 
-![igv14](igv14.png)
+<img src="alignment_figures/igv14.png" alt="igv14" width="500px"/>
 
 Zoom in by clicking and dragging across the number line until you get to some alignments. You are looking at a visual representation of the alignment of the reads to the genome. Each of the little boxes in the track represent reads. The reads can be visualized in different ways which we will show you in class.
 
@@ -184,38 +184,38 @@ Zoom in by clicking and dragging across the number line until you get to some al
 
 **11\.** The other track we will add to IGV is the annotation for Arabidopsis. In order to do that, we need to first sort the annotation file. Go to igvtools again:
 
-![igv15](igv15.png)
+<img src="alignment_figures/igv15.png" alt="igv15" width="500px"/>
 
 Choose "Sort" as the command and choose the gtf annotation file as the input file. Run it:
 
-![igv15](igv16.png)
+<img src="alignment_figures/igv16.png" alt="igv16" width="500px"/>
 
-![igv15](igv17.png)
+<img src="alignment_figures/igv17.png" alt="igv17" width="500px"/>
 
 --
 
 **12\.** Load the newly created and sorted gtf file:
 
-![igv20](igv20.png)
+<img src="alignment_figures/igv20.png" alt="igv20" width="500px"/>
 
-![igv21](igv21.png)
+<img src="alignment_figures/igv21.png" alt="igv21" width="500px"/>
 
 It will give you a warning about not having an index file. Click "Go" to create one:
 
-![igv22](igv22.png)
+<img src="alignment_figures/igv22.png" alt="igv22" width="500px"/>
 
 ---
 
 **13\.** Once the annotation track is loaded, zoom into a gene and you will see that the reads should be aligning with the exons in the genes. This makes sense, since RNA-Seq reads are from exons:
 
-![igv23](igv23.png)
+<img src="alignment_figures/igv23.png" alt="igv23" width="500px"/>
 
 ---
 
 **14\.** Ok, let's go back to the command-line. Now we are going to run all of the STAR alignments on the cluster. We will run the script from the base directory:
 
     cd ~/rnaseq_example
-    
+
 Next, copy a slurm task array file called "star.slurm":
 
     cp /share/biocore/workshops/2018_June_RNAseq/star.slurm .
