@@ -166,6 +166,8 @@ length(which(top.table$adj.P.Val < 0.05))
 
 Write top.table to a file 
 ```{r}
+top.table$Gene <- rownames(top.table)
+top.table <- top.table[,c("Gene", names(top.table)[1:6])]
 write.table(top.table, file = "time9_v_time6_I5.txt", row.names = F, sep = "\t", quote = F)
 ```
 
@@ -177,6 +179,8 @@ tmp <- eBayes(tmp)
 top.table <- topTable(tmp, sort.by = "P", n = Inf)
 head(top.table, 20)
 length(which(top.table$adj.P.Val < 0.05)) # number of DE genes
+top.table$Gene <- rownames(top.table)
+top.table <- top.table[,c("Gene", names(top.table)[1:6])]
 write.table(top.table, file = "I5_v_C_time6.txt", row.names = F, sep = "\t", quote = F)
 ```
 

@@ -90,6 +90,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -333,7 +336,9 @@ head(top.table, 20)</code></pre>
 <pre class="r"><code>length(which(top.table$adj.P.Val &lt; 0.05))</code></pre>
 <pre><code>## [1] 4529</code></pre>
 <p>Write top.table to a file</p>
-<pre class="r"><code>write.table(top.table, file = &quot;time9_v_time6_I5.txt&quot;, row.names = F, sep = &quot;\t&quot;, quote = F)</code></pre>
+<pre class="r"><code>top.table$Gene &lt;- rownames(top.table)
+top.table &lt;- top.table[,c(&quot;Gene&quot;, names(top.table)[1:6])]
+write.table(top.table, file = &quot;time9_v_time6_I5.txt&quot;, row.names = F, sep = &quot;\t&quot;, quote = F)</code></pre>
 <p>Let’s say we want to compare cultivars C and I5 at time 6. The only thing we have to change is the call to makeContrasts:</p>
 <pre class="r"><code>contr &lt;- makeContrasts(groupI5.6 - groupC.6, levels = colnames(coef(fit)))
 tmp &lt;- contrasts.fit(fit, contr)
@@ -384,7 +389,9 @@ head(top.table, 20)</code></pre>
 ## AT2G25737  2.1743236</code></pre>
 <pre class="r"><code>length(which(top.table$adj.P.Val &lt; 0.05)) # number of DE genes</code></pre>
 <pre><code>## [1] 20</code></pre>
-<pre class="r"><code>write.table(top.table, file = &quot;I5_v_C_time6.txt&quot;, row.names = F, sep = &quot;\t&quot;, quote = F)</code></pre>
+<pre class="r"><code>top.table$Gene &lt;- rownames(top.table)
+top.table &lt;- top.table[,c(&quot;Gene&quot;, names(top.table)[1:6])]
+write.table(top.table, file = &quot;I5_v_C_time6.txt&quot;, row.names = F, sep = &quot;\t&quot;, quote = F)</code></pre>
 <p>What if we refit our model as a two-factor model (rather than using the group variable)?</p>
 <p>Create new model matrix:</p>
 <pre class="r"><code>mm &lt;- model.matrix(~cultivar*time)</code></pre>
@@ -773,7 +780,7 @@ abline(a = intercept, b = slope)</code></pre>
 ## loaded via a namespace (and not attached):
 ##  [1] locfit_1.5-9.1  Rcpp_0.12.17    lattice_0.20-35 digest_0.6.15  
 ##  [5] rprojroot_1.3-2 grid_3.5.0      backports_1.1.2 magrittr_1.5   
-##  [9] evaluate_0.10.1 stringi_1.1.7   rmarkdown_1.9   tools_3.5.0    
+##  [9] evaluate_0.10.1 stringi_1.1.7   rmarkdown_1.10  tools_3.5.0    
 ## [13] stringr_1.3.1   yaml_2.1.19     compiler_3.5.0  htmltools_0.3.6
 ## [17] knitr_1.20</code></pre>
 </div>
