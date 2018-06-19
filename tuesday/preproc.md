@@ -199,29 +199,29 @@ We will use these sequences to identify rRNA in our reads, which are from Arabid
 
 1.) First, go to NCBI and in the Search dropdown select "Taxonomy" and search for "arabidopsis".
 
-![ncbi](preproc_figures/ncbi01.png)
+<img src="preproc_figures/ncbi01.png" alt="ncbi1" width="500px"/>
 
 2.) Click on "Arabidopsis":
 
-![ncbi](preproc_figures/ncbi02.png)
+<img src="preproc_figures/ncbi02.png" alt="ncbi2" width="500px"/>
 
 3.) Click on "Arabidopsis" again:
 
-![ncbi](preproc_figures/ncbi03.png)
+<img src="preproc_figures/ncbi03.png" alt="ncbi3" width="500px"/>
 
 4.) Click on the "Subtree links" for Nucleotide:
 
-![ncbi](preproc_figures/ncbi04.png)
+<img src="preproc_figures/ncbi04.png" alt="ncbi4" width="500px"/>
 
 5.) Under Molecule Types, click on "rRNA":
 
-![ncbi](preproc_figures/ncbi05.png)
+<img src="preproc_figures/ncbi05.png" alt="ncbi5" width="500px"/>
 
 6.) Click on "Send", choose "File", choose Format "FASTA", and click on "Create File".
 
-![ncbi](preproc_figures/ncbi06.png)
+<img src="preproc_figures/ncbi06.png" alt="ncbi6" width="500px"/>
 
-![ncbi](preproc_figures/ncbi07.png)
+<img src="preproc_figures/ncbi07.png" alt="ncbi7" width="500px"/>
 
 Save this file to your computer, and rename it to 'rrna.fasta'.
 
@@ -381,12 +381,10 @@ For RNAseq and variant analysis (any mapping based technique) it is not critical
 Removing PCR duplicates can be **controversial** for RNAseq, but I'm in favor of it. It tells you alot about the original complexity of each sample and potential impact of sequencing depth.
 
 **However, I would never do PCR duplicate removal on**
-
-![SD_eval](preproc_figures/SD_eval.png)
+<img src="preproc_figures/SD_eval.png" alt="SD_eval" width="500px"/>
 
 Super Deduper only uses a small portion of the reads to identify duplicates.
-
-![SD_performance](preproc_figures/SD_performance.png)
+<img src="preproc_figures/SD_performance.png" alt="SD_performance" width="500px"/>
 
 We calculated the Youden Index for every combination tested and the point that acquired the highest index value (as compared to Picard MarkDuplicates) occurred at a start position of 5bp and a length of 10bps (20bp total over both reads).
 
@@ -396,21 +394,21 @@ Consider the three scenarios below
 
 **Insert size > length of the number of cycles**
 
-![overlap_pairs](preproc_figures/overlap_pairs.png)
+<img src="preproc_figures/overlap_pairs.png" alt="overlap_pairs" width="500px"/>
 hts_AdapterTrimmer product: original pairs
 
 hts_Overlapper product: original pairs
 
 **Insert size < length of the number of cycles (10bp min)**
 
-![overlap_single](preproc_figures/overlap_single.png)
+<img src="preproc_figures/overlap_single.png" alt="overlap_single" width="500px"/>
 hts_AdapterTrimmer product: original pairs
 
 hts_Overlapper product: extended, single
 
 **Insert size < length of the read length**
 
-![overlap_adapter](preproc_figures/overlap_adapter.png)
+<img src="preproc_figures/overlap_adapter.png" alt="overlap_adapter" width="500px"/>
 hts_AdapterTrimmer product: adapter trimmed, pairs
 
 hts_Overlapper product: adapter trimmed, single
@@ -435,7 +433,7 @@ Comparing star mapping with raw and preprocessed reads
 
 
 
-**5e.** Lets put it all together
+**5.** Lets put it all together
 
     hts_Stats -O -L C61_htsStats.log -1 C61.subset_R1.fastq.gz -2 C61.subset_R2.fastq.gz | \
     hts_SeqScreener -S -O -A -L C61_htsStats.log | \
@@ -508,7 +506,7 @@ If you scroll through the data (using the spacebar), you will see that some of t
 
 ---
 
-**8.** QA/QC Summary table of the json files.
+**9.** QA/QC Summary table of the json files.
 
 I've created a small R script to read in each json file, pull out some relevant stats and write out a table for all samples.
 
