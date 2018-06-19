@@ -1,68 +1,4 @@
-== Setting up our experiment
-
-In this exercise, we will learn how to preprocess our data for alignment. We will be doing adapter trimming and quality trimming. Make sure you are logged into a compute node, not the head node (cabernet): use the 'srun' command to do this.
-
-<<<<<<< HEAD
-**1\.** First, create a directory for the example in your home directory:
-
-    cd
-    mkdir rnaseq_example
-
----
-
-**2\.** Next, go into that directory and link to the directory for your raw data. This data comes from an Arabidopsis RNA-Seq project that we did:
-
-    cd rnaseq_example
-    ln -s /share/biocore/workshops/2018_June_RNAseq/00-RawData .
-
----
-
-**3\.** Now, take a look inside that directory.
-
-    cd 00-RawData
-    ls
-
----
-
-**4\.** You will see a list of directories and some other files. Take a look at all the files in all of the directories:
-
-    ls *
-
----
-
-**5\.** Pick a directory and go into it. Look at one of the files using the 'zless' command (which is just the 'less' command for gzipped files):
-=======
-**1\.** Pick a sample directory within your raw data and go into it. Look at one of the files using the 'zless' command (which is just the 'less' command for gzipped files):
->>>>>>> ce311d2357038848bca2fd172c3dee19f03d1e17
-
-    cd ~/rnaseq_example/00-RawData/
-    cd I894/
-    zless I894_S90_L006_R1_001.fastq.gz
-
-Make sure you can identify which lines correspond to a single read and which lines are the header, sequence, and quality values. Press 'q' to exit this screen. Then, let's figure out the number of reads in this file. A simple way to do that is to count the number of lines and divide by 4 (because the record of each read uses 4 lines). In order to do this, use "zcat" to output the uncompressed file and pipe that to "wc" to count the number of lines:
-
-    zcat I894_S90_L006_R1_001.fastq.gz | wc -l
-
-Divide this number by 4 and you have the number of reads in this file. One more thing to try is to figure out the length of the reads without counting each nucleotide. First get the first 4 lines of the file (i.e. the first record):
-
-    zcat I894_S90_L006_R1_001.fastq.gz | head -4
-
-Then, copy and paste the sequence line into the following command (replace [sequence] with the line):
-
-    echo -n [sequence] | wc -c
-
-This will give you the length of the read. See if you can figure out how this command works.
-
----
-
-**2\.** Now go back to your 'rnaseq_example' directory and create another directory called '01-HTS_Preproc':
-
-    cd ~/rnaseq_example/
-    mkdir 01-HTS_Preproc
-    cd 01-HTS_Preproc
-
-
-== Sequence preprocessing
+## Sequence preprocessing
 
 **Why preprocess reads**
 
@@ -93,7 +29,7 @@ Preprocessing also produces a number of statistics that are technical in nature 
 
 ** Many technical things happen between original sample and data, preprocessing is working backwards through that process to get as close as we can to original sample **
 
-![preproc_flowchart](preproc_flowchart.png)
+![preproc_flowchart](preproc_figures/preproc_flowchart.png)
 
 1. Remove contaminants (at least PhiX).
 2. Remove PCR duplicates.
@@ -121,106 +57,469 @@ Can be downloaded from [here](https://github.com/ibest/HTStream). Fast C++ imple
 * hts_QWindowTrim - 5' and/or 3' prime quality score trimming using windows
 * hts_Stats - compute read stats
 
-**3\.** Let's run the first step of our HTStream preprocessing pipeline, which is always to gather basic stats on the read files. For now, we're only going to run one sample through the pipeline. So let's take a sample of those reads, just so our trial run through the pipeline goes really quickly.
+**1\.** Let's run the first step of our HTStream preprocessing pipeline, which is always to gather basic stats on the read files. For now, we're only going to run one sample through the pipeline.
 
-    zcat ../00-RawData/C61/C61_S67_L006_R1_001.fastq.gz | head -400000 | gzip > C61_R1.subset.fastq.gz
-    zcat ../00-RawData/C61/C61_S67_L006_R2_001.fastq.gz | head -400000 | gzip > C61_R2.subset.fastq.gz
+**1a\.** So let's first take a small subsample of reads, just so our trial run through the pipeline goes really quickly.
 
-Now we'll run the first step ... hts_Stats.
+    cd ~/rnaseq_example
+    mkdir HTS_testing
+    cd HTS_testing
+    zcat ../00-RawData/C61/C61_S67_L006_R1_001.fastq.gz | head -400000 | gzip > C61.subset_R1.fastq.gz
+    zcat ../00-RawData/C61/C61_S67_L006_R2_001.fastq.gz | head -400000 | gzip > C61.subset_R2.fastq.gz
+    ls
 
-    module load htstream/0.3.0
+So we zcat (uncompress and send to screen), pipe to head (param -400000) then pipe to gzip to recompress and name our files subset.
+
+*How many reads are we going to analyze in our subset?*
+
+**1b\.** Now we'll run our first preprocessing step ... hts_Stats, first loading the module and then looking at help.
+
+    cd ~/rnaseq_example/HTS_test
+    module load htstream/0.3.1
     hts_Stats --help
-    hts_Stats -1 C61_R1.subset.fastq.gz \
-              -2 C61_R2.subset.fastq.gz \
-              -L C61.log -f -g -p C61.stats
+
+```
+msettles@cabernet: ~$hts_Stats -h
+HTStream <https://github.com/ibest/HTStream> application: hts_Stats
+Version: 0.3.1
+The hts_Stats app produce basic statistics about the reads in a dataset.
+  Including the basepair composition and number of bases Q30.
+
+Standard Options:
+  -v [ --version ]                      Version print
+  -h [ --help ]                         Prints help documentation
+  -N [ --notes ] arg                    Notes for the stats JSON
+  -L [ --stats-file ] arg (=stats.log)  String for output stats file name
+  -A [ --append-stats-file ]            Append to stats file
+
+Input Options:
+  -1 [ --read1-input ] arg              Read 1 paired end fastq input <space
+                                        seperated for multiple files>
+  -2 [ --read2-input ] arg              Read 2 paired end fastq input <space
+                                        seperated for multiple files>
+  -U [ --singleend-input ] arg          Single end read fastq input <space
+                                        seperated for multiple files>
+  -T [ --tab-input ] arg                Tab input <space seperated for multiple
+                                        files>
+  -I [ --interleaved-input ] arg        Interleaved fastq input <space
+                                        seperated for multiple files>
+  -S [ --from-stdin ]                   STDIN input <MUST BE TAB DELIMITED
+                                        INPUT>
+
+Output Options:
+  -F [ --force ]                        Forces overwrite of files
+  -p [ --prefix ] arg (=hts_Stats)      Prefix for output files
+  -g [ --gzip-output ]                  Output gzipped files
+  -f [ --fastq-output ]                 Output to Fastq format <PE AND/OR SE
+                                        files>
+  -t [ --tab-output ]                   Output to tab-delimited file format
+  -i [ --interleaved-output ]           Output to interleaved fastq file <PE
+                                        ONLY>
+  -u [ --unmapped-output ]              Output to unmapped sam file format
+  -O [ --to-stdout ]                    Output to STDOUT in tab-delimited file
+                                        format
+
+
+Please report any issues, request for enhancement, or comments to <https://github.com/ibest/HTStream/issues>
+```
+
+So now lets run hts_Stats and look at the output.
+
+    hts_Stats -1 C61.subset_R1.fastq.gz \
+              -2 C61.subset_R2.fastq.gz \
+              -L C61.stats.log -f -g -p C61.stats
+
+*What parameters did we use, what do they do?*
+
+Lets take a look at the output of stats
+
+    ls -lah
+
+```
+msettles@ganesh: HTS_test$ls -lah
+total 20M
+drwxrwxr-x 2 msettles msettles    7 Jun 18 15:07 .
+drwxrwxr-x 4 msettles msettles    7 Jun 18 15:04 ..
+-rw-rw-r-- 1 msettles msettles  658 Jun 18 15:07 C61.stats.log
+-rw-rw-r-- 1 msettles msettles 4.6M Jun 18 15:04 C61.subset_R1.fastq.gz
+-rw-rw-r-- 1 msettles msettles 5.0M Jun 18 15:05 C61.subset_R2.fastq.gz
+-rw-rw-r-- 1 msettles msettles 4.6M Jun 18 15:07 C61.stats_R1.fastq.gz
+-rw-rw-r-- 1 msettles msettles 5.0M Jun 18 15:07 C61.stats_R2.fastq.gz
+```
+
+*Which files were generated from hts\_Stats?*
+
+*Lets look at the file C61.stats\.log*
+
+The logs generated by htstream are in [json](https://en.wikipedia.org/wiki/JSON) format, like a database format but meant to be readable.
+
+```
+{ "hts_Stats_38989": {
+    "Notes": "",
+    "totalFragmentsInput": 100000,
+    "totalFragmentsOutput": 100000,
+    "R1_readlength_histogram": [ [100,100000] ],
+    "R2_readlength_histogram": [ [100,100000] ],
+    "Base_composition": {
+        "A": 5382561,
+        "C": 4628992,
+        "G": 4586654,
+        "T": 5397116,
+        "N": 4677
+    },
+    "Single_end": {
+        "SE_in": 0,
+        "SE_out": 0,
+        "SE_bpLen": 0,
+        "SE_bQ30": 0
+    },
+    "Paired_end": {
+        "PE_in": 100000,
+        "PE_out": 100000,
+        "R1_bpLen": 10000000,
+        "R1_bQ30": 9763638,
+        "R2_bpLen": 10000000,
+        "R2_bQ30": 9561481
+    }
+  }
+}
+```
 
 ---
 
-**4\.** In order to run the next commands, we need to find sequences of ribosomal RNA. We will use these sequences to eliminate rRNA contamination in our reads, which are from Arabidopsis thaliana. One way to do that is to go to [NCBI](https://www.ncbi.nlm.nih.gov/) and search for them. First, go to NCBI and in the Search dropdown select "Taxonomy" and search for "arabidopsis".
+**2\.** Next we are going to screen from ribosomal RNA (rRNA).
 
-![ncbi](ncbi01.png)
+Ribosomal RNA makes up 90% or more of a typical _total RNA_ sample. Most library prep methods attempt to reduce the rRNA representation in a sample, oligoDt binds to polyA tails to enrich a sample for mRNA, where Ribo-depletion binds rRNA sequences to deplete the sample of rRNA. Neither technique is 100% efficient and so knowing the relative proportion of rRNA in each sample can be helpful.
 
-Click on "Arabidopsis":
+Can screen for rRNA in our sample to determine rRNA efficiency.
 
-![ncbi](ncbi02.png)
+**2a\.** Before we do so we need to find sequences of ribosomal RNA to screen against.
 
-Click on "Arabidopsis" again:
+We will use these sequences to identify rRNA in our reads, which are from Arabidopsis thaliana. One way to do that is to go to [NCBI](https://www.ncbi.nlm.nih.gov/) and search for them.
 
-![ncbi](ncbi03.png)
+1.) First, go to NCBI and in the Search dropdown select "Taxonomy" and search for "arabidopsis".
 
-Click on the "Subtree links" for Nucleotide:
+![ncbi](preproc_figures/ncbi01.png)
 
-![ncbi](ncbi04.png)
+2.) Click on "Arabidopsis":
 
-Under Molecule Types, click on "rRNA":
+![ncbi](preproc_figures/ncbi02.png)
 
-![ncbi](ncbi05.png)
+3.) Click on "Arabidopsis" again:
 
-Click on "Send", choose "File", choose Format "FASTA", and click on "Create File".
+![ncbi](preproc_figures/ncbi03.png)
 
-![ncbi](ncbi06.png)
+4.) Click on the "Subtree links" for Nucleotide:
 
-![ncbi](ncbi07.png)
+![ncbi](preproc_figures/ncbi04.png)
 
-Save this file to your computer, and rename it to 'rrna.fasta'. Now, make a directory in your "rnaseq_example" directory called "ref":
+5.) Under Molecule Types, click on "rRNA":
 
+![ncbi](preproc_figures/ncbi05.png)
+
+6.) Click on "Send", choose "File", choose Format "FASTA", and click on "Create File".
+
+![ncbi](preproc_figures/ncbi06.png)
+
+![ncbi](preproc_figures/ncbi07.png)
+
+Save this file to your computer, and rename it to 'rrna.fasta'.
+
+Now, make a directory in your "rnaseq_example" directory called "ref":
+
+    cd ~/rnaseq_example
     mkdir ~/rnaseq_example/ref
 
-Upload your rrna.fa file to this ref directory on the cluster using either **scp** or FileZilla.
+Upload your rrna.fasta file **to the 'ref' directory** on the cluster using either **scp** or FileZilla. Or if you feel like cheating, paste the contents of rrna.fa using nano into a file named ~/rnaseq_example/ref/rrna.fasta
+
+    nano ~/rnaseq_example/ref/rrna.fasta # paste contents of rrna.fa and save
 
 ---
 
-<<<<<<< HEAD
-**9\.** We're going to blaze through the rest of the steps now, and then collect the stats of the reads at the end of the process.
-=======
-**5\.** We're going to blaze through the rest of the steps now, and then collect the stats of the reads at the end of the process. 
->>>>>>> ce311d2357038848bca2fd172c3dee19f03d1e17
+**2b\.** Lets look for ribosomal rna, but not remove, so just count the occurrences.
 
-    hts_SeqScreener -1 C61.stats_R1.fastq.gz -2 C61.stats_R2.fastq.gz -A -L C61.log -f -g -p C61.seqscreener
-    hts_SuperDeduper -1 C61.seqscreener_R1.fastq.gz -2 C61.seqscreener_R2.fastq.gz -A -L C61.log -f -g -p C61.superdeduper
-    hts_SeqScreener -s ../ref/rrna.fasta -1 C61.superdeduper_R1.fastq.gz -2 C61.superdeduper_R2.fastq.gz \
-                    -A -L C61.log -f -g -p C61.seqscreener.rRNA
-    hts_AdapterTrimmer -n -1 C61.seqscreener.rRNA_R1.fastq.gz -2 C61.seqscreener.rRNA_R2.fastq.gz -f -g -p C61.adaptertrimmer
-    hts_QWindowTrim -n -1 C61.adaptertrimmer_R1.fastq.gz -2 C61.adaptertrimmer_R2.fastq.gz -A -L C61.log -f -g -p C61.qtrim
-    hts_NTrimmer -n -1 C61.qtrim_R1.fastq.gz -2 C61.qtrim_R2.fastq.gz -A -L C61.log -f -g -p C61.ntrim
-    hts_CutTrim -m 50 -1 C61.ntrim_R1.fastq.gz -2 C61.ntrim_R2.fastq.gz -A -L C61.log -f -g -p C61.cuttrim
-    ls -ltrha  # notice how few SE reads there are!
-    hts_Stats -1 C61.cuttrim_R1.fastq.gz -2 C61.cuttrim_R2.fastq.gz -A -L C61.log -f -g -p C61.final
+First, view the help documentation for hts_SeqScreener
 
-Notice the patterns? In every step we read in reads (-1 and -2), append (-A) stats to a log file (-L), then output gzipped fastq (-f -g) with names starting with a pattern describing that step (-p). Use the command 'ls -ltrha' to look at the fastq file sizes along the way; they shrink when there's data removed from them, either parts of reads or whole read pairs.
+    cd ~/rnaseq_example/HTS_testing
+    hts_SeqScreener -h
+
+```
+msettles@ganesh: HTS_test$hts_SeqScreener -h
+HTStream <https://github.com/ibest/HTStream> application: hts_SeqScreener
+Version: 0.3.1
+hts_SeqScreener identifies and removes any reads which appear to have originated
+  from a contaminant DNA source. Because bacteriophage Phi-X is common spiked
+  into Illumina runs for QC purposes, sequences originating from Phi-X are removed
+  by default. If other contaminants are suspected their sequence can be supplied
+  as a fasta file <seq>, however the algorithm has been tuned for short contaminant
+  sequences, and may not work well with sequences significantly longer than Phi-X (5Kb).
+
+
+Standard Options:
+  -v [ --version ]                      Version print
+  -h [ --help ]                         Prints help documentation
+  -N [ --notes ] arg                    Notes for the stats JSON
+  -L [ --stats-file ] arg (=stats.log)  String for output stats file name
+  -A [ --append-stats-file ]            Append to stats file
+
+Input Options:
+  -1 [ --read1-input ] arg              Read 1 paired end fastq input <space
+                                        seperated for multiple files>
+  -2 [ --read2-input ] arg              Read 2 paired end fastq input <space
+                                        seperated for multiple files>
+  -U [ --singleend-input ] arg          Single end read fastq input <space
+                                        seperated for multiple files>
+  -T [ --tab-input ] arg                Tab input <space seperated for multiple
+                                        files>
+  -I [ --interleaved-input ] arg        Interleaved fastq input <space
+                                        seperated for multiple files>
+  -S [ --from-stdin ]                   STDIN input <MUST BE TAB DELIMITED
+                                        INPUT>
+
+Output Options:
+  -F [ --force ]                        Forces overwrite of files
+  -p [ --prefix ] arg (=hts_SeqScreener)
+                                        Prefix for output files
+  -g [ --gzip-output ]                  Output gzipped files
+  -f [ --fastq-output ]                 Output to Fastq format <PE AND/OR SE
+                                        files>
+  -t [ --tab-output ]                   Output to tab-delimited file format
+  -i [ --interleaved-output ]           Output to interleaved fastq file <PE
+                                        ONLY>
+  -u [ --unmapped-output ]              Output to unmapped sam file format
+  -O [ --to-stdout ]                    Output to STDOUT in tab-delimited file
+                                        format
+
+Application Specific Options:
+  -s [ --seq ] arg                      Please supply a fasta file - default -
+                                        Phix Sequence - default
+                                        https://www.ncbi.nlm.nih.gov/nuccore/96
+                                        26372
+  -C [ --check-read-2 ]                 Check R2 as well as R1 (pe)
+  -k [ --kmer ] arg (=12)               Kmer size of the lookup table (min 5,
+                                        max 256)
+  -x [ --percentage-hits ] arg (=0.25)  Proportion of kmer percentage-hits to
+                                        sequence need to happen to discard (min
+                                        0.0, max 1.0)
+  -n [ --inverse ]                      Output reads that are ABOVE the kmer
+                                        hit threshold
+  -r [ --record ]                       Only record the reads that pass the
+                                        kmer hit threshold, output all reads
+
+
+Please report any issues, request for enhancement, or comments to <https://github.com/ibest/HTStream/issues>
+```
+
+*What parameters are needed to 1) provide a reference to hts_SeqScreener and 2) count, and not screen occurrences?*
+
+    hts_SeqScreener -1 C61.subset_R1.fastq.gz \
+                    -2 C61.subset_R2.fastq.gz \
+                    -s ../ref/rrna.fasta -r -L C61.rrna.log -A -f -g -p C61.rrna
+
+*Which files were generated from hts\_SeqScreener?*
+
+*Lets look at the file C61.rrna.log?*
+
+*What do you notice about the C61.rrna.log?*
+
+*How many reads were identified as rrna?*
+
+**4\.** The power of htstream is the ability to stream reads through multiple programs using pipe's.
+
+By streaming reads through programs processing will be much quicker, each read is read in only once (written only once), and use significantly less storage as there are no intermediate files. It can do this by streaming a tab-delimited format called tab6.
+
+Single end reads are 3 columns:
+
+`read1id  read1seq  read1qual`
+
+Paired end reads are 6 columns:
+
+`read1id  read1seq  read1qual  read2id  read2seq  read2qual`
+
+So lets first run hts_Stats and then hts_SeqScreener in a streamed fashion.
+
+    cd ~/rnaseq_example/HTS_testing
+
+    hts_Stats -1 C61.subset_R1.fastq.gz \
+              -2 C61.subset_R2.fastq.gz \
+              -L C61.streamed.log -O |
+    hts_SeqScreener -S -A -L C61.streamed.log \
+              -r -s ../ref/rrna.fasta -f -g -p C61.streamed
+
+Note the pipe between the two applications!
+
+*What new parameters did we use here?*
+
+*What parameter is SeqScreener using that specifies how reads are input?*
+
+**4\.** A RNAseq preprocessing pipeline
+
+1) hts_Stats: get stats on raw reads
+2) hts_SeqScreener: screen out (remove) phiX
+3) hts_SuperDeduper: identify and remove PCR duplicates
+4) hts_SeqScreener: screen for (count) rrnra
+5) hts_AdapterTrimmer: identify and remove adapter sequence
+6) hts_QWindowTrim: remove poor quality sequence
+7) hts_NTrimmer: remove any remaining N characters
+8) hts_CutTrim: use to remove all reads < 50bp
+9) hts_Stats: get stats out output reads
+
+
+**4a\.** Why screen for phiX?
+
+PhiX is a common control in Illumina runs, and facilities may not tell you if/when PhiX has been spiked in since it does not have a barcode, so in theory should not be in your data.
+
+However:
+* When I know PhiX has been spiked in, I find sequence every time
+    * [update] When dual matched barcodes are used, then near zero phiX reads identified.
+* When I know PhiX has not been spiked in, I do not find sequence
+
+For RNAseq and variant analysis (any mapping based technique) it is not critical to remove, but for sequence assembly it is. I think its better safe than sorry and screen for it every time.
+
+**4b.** Removing PCR duplicates with hts_SuperDeduper.
+
+Removing PCR duplicates can be **controversial** for RNAseq, but I'm in favor of it. It tells you alot about the original complexity of each sample and potential impact of sequencing depth.
+
+**However, I would never do PCR duplicate removal on**
+
+![SD_eval](preproc_figures/SD_eval.png)
+
+Super Deduper only uses a small portion of the reads to identify duplicates.
+
+![SD_performance](preproc_figures/SD_performance.png)
+
+We calculated the Youden Index for every combination tested and the point that acquired the highest index value (as compared to Picard MarkDuplicates) occurred at a start position of 5bp and a length of 10bps (20bp total over both reads).
+
+**4c.** Adapter trimming by overlapping reads.
+
+Consider the three scenarios below
+
+**Insert size > length of the number of cycles**
+
+![overlap_pairs](preproc_figures/overlap_pairs.png)
+hts_AdapterTrimmer product: original pairs
+
+hts_Overlapper product: original pairs
+
+**Insert size < length of the number of cycles (10bp min)**
+
+![overlap_single](preproc_figures/overlap_single.png)
+hts_AdapterTrimmer product: original pairs
+
+hts_Overlapper product: extended, single
+
+**Insert size < length of the read length**
+
+![overlap_adapter](preproc_figures/overlap_adapter.png)
+hts_AdapterTrimmer product: adapter trimmed, pairs
+
+hts_Overlapper product: adapter trimmed, single
+
+Both hts_AdapterTrimmer and hts_Overlapper employ this principle to identify and remove adapters for paired-end reads. For paired-end reads the difference between the two are the output, as overlapper produces single-end reads when the pairs overlap and adapter trimmer keeps the paired end format. For single-end reads, adapter trimmer identifies and removes adapters by looking for the adapter sequence, where overlapper just ignores single-end reads (nothing to overlap).
+
+**4d.** Q-window trimming.
+
+As a sequencing run progresses the quality scores tend to get worse, so its common to trim of the worst quality bases.
+
+![Qwindowtrim](preproc_figures/qwindowtrim.png)
+
+This is how reads commonly look, the start at "good" quality, increase to "excellent" and degrade to "poor", with R2 always looking worse (except when they don't) than R1 and get worse as the number of cycles increases.
+
+hts_QWindowTrim trim 5' and/or 3' end of the sequence using a windowing (average quality in window) approach.
+
+**4e.** what does all this preprocessing get you
+
+Comparing star mapping with raw and preprocessed reads
+
+<img src="preproc_figures/final.png" alt="final" width="500px"/>
+
+
+
+**5e.** Lets put it all together
+
+    hts_Stats -O -L C61_htsStats.log -1 C61.subset_R1.fastq.gz -2 C61.subset_R2.fastq.gz | \
+    hts_SeqScreener -S -O -A -L C61_htsStats.log | \
+    hts_SuperDeduper -e 250000 -S -O -A -L C61_htsStats.log | \
+    hts_SeqScreener -s ../ref/rrna.fasta -r -S -O -A -L C61_htsStats.log | \
+    hts_AdapterTrimmer -n -S -O -A -L C61_htsStats.log | \
+    hts_QWindowTrim -n -S -O -A -L C61_htsStats.log | \
+    hts_NTrimmer -n -S -O -A -L C61_htsStats.log | \
+    hts_CutTrim -n -m 50 -S -O -A -L C61_htsStats.log | \
+    hts_Stats -S -A -L C61_htsStats.log -g -p C61.htstream
+
+Note the patterns:
+* In the first routine we use -1 and -2 to specify the original reads and -O to output to standard output.
+* In the middle routines we use -S to read in from standard input and -O to write out to standard output.
+* In the final routine we use -S to read in from standard input and -g (gzipped output) and -p fastq prefix to write out new preprocessed reads.
+* For the log, we specify -L with the same log file name for all routines, and use -A for the second routine onward to append log output, generating a single log file at the end.
+* All other parameters are algorithm specific, can review using --help
+
+*Review the final json output, how many reads do we have left?*
+
+*Confirm that number by counting the number of reads in the final output files.*
+
+*How many adapters did we detect, cut off?*
+
+*How many PCR duplicates were there?*
+
+*Anything else interesting?*
 
 ---
 
-**6\.** Matt's json visualization? ###########################################################################
-
----
-
-**7\.** Alternatively, it's cleaner to stream data from one HTStream component to the next, not save the intermediate files, but still log stats from each step. We'll use a SLURM script that we should take a look at now.
+**6\.** We can now run the preprocessing routine across all samples on the real data using a SLURM script that we should take a look at now.
 
     cd ~/rnaseq_example  # We'll run this from the main directory
     cp /share/biocore/workshops/2018_June_RNAseq/hts_preproc.slurm .
     cat hts_preproc.slurm
+    mkdir slurmout
 
-After looking at the script, let's run it. First we'll need to produce a list of samples for the script to work on.
+After looking at the script, lets make a slurmout directory for the output to go and let's run it. First we'll need to produce a list of samples for the script to work on.
 
-    ls 00-RawData > 00-RawData/samples.txt
-    cat samples.txt  # should just list each sample, one per line
     sbatch hts_preproc.slurm  # moment of truth!
 
-We can watch the progress of our task array using the 'squeue' command:
+We can watch the progress of our task array using the 'squeue' command. Takes about 30 minutes to process each sample.
 
-    squeue -u [class42]  # use your actual username, no brackets
+    squeue -u class42  # use your actual username, no brackets
 
 ---
 
-**8\.** Once that is done, let's take a look at the differences between the input and output files. First look at the input file:
+**7.** Preprocessing statistics as QA/QC.
+
+Beyond generating "better" data for downstream analysis, cleaning statistics also give you an idea as to the original quality and complexity of the sample, library generation, and sequencing quality.
+
+This can help inform you of how you might change your procedures in the future, either sample preparation, or in library preparation.
+
+I’ve found it best to perform QA/QC on both the run as a whole (poor samples can affect other samples) and on the samples themselves as they compare to other samples (BE CONSISTENT).
+
+Reports such as Basespace for Illumina, are great ways to evaluate the run as a whole, the sequencing provider usually does this for you.
+PCA/MDS plots of the preprocessing summary are a great way to look for technical bias across your experiment. Poor quality samples often appear as outliers on the MDS plot and can ethically be removed due to identified technical issues.
+
+**8.** Once that is done, let's take a look at the differences between the input and output files. First look at the input file:
 
     zless 00-RawData/I894/I894_S90_L006_R1_001.fastq.gz
 
-Let's search for the adapter sequence. Type '/' (a forward slash), and then type **AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC** (the first part of the forward adapter). Press Enter. This will search for the sequence in the file and highlight each time it is found. You can now type "n" to cycle through the places where it is found. When you are done, type "q" to exit. Now look at the output file:
+Let's search for the adapter sequence. Type '/' (a forward slash), and then type **AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC** (the first part of the forward adapter). Press Enter. This will search for the sequence in the file and highlight each time it is found. You can now type "n" to cycle through the places where it is found. When you are done, type "q" to exit.
+
+Now look at the output file:
 
     zless 01-HTS_Preproc/I894/I894_R1.fastq.gz
 
-If you scroll through the data (using the spacebar), you will see that some of the sequences have been trimmed. Now, try searching for **AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC** again. You shouldn't find it. You may need to use Control-C to get out of the search and then "q" to exit the 'less' screen.
+If you scroll through the data (using the spacebar), you will see that some of the sequences have been trimmed. Now, try searching for **AGATCGGAAGAGCACACGTCTGAACTCCAGTCAC** again. You shouldn't find it (adapters were trimmed remember). You may need to use Control-C to get out of the search and then "q" to exit the 'less' screen.
 
 ---
+
+**8.** QA/QC Summary table of the json files.
+
+I've created a small R script to read in each json file, pull out some relevant stats and write out a table for all samples.
+
+    cd ~/rnaseq_example  # We'll run this from the main directory
+    cp /share/biocore/workshops/2018_June_RNAseq/summarize_stats.R .
+
+    R CMD BATCH summarize_stats.R
+    cat hts_summary.txt
+
+Lets move this file to our computer, using scp or winSCP, or copy/paste from cat [sometimes doesn't work], open in excel (or excel like application), you may have to move the header column 1 cell to the right, and lets review.
+
+*Any problematic samples?*
+
+*Anything else worth discussing?*

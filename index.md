@@ -23,11 +23,11 @@ Tuesday
 =======
 
 * [Intro to Sequencing, Lutz Froenicke]() (talk)
-* [Files and Filetypes for RNA-Seq]() (talk)
-* [Experimental Design and Cost Estimation]() (talk)
-* [Workshop dataset talk](tuesday/Emily-RNA-seq_data.pdf)
-* [Project Setup hands-on]()
-* [Preprocessing Data hands-on]()
+* [Files and Filetypes for RNA-Seq](tuesday/Filetypes.pdf) (talk)
+* [Project Setup hands-on](tuesday/project_setup.md)
+* [Workshop dataset](tuesday/Emily-RNA-seq_data.pdf)
+* [Preprocessing Data hands-on](tuesday/preproc.md)
+* [Experimental Design and Cost Estimation](tuesday/ExperimentalDesign.pdf) (talk)
 
 
 Wednesday
