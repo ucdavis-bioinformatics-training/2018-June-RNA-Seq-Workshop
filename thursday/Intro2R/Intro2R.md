@@ -1073,8 +1073,6 @@ write.csv()
 write.csv2()
 
 
-\newpage
-
 
 Topic 3. Basic statistics in R
 ====================================================
@@ -1169,7 +1167,7 @@ y <- 1 + sqrt(x)/2
 plot(x,y)
 ```
 
-![](Intro2R_files/figure-html/unnamed-chunk-61-1.png)<!-- -->
+![](Intro2R_files/figure-html/unnamed-chunk-60-1.png)<!-- -->
 
 
 Boxplot() can be used to summarize expression data.
@@ -1179,7 +1177,7 @@ Boxplot() can be used to summarize expression data.
 boxplot(data, xlab="Sample ID", ylab="Raw Counts")
 ```
 
-![](Intro2R_files/figure-html/unnamed-chunk-62-1.png)<!-- -->
+![](Intro2R_files/figure-html/unnamed-chunk-61-1.png)<!-- -->
 
 
 ```r
@@ -1187,7 +1185,7 @@ x <- rnorm(1000)
 boxplot(x)
 ```
 
-![](Intro2R_files/figure-html/unnamed-chunk-63-1.png)<!-- -->
+![](Intro2R_files/figure-html/unnamed-chunk-62-1.png)<!-- -->
 
 
 Topic 5. lapply(), sapply()
@@ -1215,25 +1213,25 @@ lapply(1:dim(data)[1], function(x){sum(data[x,])})
 
 ```
 ## [[1]]
-## [1] 1.8529
+## [1] -0.2472374
 ## 
 ## [[2]]
-## [1] -0.4709196
+## [1] 2.978294
 ## 
 ## [[3]]
-## [1] 0.4356079
+## [1] -1.880031
 ## 
 ## [[4]]
-## [1] -0.5392096
+## [1] -2.181034
 ## 
 ## [[5]]
-## [1] -6.793939
+## [1] -1.364287
 ## 
 ## [[6]]
-## [1] -0.01766672
+## [1] -1.341045
 ## 
 ## [[7]]
-## [1] -3.093931
+## [1] 0.01238915
 ```
 
 ```r
@@ -1241,8 +1239,8 @@ apply(data, MARGIN=1, sum)
 ```
 
 ```
-## [1]  1.85289983 -0.47091957  0.43560791 -0.53920961 -6.79393900 -0.01766672
-## [7] -3.09393092
+## [1] -0.24723742  2.97829373 -1.88003064 -2.18103414 -1.36428713 -1.34104528
+## [7]  0.01238915
 ```
 
 ```r
@@ -1263,13 +1261,13 @@ lapply(1:dim(data)[1], function(x){log10(sum(data[x,]))})
 
 ```
 ## [[1]]
-## [1] 0.2678519
-## 
-## [[2]]
 ## [1] NaN
 ## 
+## [[2]]
+## [1] 0.4739675
+## 
 ## [[3]]
-## [1] -0.3609042
+## [1] NaN
 ## 
 ## [[4]]
 ## [1] NaN
@@ -1281,7 +1279,7 @@ lapply(1:dim(data)[1], function(x){log10(sum(data[x,]))})
 ## [1] NaN
 ## 
 ## [[7]]
-## [1] NaN
+## [1] -1.906959
 ```
 
 # The function sapply() works like function lapply(), but tries to simplify the output to the most elementary data structure that is possible. As a matter of fact, sapply() is a "wrapper" function for lapply(). By default, it returns a vector.
@@ -1307,8 +1305,8 @@ sapply(1:dim(data)[1], function(x){log10(sum(data[x,]))})
 ```
 
 ```
-## [1]  0.2678519        NaN -0.3609042        NaN        NaN        NaN
-## [7]        NaN
+## [1]        NaN  0.4739675        NaN        NaN        NaN        NaN
+## [7] -1.9069586
 ```
 
 # If the "simplify" parameter is turned off, sapply() will produced exactly the same results as lapply(), in the form of a list. By default, "simplify" is turned on.
@@ -1331,13 +1329,13 @@ sapply(1:dim(data)[1], function(x){log10(sum(data[x,]))}, simplify=FALSE)
 
 ```
 ## [[1]]
-## [1] 0.2678519
-## 
-## [[2]]
 ## [1] NaN
 ## 
+## [[2]]
+## [1] 0.4739675
+## 
 ## [[3]]
-## [1] -0.3609042
+## [1] NaN
 ## 
 ## [[4]]
 ## [1] NaN
@@ -1349,7 +1347,7 @@ sapply(1:dim(data)[1], function(x){log10(sum(data[x,]))}, simplify=FALSE)
 ## [1] NaN
 ## 
 ## [[7]]
-## [1] NaN
+## [1] -1.906959
 ```
 
 
