@@ -1,32 +1,8 @@
 Alignment to Read Counts & Visualization in IGV
 ================================================
 
-In this section we will align reads to the genome, view some alignments, and assign counts to genes. **Log into a compute node using srun first! Do not run on the head node!**
 
-**1\.** First, let's make sure that your jobs from yesterday completed. Go back to your '01-Trimming' directory and first check all the "arrayJob\*.out" and "arrayJob\*.err" files:
-
-    cd ~/rnaseq_example
-    cat slurmout/arrayJob*.out
-
-Look through the output and make sure you don't see any errors. Now do the same for the err files:
-
-    cat arrayJob*.err
-
-Also, check the output files. First check the number of forward and reverse output files (should be 24 each):
-
-    cd 01-HTS_Preproc
-    ls */*R1* | wc -l
-    ls */*R2* | wc -l
-
-Check the sizes of the files as well. Make sure there are no zero or near-zero size files and also make sure that the size of the files are in the same ballpark as each other:
-
-    ls -lh *
-
-If, for some reason, your jobs did not finish or something else went wrong, please let one of us know and we can get you caught up.
-
----
-
-**2\.** To align our data we will need the genome and annotation for Arabidopsis thaliana. There are many places to find them, but we are going to get them from the Ensembl Genomes FTP site. In a browser, go to here:
+**1\.** To align our data we will need the genome and annotation for Arabidopsis thaliana. There are many places to find them, but we are going to get them from the Ensembl Genomes FTP site. In a browser, go to here:
 
     ftp://ftp.ensemblgenomes.org/pub/plants/release-39/
 
