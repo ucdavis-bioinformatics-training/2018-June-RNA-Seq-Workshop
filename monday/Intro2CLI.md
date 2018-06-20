@@ -168,7 +168,7 @@ In the case where we have a few patterns that we are interested, we can use an o
 
     grep -E "ATCG01090|AT1G03997" all_counts.txt
 
-The option ***-E*** tells ***grep*** to use an Extended Regular Expression, where **\|*** is an logical operator of OR, meaning that we want to search any line that matches the pattern "ATCG01090", or "AT1G03997". The result of this command is the two lines that each matching one pattern. The command ***egrep*** is exactly the same as ***grep -E***.
+The option ***-E*** tells ***grep*** to use an Extended Regular Expression, where **\|** is an logical operator of OR, meaning that we want to search any line that matches the pattern "ATCG01090", or "AT1G03997". The result of this command is the two lines that each matching one pattern. The command ***egrep*** is exactly the same as ***grep -E***.
 
 This command is very good at finding matches for a few patterns. However, sometimes, we might have many more patterns that we want to search. Under this situation, we can use a different option ***-F*** and provide a file that have all the patterns that we are interested in.
 
