@@ -62,7 +62,7 @@ and let's run STAR on the pair of subset files we created before. (**Again, the 
     --quantMode GeneCounts \
     --outFileNamePrefix C61.subset. \
     --readFilesCommand zcat \
-    --readFilesIn ../01-HTS_Preproc/C61/C61.final_R1.fastq.gz ../01-HTS_Preproc/C61/C61.final_R2.fastq.gz
+    --readFilesIn ../01-HTS_Preproc/C61/C61_R1.fastq.gz ../01-HTS_Preproc/C61/C61_R2.fastq.gz
 
 For this command, we are giving it the overhang like from the previous step, the genome index directory we created in the last step, an identifier name from the GTF file that identifies genes, the annotation file, the output file type, outputting unmapped reads, telling it to count reads on a gene level, the prefix for all the output files, the command to unzip the files, and finally, the input files.
 
