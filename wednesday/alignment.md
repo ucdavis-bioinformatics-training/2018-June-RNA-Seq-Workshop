@@ -1,6 +1,10 @@
 Alignment to Read Counts & Visualization in IGV
 ================================================
 
+**BEFORE YOU START THIS SECTION, MAKE SURE YOU ARE LOGGED INTO THE CLUSTER USING SRUN**
+
+    srun --time=4:00:00 -n 8 --mem=20g --pty /bin/bash --reservation=workshop
+
 
 **1\.** To align our data we will need the genome and annotation for Arabidopsis thaliana. There are many places to find them, but we are going to get them from the Ensembl Genomes FTP site. In a browser, go to here:
 
