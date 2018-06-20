@@ -88,6 +88,8 @@ We need to index the new BAM file:
 
 Now, download chr5.bam and chr5.bam.bai (the index file) to your laptop. You will also need to download and uncompress both the Arabidopsis thaliana genome and annotation to your laptop. Just go back to where you got them before and instead of using wget, just download them directly to your laptop. And make sure to uncompress them.
 
+[DOWNLOAD LINK](https://bioshare.bioinformatics.ucdavis.edu/bioshare/view/yf9mmft3109giy2/)
+
 ---
 
 **5\.** Now we are ready to use IGV. Go to the [IGV page at the Broad Institute](http://software.broadinstitute.org/software/igv/) and click on Downloads.
