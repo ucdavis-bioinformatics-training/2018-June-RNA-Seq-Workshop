@@ -217,3 +217,18 @@ You will want to use 'squeue' to make sure that your jobs are actually running. 
     squeue -u <your username>
 
 And now you wait.
+
+---
+
+---
+
+---
+
+**16\.** Once your jobs have finished successfully, use a script of ours to collect the alignment stats. Don't worry about the script's contents at the moment; you'll use very similar commands to create a counts table in the next section. For now:
+
+    cd ~/rnaseq_example/02-STAR_alignment/
+    cp /share/biocore/workshops/2018_June_RNAseq/02-STAR_alignment/aln_stats.sh .
+    . aln_stats.sh
+
+The table that this script creates ("stats.txt") can be pulled to your laptop via 'scp', or WinSCP, etc., and imported into a spreadsheet. Are all samples behaving similarly? Discuss ...
+
