@@ -47,7 +47,6 @@ Thursday
 * [Intro to R](thursday/Intro2R/Intro2R.md)
 * Lunch and Learn - Lexogen
 * [DE Analysis: counts to lists of DE genes](thursday/DE.html)
-
   * [The R Markdown file](thursday/DE.Rmd)
 
 
@@ -55,9 +54,7 @@ Friday
 =======
 
 * [Gene Ontology and KEGG Pathway Enrichment Analyses](friday/enrichment.html)
-
   * [The R Markdown file](friday/enrichment.html)
-
 * [Generating figures]()
 * [Closing thoughts]()
 
