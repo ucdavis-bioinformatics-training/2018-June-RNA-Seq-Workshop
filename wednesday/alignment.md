@@ -76,7 +76,7 @@ For this command, we are giving it the overhang like from the previous step, the
 
 Now, use the 'samtools view' command to extract just chromosome 5 of an already completed alignment:
 
-    samtools view -b -@ 8 -o chr5.bam /share/biocore/workshops/2018_June_RNAseq/02-STAR_alignment/I864/I864_Aligned.sortedByCoord.out.bam 5
+    samtools view -b -@ 8 -o chr5.bam /share/biocore/workshops/2018_June_RNAseq/02-STAR_alignment/C61/C61_Aligned.sortedByCoord.out.bam 5
 
 We need to index the new BAM file:
 
