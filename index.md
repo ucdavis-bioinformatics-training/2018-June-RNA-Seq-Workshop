@@ -54,7 +54,7 @@ Friday
 =======
 
 * [Gene Ontology and KEGG Pathway Enrichment Analyses](friday/enrichment.html)
-  * [The R Markdown file](friday/enrichment.html)
+  * [The R Markdown file](friday/enrichment.Rmd)
 * [Generating figures]()
 * [Closing thoughts]()
 
