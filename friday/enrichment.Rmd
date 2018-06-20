@@ -1,0 +1,234 @@
+---
+title: "Gene Ontology and KEGG Enrichment Analysis"
+output: html_document
+---
+
+#0. Setup
+Install topGO, KEGGREST, org.At.tair.db, and Rgraphviz if not already installed
+```{r}
+#source("https://bioconductor.org/biocLite.R")
+#biocLite(c("topGO", "KEGGREST", "org.At.tair.db", "Rgraphviz"))
+```
+Load libraries
+```{r}
+library(topGO)
+library(KEGGREST)
+```
+Files for examples:
+
+[I5_v_C_time6.txt](https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/friday/I5_v_C_time6.txt)
+
+[ensembl_example_input.txt](https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/friday/ensembl_example_input.txt)
+
+[mart_export.txt](https://github.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/blob/master/friday/mart_export.txt).
+
+# 1. Gene Ontology (GO) Enrichment 
+
+Gene ontology (http://www.geneontology.org/) provides a controlled vocabulary for describing biological processes (BP ontology), molecular functions (MF ontology) and cellular components (CC ontology)
+
+The GO ontologies themselves are organism-independent; terms are associated with genes for a specific organism through direct experimentation or through sequence homology with another organism and its GO annotation.
+
+Terms are related to other terms through parent-child relationships in a directed acylic graph.
+
+Enrichment analysis provides one way of drawing conclusions about a set of differential expression results.
+
+# 2. topGO Example Using Kolmogorov-Smirnov Testing
+Our first example uses Kolmogorov-Smirnov Testing for enrichment testing of our arabadopsis DE results, with GO annotation obtained from the Bioconductor database org.At.tair.db. 
+
+The first step in each topGO analysis is to create a topGOdata object.  This contains the genes, the score for each gene (here we use the p-value from the DE test), the GO terms associated with each gene, and the ontology to be used (here we use the biological process ontology)
+```{r}
+infile <- "I5_v_C_time6.txt"
+tmp <- read.delim(infile)
+geneList <- tmp$P.Value
+names(geneList) <- tmp$Gene
+# Create topGOData object
+GOdata <- new("topGOdata",
+	ontology = "BP",
+	allGenes = geneList,
+	geneSelectionFun = function(x)x,
+	annot = annFUN.org, mapping = "org.At.tair.db")
+```
+
+The topGOdata object is then used as input for enrichment testing:
+```{r}
+# Kolmogorov-Smirnov testing
+resultKS <- runTest(GOdata, algorithm = "weight01", statistic = "ks")
+tab <- GenTable(GOdata, raw.p.value = resultKS, topNodes = length(resultKS@score), numChar = 120)
+```
+
+topGO preferentially tests more specific terms, utilizing the topology of the GO graph. The algorithms used are described in detail [here](https://academic.oup.com/bioinformatics/article/22/13/1600/193669).
+
+```{r}
+head(tab, 15)
+```
+* Annotated: number of genes (in our gene list) that are annotated with the term
+* Significant: n/a for this example, same as Annotated here
+* Expected: n/a for this example, same as Annotated here
+* raw.p.value: P-value from Kolomogorov-Smirnov test that DE p-values annotated with the term are smaller (i.e. more significant) than those not annotated with the term.
+
+The Kolmogorov-Smirnov test directly compares two probability distributions based on their maximum distance.  
+
+To illustrate the KS test, we plot probability distributions of p-values that are and that are not annotated with the term "RNA methylation".  (This won't exactly match what topGO does due to their elimination algorithm):
+```{r}
+rna.meth.terms <- genesInTerm(GOdata)[["GO:0001510"]] # get genes associated with term
+p.values.in <- geneList[names(geneList) %in% rna.meth.terms]
+p.values.out <- geneList[!(names(geneList) %in% rna.meth.terms)]
+plot.ecdf(p.values.in, verticals = T, do.points = F, col = "red", lwd = 2, xlim = c(0,1),
+          main = "Empirical Distribution of DE P-Values by Annotation with 'RNA Methylation'",
+          cex.main = 0.9, xlab = "p", ylab = "Probabilty(P-Value < p)")
+ecdf.out <- ecdf(p.values.out)
+xx <- unique(sort(c(seq(0, 1, length = 201), knots(ecdf.out))))
+lines(xx, ecdf.out(xx), col = "black", lwd = 2)
+legend("bottomright", legend = c("Genes Annotated with 'RNA Methylation'", "Genes Not Annotated with 'RNA Methylation'"), lwd = 2, col = 2:1, cex = 0.9)
+```
+
+We can use the function showSigOfNodes to plot the GO graph for the 3 most significant terms and their parents, color coded by enrichment p-value (red is most significant):
+```{r, fig.width = 20, fig.height = 20}
+par(cex = 0.3)
+showSigOfNodes(GOdata, score(resultKS), firstSigNodes = 3, useInfo = "def")
+par(cex = 1)
+```
+
+#3. topGO Example Using Fisher's Exact Test
+Next, we use Fisher's exact test to test for pathway enrichment among significantly DE genes, with GO terms from an external file.
+
+This example uses Mus musculus, but the same procedure can be followed to input GO terms from an external file for a non-model organism.
+
+Creating topGOdata object using GO terms from Biomart (https://www.ensembl.org/biomart): 
+
+```{r}
+gene.go <- read.delim("mart_export.txt", stringsAsFactors = F)
+
+gene.go <- gene.go[which(gene.go$GO.term.accession != ""),] # take out genes without GO terms
+head(gene.go)
+
+# Create list with element for each gene, containing vectors with all terms for each gene
+gene2GO <- tapply(gene.go$GO.term.accession, gene.go$Gene.stable.ID, function(x)x)
+head(gene2GO)
+```
+
+Define vector that is 1 if gene is significantly DE (adj.P.Val < 0.05) and 0 otherwise:
+```{r}
+infile <- "ensembl_example_input.txt"
+pcutoff <- 0.05 # cutoff for defining significant genes
+DE <- read.delim(infile, stringsAsFactors = F)
+head(DE)
+# Define gene list as 1's if adjP < cutoff, 0, otherwise
+tmp <- ifelse(DE$adj.P.Val < pcutoff, 1, 0)
+geneList <- tmp
+
+# geneList needs names that match those for GO terms, so stripping off part of name after dot
+# (This is only necessary for ensembl IDs)
+names(geneList) <- unlist(lapply(strsplit(DE$Gene, split = ".", fixed = T), function(x)x[1]))
+head(geneList)
+```
+
+Create topGOdata object:
+```{r}
+GOdata <- new("topGOdata",
+		ontology = "BP",
+		allGenes = geneList,
+		geneSelectionFun = function(x)(x == 1),
+		annot = annFUN.gene2GO, gene2GO = gene2GO)
+```
+
+Run Fisher's Exact Test:
+```{r}
+resultFisher <- runTest(GOdata, algorithm = "elim", statistic = "fisher")
+tab <- GenTable(GOdata, raw.p.value = resultFisher, topNodes = length(resultFisher@score),
+				numChar = 120)
+head(tab)
+```
+* Annotated: number of genes (in our gene list) that are annotated with the term
+* Significant: Number of significantly DE genes annotated with that term (i.e. genes where geneList = 1)
+* Expected: Under random chance, number of genes that would be expected to be significantly DE and annotated with that term
+* raw.p.value: P-value from Fisher's Exact Test, testing for association between significance and pathway membership.
+
+Fisher's Exact Test is applied to the table:
+
+**Significance/Annotation**|**Annotated With GO Term**|**Not Annotated With GO Term**
+:-----:|:-----:|:-----:
+**Significantly DE**|n1|n3
+**Not Significantly DE**|n2|n4
+
+and compares the probability of the observed table, conditional on the row and column sums, to what would be expected under random chance.  
+
+Advantages over KS (or Wilcoxon) Tests:
+
+*Ease of interpretation
+
+Disadvantages:
+
+* Relies on significant/non-significant dichotomy (an interesting gene could have an adjusted p-value of 0.051 and be counted as non-significant)
+* Less powerful
+* May be less useful if there are very few (or a large number of) significant genes
+
+#4. KEGG Pathway Enrichment Testing With KEGGREST
+KEGG, the Kyoto Encyclopedia of Genes and Genomes (https://www.genome.jp/kegg/), provides assignment of genes for many organisms into pathways. 
+
+We will access KEGG pathway assignments for arabadopsis through the KEGGREST Bioconductor package, and then use some homebrew code for enrichment testing.
+
+Get all arabadopsis pathways and their genes:
+```{r}
+# Pull all pathways for AT	
+pathways.list <- keggList("pathway", "ath")
+head(pathways.list)
+
+# Pull all genes for each pathway
+pathway.codes <- sub("path:", "", names(pathways.list))	
+genes.by.pathway <- sapply(pathway.codes,
+	function(pwid){
+		pw <- keggGet(pwid)
+		if (is.null(pw[[1]]$GENE)) return(NA)
+		pw2 <- pw[[1]]$GENE[c(TRUE,FALSE)] # may need to modify this to c(FALSE, TRUE) for other organisms
+		pw2 <- unlist(lapply(strsplit(pw2, split = ";", fixed = T), function(x)x[1]))
+		return(pw2)
+	}
+)
+head(genes.by.pathway)
+```
+
+Read in DE file to be used in enrichment testing:
+```{r}
+infile <- "I5_v_C_time6.txt"
+DE.table <- read.delim(infile, stringsAsFactors = F)
+geneList <- DE.table$P.Value
+names(geneList) <- DE.table$Gene
+head(geneList)
+```
+
+Apply Wilcoxon rank-sum test to each pathway, testing if "in" p-values are smaller than "out" p-values:
+```{r}
+# Wilcoxon test for each pathway
+pVals.by.pathway <- t(sapply(names(genes.by.pathway),
+	function(pathway) {
+		pathway.genes <- genes.by.pathway[[pathway]]
+		list.genes.in.pathway <- intersect(names(geneList), pathway.genes)
+		list.genes.not.in.pathway <- setdiff(names(geneList), list.genes.in.pathway)
+		scores.in.pathway <- geneList[list.genes.in.pathway]
+		scores.not.in.pathway <- geneList[list.genes.not.in.pathway]
+		if (length(scores.in.pathway) > 0){
+			p.value <- wilcox.test(scores.in.pathway, scores.not.in.pathway, alternative = "less")$p.value
+		} else{
+			p.value <- NA
+		}
+		return(c(p.value = p.value, Annotated = length(list.genes.in.pathway)))
+	}
+))
+
+# Assemble output table
+outdat <- data.frame(pathway.code = rownames(pVals.by.pathway))
+outdat$pathway.name <- pathways.list[outdat$pathway.code]
+outdat$p.value <- pVals.by.pathway[,"p.value"]
+outdat$Annotated <- pVals.by.pathway[,"Annotated"]
+outdat <- outdat[order(outdat$p.value),]
+head(outdat)
+```
+* p.value: P-value for Wilcoxon rank-sum testing, testing that p-values from DE analysis for genes in the pathway are smaller than those not in the pathway
+* Annotated: Number of genes in the pathway (regardless of DE p-value)
+
+The Wilcoxon rank-sum test is the nonparametric analogue of the two-sample t-test.  It compares the ranks of observations in two groups.  It is more powerful than the Kolmogorov-Smirnov test.
+
+```{r}
+sessionInfo()
+```
