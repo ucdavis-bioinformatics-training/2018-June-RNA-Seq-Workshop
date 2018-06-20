@@ -89,31 +89,30 @@ Now, download chr5.bam and chr5.bam.bai (the index file) to your laptop. You wil
 **5\.** Now we are ready to use IGV. Go to the [IGV page at the Broad Institute](http://software.broadinstitute.org/software/igv/) and click on Downloads.
 
 ![igv1](./alignment_figures/igv01.png)
-<img src="alignment_figures/igv01.png" alt="igv1" width="500px"/>
 
 Scroll down the page and under "Java Web Start" click on the "Launch" button with 1.2Gb of memory. This will download a ".jnlp" file which will need to be run using Java Web Start (javaws). If you don't have this on your computer, you will need to install it.
 
-<img src="alignment_figures/igv02.png" alt="igv2" width="500px"/>
+![igv2](./alignment_figures/igv02.png)
 
 ---
 
 **6\.** IGV should start up automatically. The first thing we want to do is load our Arabidopsis genome. Click on "Genomes" in the menu and choose "Load Genome from File":
 
-<img src="alignment_figures/igv03.png" alt="igv3" width="500px"/>
+![igv3](./alignment_figures/igv03.png)
 
 Find your genome file on your laptop and choose that:
 
-<img src="alignment_figures/igv04.png" alt="igv4" width="500px"/>
+![igv4](./alignment_figures/igv04.png)
 
 ---
 
 **7\.** Now let's load the alignment. Click on "File" and choose "Load from File":
 
-<img src="alignment_figures/igv05.png" alt="igv5" width="500px"/>
+![igv5](./alignment_figures/igv05.png)
 
 Choose your chr5.bam file. Make sure the chr.bam.bai file is in the same directory as the BAM file.
 
-<img src="alignment_figures/igv06.png" alt="igv6" width="500px"/>
+![igv6](./alignment_figures/igv06.png)
 
 Now your alignment is loaded. Any loaded file aligned to a genome is called a "track".
 
@@ -121,39 +120,39 @@ Now your alignment is loaded. Any loaded file aligned to a genome is called a "t
 
 **8\.** Choose chromosome 5 from the chromosome dropdown:
 
-<img src="alignment_figures/igv07.png" alt="igv7" width="500px"/>
+![igv7](./alignment_figures/igv07.png)
 
 You will need to zoom in to see alignments, so click on the plus sign until you see something. You also may have to move around by clicking and dragging in the BAM track window.
 
-<img src="alignment_figures/igv08.png" alt="igv8" width="500px"/>
+![igv8](./alignment_figures/igv08.png)
 
 You can also zoom in by clicking and dragging across the number line at the top. That section will highlight, and when you release the button, it will zoom into that section.
 
-<img src="alignment_figures/igv09.png" alt="igv9" width="500px"/>
+![igv9](./alignment_figures/igv09.png)
 
 ---
 
 **9\.** In order to see alignments more easily when zoomed out, we are going to create a coverage track. Click on "Tools" and then choose "Run igvtools".
 
-<img src="alignment_figures/igv10.png" alt="igv10" width="500px"/>
+![igv10](./alignment_figures/igv10.png)
 
 Choose "Count" as the command, and choose your chr5.bam file as the Input File (the output file path will get created automatically):
 
-<img src="alignment_figures/igv11.png" alt="igv11" width="500px"/>
+![igv11](./alignment_figures/igv11.png)
 
 Choose a Zoom Level of 10 and then click "Run":
 
-<img src="alignment_figures/igv12.png" alt="igv12" width="500px"/>
+![igv11](./alignment_figures/igv12.png)
 
 ---
 
 **10\.** Once that is done, there will be a chr5.bam.tdf file in the same directory as your bam file. Click on "File" and "Load from File" and choose that file. This will create a coverage track that is visible even at maximum zoom out.
 
-<img src="alignment_figures/igv13.png" alt="igv13" width="500px"/>
+![igv13](./alignment_figures/igv13.png)
 
 Click on the minus sign in the upper right to zoom out. Zoom out until you are all the way zoomed out. The alignment track will not show anything, but you will be able to see the coverage track which will show you the locations of the alignments.
 
-<img src="alignment_figures/igv14.png" alt="igv14" width="500px"/>
+![igv14](./alignment_figures/igv14.png)
 
 Zoom in by clicking and dragging across the number line until you get to some alignments. You are looking at a visual representation of the alignment of the reads to the genome. Each of the little boxes in the track represent reads. The reads can be visualized in different ways which we will show you in class.
 
@@ -161,31 +160,31 @@ Zoom in by clicking and dragging across the number line until you get to some al
 
 **11\.** The other track we will add to IGV is the annotation for Arabidopsis. In order to do that, we need to first sort the annotation file. Go to igvtools again:
 
-<img src="alignment_figures/igv15.png" alt="igv15" width="500px"/>
+![igv15](./alignment_figures/igv15.png)
 
 Choose "Sort" as the command and choose the gtf annotation file as the input file. Run it:
 
-<img src="alignment_figures/igv16.png" alt="igv16" width="500px"/>
+![igv16](./alignment_figures/igv16.png)
 
-<img src="alignment_figures/igv17.png" alt="igv17" width="500px"/>
+![igv17](./alignment_figures/igv17.png)
 
 --
 
 **12\.** Load the newly created and sorted gtf file:
 
-<img src="alignment_figures/igv20.png" alt="igv20" width="500px"/>
+![igv20](./alignment_figures/igv20.png)
 
-<img src="alignment_figures/igv21.png" alt="igv21" width="500px"/>
+![igv21](./alignment_figures/igv21.png)
 
 It will give you a warning about not having an index file. Click "Go" to create one:
 
-<img src="alignment_figures/igv22.png" alt="igv22" width="500px"/>
+![igv22](./alignment_figures/igv22.png)
 
 ---
 
 **13\.** Once the annotation track is loaded, zoom into a gene and you will see that the reads should be aligning with the exons in the genes. This makes sense, since RNA-Seq reads are from exons:
 
-<img src="alignment_figures/igv23.png" alt="igv23" width="500px"/>
+![igv23](./alignment_figures/igv23.png)
 
 ---
 
