@@ -35,10 +35,10 @@ Wednesday
 ==========
 
 * [More Files and Filetypes for RNA-Seq](tuesday/Filetypes.pdf) (talk)
-* [Aligners](tuesday/Aligners.pdf)
-* [Aligners hands-on](tuesday/alignment.md)
+* [Aligners](wednesday/Aligners.pdf)
+* [Aligners hands-on](wednesday/alignment.md)
 * Lunch and Learn - Qiagen
-* [Generating Summarized Counts](counts.md)
+* [Generating Summarized Counts](wednesday/counts.md)
 
 
 Thursday
