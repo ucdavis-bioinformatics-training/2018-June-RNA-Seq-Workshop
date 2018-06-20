@@ -88,6 +88,7 @@ Now, download chr5.bam and chr5.bam.bai (the index file) to your laptop. You wil
 
 **5\.** Now we are ready to use IGV. Go to the [IGV page at the Broad Institute](http://software.broadinstitute.org/software/igv/) and click on Downloads.
 
+![igv1](./alignment_figures/igv01.png)
 <img src="alignment_figures/igv01.png" alt="igv1" width="500px"/>
 
 Scroll down the page and under "Java Web Start" click on the "Launch" button with 1.2Gb of memory. This will download a ".jnlp" file which will need to be run using Java Web Start (javaws). If you don't have this on your computer, you will need to install it.
