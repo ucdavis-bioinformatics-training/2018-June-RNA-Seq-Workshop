@@ -22,7 +22,7 @@ Monday
 Tuesday
 =======
 
-* [Intro to Sequencing, Lutz Froenicke]() (talk)
+* [Intro to Sequencing, Lutz Froenicke](tuesday/Bioinformatics_Workshop_2018_LF.pdf) (talk)
 * [Files and Filetypes for RNA-Seq](tuesday/Filetypes.pdf) (talk)
 * [Project Setup hands-on](tuesday/project_setup.md)
 * [Workshop dataset](tuesday/Emily-RNA-seq_data.pdf) (talk)
