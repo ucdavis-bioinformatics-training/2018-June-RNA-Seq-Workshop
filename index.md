@@ -48,13 +48,16 @@ Thursday
 * Lunch and Learn - Lexogen
 * [DE Analysis: counts to lists of DE genes](thursday/DE.html)
 
-  -[The R Markdown file](thursday/DE.Rmd)
+  * [The R Markdown file](thursday/DE.Rmd)
 
 
 Friday
 =======
 
-* GO/KEGG Pathway Enrichment: [GO](), [KEGG]()
+* [Gene Ontology and KEGG Pathway Enrichment Analyses](friday/enrichment.html)
+
+  * [The R Markdown file](friday/enrichment.html)
+
 * [Generating figures]()
 * [Closing thoughts]()
 
