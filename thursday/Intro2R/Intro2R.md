@@ -1213,25 +1213,25 @@ lapply(1:dim(data)[1], function(x){sum(data[x,])})
 
 ```
 ## [[1]]
-## [1] -0.2472374
+## [1] -1.330278
 ## 
 ## [[2]]
-## [1] 2.978294
+## [1] 0.8330145
 ## 
 ## [[3]]
-## [1] -1.880031
+## [1] 0.536433
 ## 
 ## [[4]]
-## [1] -2.181034
+## [1] 4.982707
 ## 
 ## [[5]]
-## [1] -1.364287
+## [1] 3.999703
 ## 
 ## [[6]]
-## [1] -1.341045
+## [1] 0.9652817
 ## 
 ## [[7]]
-## [1] 0.01238915
+## [1] 3.098635
 ```
 
 ```r
@@ -1239,8 +1239,8 @@ apply(data, MARGIN=1, sum)
 ```
 
 ```
-## [1] -0.24723742  2.97829373 -1.88003064 -2.18103414 -1.36428713 -1.34104528
-## [7]  0.01238915
+## [1] -1.3302775  0.8330145  0.5364330  4.9827067  3.9997034  0.9652817
+## [7]  3.0986354
 ```
 
 ```r
@@ -1249,14 +1249,6 @@ lapply(1:dim(data)[1], function(x){log10(sum(data[x,]))})
 
 ```
 ## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
 ```
 
 ```
@@ -1264,22 +1256,22 @@ lapply(1:dim(data)[1], function(x){log10(sum(data[x,]))})
 ## [1] NaN
 ## 
 ## [[2]]
-## [1] 0.4739675
+## [1] -0.07934745
 ## 
 ## [[3]]
-## [1] NaN
+## [1] -0.2704845
 ## 
 ## [[4]]
-## [1] NaN
+## [1] 0.6974653
 ## 
 ## [[5]]
-## [1] NaN
+## [1] 0.6020278
 ## 
 ## [[6]]
-## [1] NaN
+## [1] -0.01534593
 ## 
 ## [[7]]
-## [1] -1.906959
+## [1] 0.4911705
 ```
 
 # The function sapply() works like function lapply(), but tries to simplify the output to the most elementary data structure that is possible. As a matter of fact, sapply() is a "wrapper" function for lapply(). By default, it returns a vector.
@@ -1294,19 +1286,11 @@ sapply(1:dim(data)[1], function(x){log10(sum(data[x,]))})
 
 ```
 ## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
 ```
 
 ```
-## [1]        NaN  0.4739675        NaN        NaN        NaN        NaN
-## [7] -1.9069586
+## [1]         NaN -0.07934745 -0.27048449  0.69746532  0.60202779 -0.01534593
+## [7]  0.49117048
 ```
 
 # If the "simplify" parameter is turned off, sapply() will produced exactly the same results as lapply(), in the form of a list. By default, "simplify" is turned on.
@@ -1317,14 +1301,6 @@ sapply(1:dim(data)[1], function(x){log10(sum(data[x,]))}, simplify=FALSE)
 
 ```
 ## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
 ```
 
 ```
@@ -1332,22 +1308,22 @@ sapply(1:dim(data)[1], function(x){log10(sum(data[x,]))}, simplify=FALSE)
 ## [1] NaN
 ## 
 ## [[2]]
-## [1] 0.4739675
+## [1] -0.07934745
 ## 
 ## [[3]]
-## [1] NaN
+## [1] -0.2704845
 ## 
 ## [[4]]
-## [1] NaN
+## [1] 0.6974653
 ## 
 ## [[5]]
-## [1] NaN
+## [1] 0.6020278
 ## 
 ## [[6]]
-## [1] NaN
+## [1] -0.01534593
 ## 
 ## [[7]]
-## [1] -1.906959
+## [1] 0.4911705
 ```
 
 
@@ -1375,7 +1351,7 @@ source("http://bioconductor.org/biocLite.R")
 #biocLite()
 ## install specific packages
 #biocLite("edgeR")
-#biocLite(c("topGO", "org.At.tair.db", "biomaRt", "KEGGREST", "WGCNA", "gplots","devtools"))
+#biocLite(c("topGO", "org.At.tair.db", "biomaRt", "KEGGREST", "WGCNA", "Rgraphviz", "gplots", "devtools"))
 ```
 
 
