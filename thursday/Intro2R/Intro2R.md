@@ -1,3 +1,9 @@
+---
+output:
+  html_document:
+    keep_md: true
+  word_document: default
+---
 R for Biologist - An Introduction to R (Beginner)
 ========================================================
 
@@ -984,7 +990,7 @@ R base function read.table() is a general funciton that can be used to read a fi
 data <- read.table(file="raw_counts.txt", sep="\t", header=T, stringsAsFactors=F)
 
 # There is a more convenient way to read files from the internet.
-data <- read.table(file="https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2017-August-Variant-Analysis-Workshop/master/friday/Intro2R/raw_counts.txt", sep="\t", header=T, stringsAsFactors=F)
+data <- read.table(file="https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2017-September-Microbial-Community-Analysis-Workshop/master/friday/Intro2R/raw_counts.txt", sep="\t", header=T, stringsAsFactors=F)
 ```
 
 Take a look at the beginning part of the data frame.
@@ -1067,16 +1073,10 @@ write.csv()
 write.csv2()
 
 
-\newpage
-
 
 Topic 3. Basic statistics in R
 ====================================================
 
-
-```
-## Warning: package 'knitr' was built under R version 3.4.1
-```
 
              Description                 R_function 
 --------------------------------------  ------------
@@ -1167,7 +1167,7 @@ y <- 1 + sqrt(x)/2
 plot(x,y)
 ```
 
-![](Intro2R_files/figure-html/unnamed-chunk-61-1.png)<!-- -->
+![](Intro2R_files/figure-html/unnamed-chunk-60-1.png)<!-- -->
 
 
 Boxplot() can be used to summarize expression data.
@@ -1177,7 +1177,7 @@ Boxplot() can be used to summarize expression data.
 boxplot(data, xlab="Sample ID", ylab="Raw Counts")
 ```
 
-![](Intro2R_files/figure-html/unnamed-chunk-62-1.png)<!-- -->
+![](Intro2R_files/figure-html/unnamed-chunk-61-1.png)<!-- -->
 
 
 ```r
@@ -1185,7 +1185,7 @@ x <- rnorm(1000)
 boxplot(x)
 ```
 
-![](Intro2R_files/figure-html/unnamed-chunk-63-1.png)<!-- -->
+![](Intro2R_files/figure-html/unnamed-chunk-62-1.png)<!-- -->
 
 
 Topic 5. lapply(), sapply()
@@ -1213,25 +1213,25 @@ lapply(1:dim(data)[1], function(x){sum(data[x,])})
 
 ```
 ## [[1]]
-## [1] 3.08365
+## [1] -1.330278
 ## 
 ## [[2]]
-## [1] 0.6096668
+## [1] 0.8330145
 ## 
 ## [[3]]
-## [1] 4.569502
+## [1] 0.536433
 ## 
 ## [[4]]
-## [1] 3.993351
+## [1] 4.982707
 ## 
 ## [[5]]
-## [1] 1.978054
+## [1] 3.999703
 ## 
 ## [[6]]
-## [1] -1.357851
+## [1] 0.9652817
 ## 
 ## [[7]]
-## [1] -1.154092
+## [1] 3.098635
 ```
 
 ```r
@@ -1239,8 +1239,8 @@ apply(data, MARGIN=1, sum)
 ```
 
 ```
-## [1]  3.0836505  0.6096668  4.5695023  3.9933514  1.9780545 -1.3578508
-## [7] -1.1540921
+## [1] -1.3302775  0.8330145  0.5364330  4.9827067  3.9997034  0.9652817
+## [7]  3.0986354
 ```
 
 ```r
@@ -1249,31 +1249,29 @@ lapply(1:dim(data)[1], function(x){log10(sum(data[x,]))})
 
 ```
 ## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
 ```
 
 ```
 ## [[1]]
-## [1] 0.4890651
+## [1] NaN
 ## 
 ## [[2]]
-## [1] -0.2149075
+## [1] -0.07934745
 ## 
 ## [[3]]
-## [1] 0.6598689
+## [1] -0.2704845
 ## 
 ## [[4]]
-## [1] 0.6013375
+## [1] 0.6974653
 ## 
 ## [[5]]
-## [1] 0.2962383
+## [1] 0.6020278
 ## 
 ## [[6]]
-## [1] NaN
+## [1] -0.01534593
 ## 
 ## [[7]]
-## [1] NaN
+## [1] 0.4911705
 ```
 
 # The function sapply() works like function lapply(), but tries to simplify the output to the most elementary data structure that is possible. As a matter of fact, sapply() is a "wrapper" function for lapply(). By default, it returns a vector.
@@ -1288,13 +1286,11 @@ sapply(1:dim(data)[1], function(x){log10(sum(data[x,]))})
 
 ```
 ## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
 ```
 
 ```
-## [1]  0.4890651 -0.2149075  0.6598689  0.6013375  0.2962383        NaN
-## [7]        NaN
+## [1]         NaN -0.07934745 -0.27048449  0.69746532  0.60202779 -0.01534593
+## [7]  0.49117048
 ```
 
 # If the "simplify" parameter is turned off, sapply() will produced exactly the same results as lapply(), in the form of a list. By default, "simplify" is turned on.
@@ -1305,31 +1301,29 @@ sapply(1:dim(data)[1], function(x){log10(sum(data[x,]))}, simplify=FALSE)
 
 ```
 ## Warning in FUN(X[[i]], ...): NaNs produced
-
-## Warning in FUN(X[[i]], ...): NaNs produced
 ```
 
 ```
 ## [[1]]
-## [1] 0.4890651
+## [1] NaN
 ## 
 ## [[2]]
-## [1] -0.2149075
+## [1] -0.07934745
 ## 
 ## [[3]]
-## [1] 0.6598689
+## [1] -0.2704845
 ## 
 ## [[4]]
-## [1] 0.6013375
+## [1] 0.6974653
 ## 
 ## [[5]]
-## [1] 0.2962383
+## [1] 0.6020278
 ## 
 ## [[6]]
-## [1] NaN
+## [1] -0.01534593
 ## 
 ## [[7]]
-## [1] NaN
+## [1] 0.4911705
 ```
 
 
@@ -1344,38 +1338,37 @@ source("http://bioconductor.org/biocLite.R")
 ```
 
 ```
-## Bioconductor version 3.5 (BiocInstaller 1.26.0), ?biocLite for help
+## Bioconductor version 3.5 (BiocInstaller 1.26.1), ?biocLite for help
+```
+
+```
+## A newer version of Bioconductor is available for this version of R,
+##   ?BiocUpgrade for help
 ```
 
 ```r
 ## install core packages
 #biocLite()
 ## install specific packages
-#biocLite("RCircos")
-#biocLite(c("IdeoViz", "devtools"))
+#biocLite("edgeR")
+#biocLite(c("topGO", "org.At.tair.db", "biomaRt", "KEGGREST", "WGCNA", "Rgraphviz", "gplots", "devtools"))
 ```
 
 
 ```r
 #install.packages("ggplot2", repos="http://cran.us.r-project.org")
+#install.packages("locfit", repos="http://cran.us.r-project.org")
 ```
 
 Install from source of github.
 
 ```r
 library(devtools)
-```
-
-```
-## Warning: package 'devtools' was built under R version 3.4.1
-```
-
-```r
 install_github("stephenturner/qqman")
 ```
 
 ```
-## Skipping install of 'qqman' from a github remote, the SHA1 (d6aa53a0) has not changed since last install.
+## Skipping install of 'qqman' from a github remote, the SHA1 (3cdfa9a6) has not changed since last install.
 ##   Use `force = TRUE` to force installation
 ```
 
