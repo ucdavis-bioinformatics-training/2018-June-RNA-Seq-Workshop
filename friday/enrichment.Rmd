@@ -39,6 +39,10 @@ The first step in each topGO analysis is to create a topGOdata object.  This con
 ```{r}
 infile <- "I5_v_C_time6.txt"
 tmp <- read.delim(infile)
+
+# OR
+tmp <- read.delim("https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/friday/I5_v_C_time6.txt")
+
 geneList <- tmp$P.Value
 names(geneList) <- tmp$Gene
 # Create topGOData object
@@ -99,6 +103,10 @@ Creating topGOdata object using GO terms from Biomart (https://www.ensembl.org/b
 ```{r}
 gene.go <- read.delim("mart_export.txt", stringsAsFactors = F)
 
+# OR
+
+gene.go <- read.delim("https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/friday/mart_export.txt", stringsAsFactors = F)
+
 gene.go <- gene.go[which(gene.go$GO.term.accession != ""),] # take out genes without GO terms
 head(gene.go)
 
@@ -112,6 +120,10 @@ Define vector that is 1 if gene is significantly DE (adj.P.Val < 0.05) and 0 oth
 infile <- "ensembl_example_input.txt"
 pcutoff <- 0.05 # cutoff for defining significant genes
 DE <- read.delim(infile, stringsAsFactors = F)
+
+#OR
+DE <- read.delim("https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/friday/ensembl_example_input.txt", stringsAsFactors = F)
+
 head(DE)
 # Define gene list as 1's if adjP < cutoff, 0, otherwise
 tmp <- ifelse(DE$adj.P.Val < pcutoff, 1, 0)
@@ -192,6 +204,11 @@ Read in DE file to be used in enrichment testing:
 ```{r}
 infile <- "I5_v_C_time6.txt"
 DE.table <- read.delim(infile, stringsAsFactors = F)
+
+# OR
+
+DE.table <- read.delim("https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/friday/I5_v_C_time6.txt")
+
 geneList <- DE.table$P.Value
 names(geneList) <- DE.table$Gene
 head(geneList)
