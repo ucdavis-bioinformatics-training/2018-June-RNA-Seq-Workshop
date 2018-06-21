@@ -39,6 +39,12 @@ counts <- read.delim("all_counts.txt", row.names = 1)
 head(counts)
 ```
 
+OR read the file directly from the github page:
+```{r}
+counts <- read.table(file = "https://raw.githubusercontent.com/ucdavis-bioinformatics-training/2018-June-RNA-Seq-Workshop/master/thursday/all_counts.txt", header = T, sep = "\t", stringsAsFactors = F)
+head(counts)
+```
+
 Create DGEList object
 ```{r}
 d0 <- DGEList(counts)
