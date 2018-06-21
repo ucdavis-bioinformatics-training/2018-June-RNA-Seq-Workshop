@@ -44,7 +44,7 @@ Wednesday
 Thursday
 ==========
 
-* [Intro to R](thursday/Intro2R/Intro2R.md)
+* [Intro to R](thursday/Intro2R.md)
 * Lunch and Learn - Lexogen
 * [DE Analysis: counts to lists of DE genes](thursday/DE.html)
   * [The R Markdown file](thursday/DE.Rmd)
