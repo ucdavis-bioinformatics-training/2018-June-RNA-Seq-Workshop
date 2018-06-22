@@ -1,7 +1,6 @@
 ---
 title: "Plots in R"
 author: "Stefania Giacomello"
-date: "6/22/2018"
 output: 
   html_document:
     keep_md: true
@@ -285,7 +284,7 @@ dev.off()
 ```
 
 ```
-## quartz_off_screen 
+## quartz_off_screen
 ##                 2
 ```
 
