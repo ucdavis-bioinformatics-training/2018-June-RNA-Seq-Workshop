@@ -63,6 +63,8 @@ Friday
   * [all_counts.txt](friday/all_counts.txt)
 * [Closing thoughts]()
 
-Evaluation!
-============
-Please help us improve future workshops, for you and others, by filling out an [evaluation]().
+Other Talks
+===========
+[What is Bioinformatics](additional_lectures/What_is_Bioinformatics.pdf)
+[Transcript assembly](additional_lectures/June_2018_MB_RNASeq_Assembly.pdf)
+[Single Cell RNAseq](additional_lectures/stefania_sc.pdf)
