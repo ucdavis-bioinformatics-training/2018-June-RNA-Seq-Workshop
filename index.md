@@ -61,6 +61,7 @@ Friday
   * [I5_v_C_time6_KEGG.txt](friday/I5_v_C_time6_KEGG.txt)
   * [metafile](friday/metafile.txt)
   * [all_counts.txt](friday/all_counts.txt)
+  * [all files for plots](friday/files_for_plots.zip)
 * [Closing thoughts]()
 
 Other Talks
