@@ -1,0 +1,185 @@
+---
+title: "Plots in R"
+author: "Stefania Giacomello"
+date: "6/22/2018"
+output: 
+  html_document:
+    keep_md: true
+---
+
+This R Markdown report contains instructions on how to make plots in R.
+Set your working directory as first thing:
+
+setwd("your/path/to/working/directory")
+
+####1. As first thing, load the necessary libraries and set the working directory.
+```{r lib_dir, error=FALSE, warning=FALSE, results='hide'}
+#Load required library
+suppressWarnings(library(metaMA))
+suppressMessages(library(lattice))
+suppressMessages(suppressWarnings(library(genefilter)))
+suppressMessages(suppressWarnings(library(edgeR)))
+suppressMessages(library(ggplot2))
+suppressMessages(library(RColorBrewer))
+suppressWarnings(library(cluster))
+suppressMessages(suppressWarnings(library(WGCNA)))
+suppressMessages(suppressWarnings(library(matrixStats)))
+suppressMessages(suppressWarnings(library(dplyr)))
+suppressWarnings(library(devtools))
+suppressMessages(library(gplots))
+suppressMessages(suppressWarnings(library(pathview)))
+
+#Set the working directory where you have downloaded the count table
+#setwd("Documents/Conferences/UCDavis")
+```
+
+####2. Load the count table and the relative metafile.
+```{r input}
+d <- read.table(file="all_counts.txt", sep="\t", header=T, stringsAsFactors=F)
+
+m <- read.table(file="metafile.txt", sep="\t", header=T, stringsAsFactors=F)
+
+#Inspect the count table and check its dimensions
+head(d)
+dim(d)
+```
+
+How many genes and samples does the count table contain?
+
+####3. Normalize the data using count-per-million.
+```{r normalization}
+keep <- rowSums(cpm(d) > 1) > 1  ##What does this command do?
+counts <- d[keep,]
+norm.counts <- cpm(counts)
+
+#Inspect the normalized count table and check its dimensions
+head(norm.counts)
+dim(norm.counts)
+```
+
+What are the main differences between the raw count table and the normilized one?
+
+####4. Investigate the data using Principal Component Analysis (PCA).
+```{r PCA}
+rv <- rowVars(norm.counts)
+select <- order(rv, decreasing=TRUE)[seq_len(100)]
+pca <- prcomp(t(norm.counts[select,]))
+fac <- factor(apply(m[,c("Cultivar", "TimePoint")], 1, paste, collapse=":"))
+colours <- brewer.pal(nlevels(fac), "Paired")
+pcafig <- xyplot(PC2 ~ PC1, groups=fac, data=as.data.frame(pca$x), pch=16, cex=1, aspect="iso",
+    col=colours, main=draw.key(key=list(rect=list(col=colours), text=list(levels(fac)),
+    rep=FALSE)))
+print(pcafig)
+
+#We can play around with visualization optsions:
+pcafig <- xyplot(PC2 ~ PC1, groups=fac, data=as.data.frame(pca$x), pch=18, cex=1, aspect="iso",
+    col=colours, main=draw.key(key=list(rect=list(col=colours), text=list(levels(fac)),
+    rep=FALSE)))
+print(pcafig)
+
+pcafig <- xyplot(PC2 ~ PC1, groups=fac, data=as.data.frame(pca$x), pch=6, cex=1, aspect="iso",
+    col=colours, main=draw.key(key=list(rect=list(col=colours), text=list(levels(fac)),
+    rep=FALSE)))
+print(pcafig)
+
+#We can draw colour keys in a non-default way
+pcafig <- xyplot(PC2 ~ PC1, groups=fac, data=as.data.frame(pca$x), pch=16, cex=1, aspect="iso",
+    col=colours, main=draw.key(key=list(rect=list(col=colours), text=list(levels(fac)),
+    rep=FALSE, columns=3)))
+print(pcafig)
+```
+
+####5. Cluster the data.
+```{r clustering}
+dist.matrix <- dist(t(norm.counts))
+sampleTree <- hclust(dist.matrix)
+colours <- data.frame(Cultivar=labels2colors(m$Cultivar), TimePoint=labels2colors(m$TimePoint))
+plotDendroAndColors(sampleTree, colors=colours, groupLabels=c("Cultivar", "TimePoint"), colorHeight=0.1, autoColorHeight=FALSE)
+```
+
+####6. Visualize the differential gene expression analysis results by using volcano plots.
+```{r volcano_plots}
+#We need to import a new table with logFC values.
+fc <- read.table(file="I5_v_C_time6.txt", sep="\t", header=T, stringsAsFactors=F)
+logFDR <- -log10(fc$adj.P.Val)
+plot(fc$logFC, logFDR, xlab="log2(Fold-Change)", ylab="-log10FDR")
+
+#Label significant genes
+fc <- mutate(fc, sig=ifelse(fc$adj.P.Val<0.05, "FDR<0.05", "Not Significant")) #What does the command do?
+
+#Make plot
+p <- ggplot(fc, aes(logFC, -log10(adj.P.Val))) + geom_point(aes(col=sig)) + scale_color_manual(values=c("red", "black"))
+
+p + geom_text(data=filter(fc, adj.P.Val<0.001), aes(label=Gene))
+
+p + geom_text(data=fc[order(fc$adj.P.Val, decreasing=FALSE)[1:10],], aes(label=Gene))
+
+p + geom_text(data=fc[order(fc$adj.P.Val, decreasing=FALSE)[1:10],], aes(label=Gene)) + geom_vline(xintercept=c(-2,2), colour="black") + geom_hline(yintercept=1.3, colour="black")
+```
+
+####7. Look at patterns using heatmaps.
+```{r heatmaps}
+slt <- order(rv, decreasing=TRUE)[seq_len(20)]
+heatmap.2(norm.counts[slt,], col=heat.colors, trace="none", margin=c(3,7))
+
+heatmap.2(norm.counts[slt,], col=heat.colors, trace="none", margin=c(3,6), cexRow=0.8, cexCol=0.8)
+heatmap.2(norm.counts[slt,], col=heat.colors, trace="none", margin=c(3,7), cexRow=0.8, cexCol=0.8, ColSideColors=labels2colors(m$Cultivar))
+
+rowcols <- rep(brewer.pal(4, 'Set1'), each=5)
+names(rowcols) <- rownames(norm.counts[slt,])
+heatmap.2(norm.counts[slt,], col=heat.colors, trace="none", margin=c(3,7), cexRow=0.8, cexCol=0.8, ColSideColors=labels2colors(m$Cultivar), RowSideColors=rowcols)
+
+#Heatmaps with multiple side bars using heatmap.3()
+source_url("https://raw.githubusercontent.com/obigriffith/biostar-tutorials/master/Heatmaps/heatmap.3.R")
+## SHA-1 hash of file is 015fc0457e61e3e93a903e69a24d96d2dac7b9fb
+rlab <- t(rowcols)
+rownames(rlab) <- "GeneType"
+clab <- cbind(labels2colors(m$Cultivar), labels2colors(m$TimePoint))
+colnames(clab) <- c("Cultivar", "TimePoint")
+
+# The plot will be saved to a pdf file because of the size of the figure
+pdf("test_heatmap3.pdf")
+heatmap.3(norm.counts[slt,], col=heat.colors, trace="none", cexRow=0.8, cexCol=0.8, ColSideColors=clab, RowSideColors=rlab, ColSideColorsSize=2, RowSideColorsSize=2, margin=c(5,5))
+dev.off()
+
+#select genes from the differential expression analysis results
+# first, load in your differential expression analysis results
+sel.genes <- fc$Gene[1:10]
+# then, match the names of your selected genes to the rownames of your counts table
+index <- match(sel.genes, rownames(norm.counts))
+# then, follow some steps from above to generate necessary colors and labels
+rowcols <- rep(brewer.pal(5, 'Set1'), each=2)
+names(rowcols) <- rownames(norm.counts[index,])
+rlab <- t(rowcols)
+rownames(rlab) <- "GeneType"
+clab <- cbind(labels2colors(m$Cultivar), labels2colors(m$TimePoint))
+colnames(clab) <- c("Cultivar", "TimePoint")
+#Using log transformed data.
+log.counts <- cpm(counts, log=TRUE)
+rv <- rowVars(log.counts)
+slt <- order(rv, decreasing=TRUE)[seq_len(20)]
+# use non-default color scheme
+mypalette <- brewer.pal(11, "RdYlBu")
+morecols <- colorRampPalette(mypalette)
+heatmap.2(log.counts[slt,], col=morecols, trace="none", margin=c(3,7))
+```
+
+####8. Visualize pathways.
+```{r pathways}
+#Visulize pathway enrichment results using bioconductor package "pathview"
+DE.paths <- read.table(file="I5_v_C_time6_KEGG.txt", sep="\t", header=T, stringsAsFactors=F)
+head(DE.paths, 1)
+pid <- DE.paths$pathway.code[3]
+
+head(fc, 2)
+rownames(fc) <- fc$Gene
+colnames(fc)
+## [1] "Gene"      "logFC"     "AveExpr"   "P.Value"   "adj.P.Val"
+gene.data <- subset(fc, select="logFC")
+head(gene.data)
+pv.out <- pathview(gene.data=gene.data, pathway.id=pid, species="ath", gene.idtype="KEGG", kegg.native=T)
+
+#By default, running pathview() will create an image file named by the pathway id (for example, in this case there should be a file named "ath04141.pathview.png" in the current directory).
+#Another package for ploting is "piano". It generates network style graphs. "Cytoscape" is another possible software to generate graphs for enrichment analysis results.
+#Visulize GO enrichment results use revigo.irb.hr web application. In a web browser (Safari, explorer, chrome, firefox), open revigo.irb.hr.
+```

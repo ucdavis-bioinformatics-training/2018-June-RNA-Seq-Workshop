@@ -1,0 +1,135 @@
+pathway.code	pathway.name	p.value	Annotated
+ath03010	Ribosome - Arabidopsis thaliana (thale cress)	5.37858910508805e-35	301
+ath00966	Glucosinolate biosynthesis - Arabidopsis thaliana (thale cress)	2.57284506129555e-06	22
+ath04141	Protein processing in endoplasmic reticulum - Arabidopsis thaliana (thale cress)	4.85700309169179e-06	186
+ath00071	Fatty acid degradation - Arabidopsis thaliana (thale cress)	1.5802817161189e-05	40
+ath03013	RNA transport - Arabidopsis thaliana (thale cress)	0.000210784926978934	151
+ath00592	alpha-Linolenic acid metabolism - Arabidopsis thaliana (thale cress)	0.00112710801933166	33
+ath04145	Phagosome - Arabidopsis thaliana (thale cress)	0.00118398346863446	80
+ath03040	Spliceosome - Arabidopsis thaliana (thale cress)	0.00141015758836373	174
+ath01040	Biosynthesis of unsaturated fatty acids - Arabidopsis thaliana (thale cress)	0.00162118692930067	29
+ath04136	Autophagy - other - Arabidopsis thaliana (thale cress)	0.00198990862083985	39
+ath04146	Peroxisome - Arabidopsis thaliana (thale cress)	0.00418068834117527	80
+ath00280	Valine, leucine and isoleucine degradation - Arabidopsis thaliana (thale cress)	0.00733208024580697	43
+ath03008	Ribosome biogenesis in eukaryotes - Arabidopsis thaliana (thale cress)	0.00811798678270694	87
+ath00760	Nicotinate and nicotinamide metabolism - Arabidopsis thaliana (thale cress)	0.0104191550202977	16
+ath04120	Ubiquitin mediated proteolysis - Arabidopsis thaliana (thale cress)	0.0206644195584317	110
+ath00061	Fatty acid biosynthesis - Arabidopsis thaliana (thale cress)	0.0236427006447309	39
+ath00561	Glycerolipid metabolism - Arabidopsis thaliana (thale cress)	0.0305799907492731	55
+ath00020	Citrate cycle (TCA cycle) - Arabidopsis thaliana (thale cress)	0.0323457251300192	58
+ath03015	mRNA surveillance pathway - Arabidopsis thaliana (thale cress)	0.034917984480632	107
+ath00909	Sesquiterpenoid and triterpenoid biosynthesis - Arabidopsis thaliana (thale cress)	0.0543546383505645	20
+ath00901	Indole alkaloid biosynthesis - Arabidopsis thaliana (thale cress)	0.0546363178958333	10
+ath00904	Diterpenoid biosynthesis - Arabidopsis thaliana (thale cress)	0.0589135618433496	14
+ath00480	Glutathione metabolism - Arabidopsis thaliana (thale cress)	0.06082788045175	86
+ath04122	Sulfur relay system - Arabidopsis thaliana (thale cress)	0.0609800200597886	13
+ath00400	Phenylalanine, tyrosine and tryptophan biosynthesis - Arabidopsis thaliana (thale cress)	0.0612942122936454	48
+ath00460	Cyanoamino acid metabolism - Arabidopsis thaliana (thale cress)	0.0657792611254721	46
+ath00620	Pyruvate metabolism - Arabidopsis thaliana (thale cress)	0.0724155838280934	79
+ath00232	Caffeine metabolism - Arabidopsis thaliana (thale cress)	0.0757030451677617	3
+ath00564	Glycerophospholipid metabolism - Arabidopsis thaliana (thale cress)	0.075998316022094	85
+ath00100	Steroid biosynthesis - Arabidopsis thaliana (thale cress)	0.078457729078321	33
+ath00350	Tyrosine metabolism - Arabidopsis thaliana (thale cress)	0.0846183960896024	35
+ath00040	Pentose and glucuronate interconversions - Arabidopsis thaliana (thale cress)	0.08593207850142	56
+ath00500	Starch and sucrose metabolism - Arabidopsis thaliana (thale cress)	0.101572859371557	118
+ath00770	Pantothenate and CoA biosynthesis - Arabidopsis thaliana (thale cress)	0.120809340116733	26
+ath00510	N-Glycan biosynthesis - Arabidopsis thaliana (thale cress)	0.121538379893127	42
+ath00250	Alanine, aspartate and glutamate metabolism - Arabidopsis thaliana (thale cress)	0.124106716709723	46
+ath00940	Phenylpropanoid biosynthesis - Arabidopsis thaliana (thale cress)	0.125924268770907	128
+ath00330	Arginine and proline metabolism - Arabidopsis thaliana (thale cress)	0.135382457426174	50
+ath00565	Ether lipid metabolism - Arabidopsis thaliana (thale cress)	0.136550934816794	26
+ath00640	Propanoate metabolism - Arabidopsis thaliana (thale cress)	0.145892344607653	29
+ath00290	Valine, leucine and isoleucine biosynthesis - Arabidopsis thaliana (thale cress)	0.154744643826377	21
+ath00750	Vitamin B6 metabolism - Arabidopsis thaliana (thale cress)	0.159566465864868	14
+ath00380	Tryptophan metabolism - Arabidopsis thaliana (thale cress)	0.159849664627876	40
+ath00440	Phosphonate and phosphinate metabolism - Arabidopsis thaliana (thale cress)	0.160615325308817	6
+ath00310	Lysine degradation - Arabidopsis thaliana (thale cress)	0.171793517070446	26
+ath00052	Galactose metabolism - Arabidopsis thaliana (thale cress)	0.195552094088152	48
+ath00903	Limonene and pinene degradation - Arabidopsis thaliana (thale cress)	0.196614302060453	30
+ath00410	beta-Alanine metabolism - Arabidopsis thaliana (thale cress)	0.197964618156239	35
+ath00220	Arginine biosynthesis - Arabidopsis thaliana (thale cress)	0.20192197078627	34
+ath04712	Circadian rhythm - plant - Arabidopsis thaliana (thale cress)	0.21864971726492	34
+ath00531	Glycosaminoglycan degradation - Arabidopsis thaliana (thale cress)	0.223060109982705	7
+ath00073	Cutin, suberine and wax biosynthesis - Arabidopsis thaliana (thale cress)	0.22454268653759	17
+ath04075	Plant hormone signal transduction - Arabidopsis thaliana (thale cress)	0.234333569593367	228
+ath02010	ABC transporters - Arabidopsis thaliana (thale cress)	0.244993025327041	21
+ath00945	Stilbenoid, diarylheptanoid and gingerol biosynthesis - Arabidopsis thaliana (thale cress)	0.257080337877457	32
+ath04933	AGE-RAGE signaling pathway in diabetic complications - Arabidopsis thaliana (thale cress)	0.292957994798172	18
+ath00562	Inositol phosphate metabolism - Arabidopsis thaliana (thale cress)	0.294255504611972	59
+ath00053	Ascorbate and aldarate metabolism - Arabidopsis thaliana (thale cress)	0.29467421481128	38
+ath00908	Zeatin biosynthesis - Arabidopsis thaliana (thale cress)	0.307502723696238	19
+ath03020	RNA polymerase - Arabidopsis thaliana (thale cress)	0.30835898486064	38
+ath00340	Histidine metabolism - Arabidopsis thaliana (thale cress)	0.31355843844951	17
+ath03018	RNA degradation - Arabidopsis thaliana (thale cress)	0.316376792505458	104
+ath00601	Glycosphingolipid biosynthesis - lacto and neolacto series - Arabidopsis thaliana (thale cress)	0.322395217156581	2
+ath00010	Glycolysis / Gluconeogenesis - Arabidopsis thaliana (thale cress)	0.339287609588486	110
+ath00300	Lysine biosynthesis - Arabidopsis thaliana (thale cress)	0.354848390728959	16
+ath00780	Biotin metabolism - Arabidopsis thaliana (thale cress)	0.355426673247392	14
+ath00240	Pyrimidine metabolism - Arabidopsis thaliana (thale cress)	0.38403278827533	100
+ath04144	Endocytosis - Arabidopsis thaliana (thale cress)	0.384844984999455	138
+ath00270	Cysteine and methionine metabolism - Arabidopsis thaliana (thale cress)	0.393175845446366	104
+ath00520	Amino sugar and nucleotide sugar metabolism - Arabidopsis thaliana (thale cress)	0.407564661143508	117
+ath04070	Phosphatidylinositol signaling system - Arabidopsis thaliana (thale cress)	0.409985687720712	61
+ath03060	Protein export - Arabidopsis thaliana (thale cress)	0.413639411556346	52
+ath03450	Non-homologous end-joining - Arabidopsis thaliana (thale cress)	0.414126956296254	8
+ath00430	Taurine and hypotaurine metabolism - Arabidopsis thaliana (thale cress)	0.417221317957483	11
+ath00590	Arachidonic acid metabolism - Arabidopsis thaliana (thale cress)	0.420106221716186	15
+ath00950	Isoquinoline alkaloid biosynthesis - Arabidopsis thaliana (thale cress)	0.436988767459415	19
+ath00360	Phenylalanine metabolism - Arabidopsis thaliana (thale cress)	0.438370549897128	37
+ath00563	Glycosylphosphatidylinositol (GPI)-anchor biosynthesis - Arabidopsis thaliana (thale cress)	0.474852470283487	24
+ath00603	Glycosphingolipid biosynthesis - globo and isoglobo series - Arabidopsis thaliana (thale cress)	0.484321930930393	8
+ath00261	Monobactam biosynthesis - Arabidopsis thaliana (thale cress)	0.484344661402196	14
+ath00190	Oxidative phosphorylation - Arabidopsis thaliana (thale cress)	0.489608296499691	115
+ath00511	Other glycan degradation - Arabidopsis thaliana (thale cress)	0.539872726317699	19
+ath00670	One carbon pool by folate - Arabidopsis thaliana (thale cress)	0.543899528357895	20
+ath00030	Pentose phosphate pathway - Arabidopsis thaliana (thale cress)	0.545288406629466	58
+ath00604	Glycosphingolipid biosynthesis - ganglio series - Arabidopsis thaliana (thale cress)	0.557690022112946	5
+ath00591	Linoleic acid metabolism - Arabidopsis thaliana (thale cress)	0.565133833461517	9
+ath00920	Sulfur metabolism - Arabidopsis thaliana (thale cress)	0.60547597463075	41
+ath03420	Nucleotide excision repair - Arabidopsis thaliana (thale cress)	0.607227950216604	60
+ath00660	C5-Branched dibasic acid metabolism - Arabidopsis thaliana (thale cress)	0.620654751741662	7
+ath04016	MAPK signaling pathway - plant - Arabidopsis thaliana (thale cress)	0.622097578644554	118
+ath00740	Riboflavin metabolism - Arabidopsis thaliana (thale cress)	0.62991274294197	15
+ath00941	Flavonoid biosynthesis - Arabidopsis thaliana (thale cress)	0.642810474425925	17
+ath00790	Folate biosynthesis - Arabidopsis thaliana (thale cress)	0.649361399937931	21
+ath00905	Brassinosteroid biosynthesis - Arabidopsis thaliana (thale cress)	0.649639383304205	8
+ath00051	Fructose and mannose metabolism - Arabidopsis thaliana (thale cress)	0.662504562736153	57
+ath00130	Ubiquinone and other terpenoid-quinone biosynthesis - Arabidopsis thaliana (thale cress)	0.683503067510798	32
+ath03022	Basal transcription factors - Arabidopsis thaliana (thale cress)	0.698652408926581	46
+ath00785	Lipoic acid metabolism - Arabidopsis thaliana (thale cress)	0.71290901715876	5
+ath04130	SNARE interactions in vesicular transport - Arabidopsis thaliana (thale cress)	0.714232977244753	38
+ath00260	Glycine, serine and threonine metabolism - Arabidopsis thaliana (thale cress)	0.749979655811639	69
+ath00970	Aminoacyl-tRNA biosynthesis - Arabidopsis thaliana (thale cress)	0.758649749890337	52
+ath00906	Carotenoid biosynthesis - Arabidopsis thaliana (thale cress)	0.767835740195465	25
+ath00600	Sphingolipid metabolism - Arabidopsis thaliana (thale cress)	0.779874948242012	27
+ath00730	Thiamine metabolism - Arabidopsis thaliana (thale cress)	0.804903617109222	19
+ath00072	Synthesis and degradation of ketone bodies - Arabidopsis thaliana (thale cress)	0.813883516478045	4
+ath00910	Nitrogen metabolism - Arabidopsis thaliana (thale cress)	0.81988697850616	35
+ath00230	Purine metabolism - Arabidopsis thaliana (thale cress)	0.824931344281639	141
+ath00942	Anthocyanin biosynthesis - Arabidopsis thaliana (thale cress)	0.873257505996983	2
+ath00450	Selenocompound metabolism - Arabidopsis thaliana (thale cress)	0.87445506981085	18
+ath00960	Tropane, piperidine and pyridine alkaloid biosynthesis - Arabidopsis thaliana (thale cress)	0.876381159075243	29
+ath00944	Flavone and flavonol biosynthesis - Arabidopsis thaliana (thale cress)	0.87675808372687	4
+ath00650	Butanoate metabolism - Arabidopsis thaliana (thale cress)	0.890175158242388	16
+ath03050	Proteasome - Arabidopsis thaliana (thale cress)	0.91404106644032	57
+ath00062	Fatty acid elongation - Arabidopsis thaliana (thale cress)	0.917266195359187	28
+ath03030	DNA replication - Arabidopsis thaliana (thale cress)	0.946859685416313	46
+ath00902	Monoterpenoid biosynthesis - Arabidopsis thaliana (thale cress)	0.964467468936079	2
+ath00630	Glyoxylate and dicarboxylate metabolism - Arabidopsis thaliana (thale cress)	0.973358932997886	69
+ath04626	Plant-pathogen interaction - Arabidopsis thaliana (thale cress)	0.973855960707295	149
+ath00710	Carbon fixation in photosynthetic organisms - Arabidopsis thaliana (thale cress)	0.975647738426399	68
+ath03430	Mismatch repair - Arabidopsis thaliana (thale cress)	0.982903672381787	36
+ath00860	Porphyrin and chlorophyll metabolism - Arabidopsis thaliana (thale cress)	0.983017867071063	43
+ath00900	Terpenoid backbone biosynthesis - Arabidopsis thaliana (thale cress)	0.987100495787913	54
+ath03410	Base excision repair - Arabidopsis thaliana (thale cress)	0.987133750614026	40
+ath00514	Other types of O-glycan biosynthesis - Arabidopsis thaliana (thale cress)	0.988752824251235	12
+ath03440	Homologous recombination - Arabidopsis thaliana (thale cress)	0.993678796154056	61
+ath00196	Photosynthesis - antenna proteins - Arabidopsis thaliana (thale cress)	0.999991414423491	22
+ath00195	Photosynthesis - Arabidopsis thaliana (thale cress)	0.999999990360191	44
+ath01100	Metabolic pathways - Arabidopsis thaliana (thale cress)	NA	0
+ath01110	Biosynthesis of secondary metabolites - Arabidopsis thaliana (thale cress)	NA	0
+ath01200	Carbon metabolism - Arabidopsis thaliana (thale cress)	NA	0
+ath01210	2-Oxocarboxylic acid metabolism - Arabidopsis thaliana (thale cress)	NA	0
+ath01212	Fatty acid metabolism - Arabidopsis thaliana (thale cress)	NA	0
+ath01230	Biosynthesis of amino acids - Arabidopsis thaliana (thale cress)	NA	0
+ath01502	Vancomycin resistance - Arabidopsis thaliana (thale cress)	NA	0
