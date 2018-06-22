@@ -14,6 +14,7 @@ setwd("your/path/to/working/directory")
 ####1. As first thing, load the necessary libraries and set the working directory.
 ```{r lib_dir, error=FALSE, warning=FALSE, results='hide'}
 #Load required library
+# if necessary, install using 'install.packages("metaMA","lattice","genefilter","ggplot2","RColorBrewer","cluster","WGCNA","matrixStats","dplyr","gplots","pathview")' ... etc.
 suppressWarnings(library(metaMA))
 suppressMessages(library(lattice))
 suppressMessages(suppressWarnings(library(genefilter)))
