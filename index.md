@@ -62,7 +62,7 @@ Friday
   * [metafile](friday/metafile.txt)
   * [all_counts.txt](friday/all_counts.txt)
   * [all files for plots](friday/files_for_plots.zip)
-* [Closing thoughts]()
+* [Closing thoughts](friday/Closing_Thoughts.pdf)
 
 Other Talks
 ===========
