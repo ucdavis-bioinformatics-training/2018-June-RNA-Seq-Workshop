@@ -15,6 +15,8 @@ setwd("your/path/to/working/directory")
 
 ```r
 #Load required library
+# source("https://bioconductor.org/biocLite.R")
+# biocLite( c("metaMA","lattice","genefilter","ggplot2","RColorBrewer","cluster","WGCNA","matrixStats","dplyr","gplots","pathview","genefilter") )
 suppressWarnings(library(metaMA))
 suppressMessages(library(lattice))
 suppressMessages(suppressWarnings(library(genefilter)))
