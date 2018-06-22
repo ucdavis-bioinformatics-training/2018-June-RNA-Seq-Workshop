@@ -55,8 +55,8 @@ Friday
 
 * [Gene Ontology and KEGG Pathway Enrichment Analyses](friday/enrichment.html)
   * [The R Markdown file](friday/enrichment.Rmd)
-* [Generating figures](friday/generate-figures.md)
-  * [The R Markdown file](friday/generate-figures.Rmd)
+* [Generating figures](friday/script_plots.md)
+  * [The R Markdown file](friday/script_plots.Rmd)
   * [I5_v_C_time6.txt](friday/I5_v_C_time6.txt)
   * [I5_v_C_time6_KEGG.txt](friday/I5_v_C_time6_KEGG.txt)
   * [metafile](friday/metafile.txt)
