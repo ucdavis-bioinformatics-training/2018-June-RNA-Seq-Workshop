@@ -1,44 +1,37 @@
 #!/bin/bash
 
-#SBATCH --array=1-24  # NEED TO CHANGE THIS!
-#SBATCH --job-name=star # Job name
-#SBATCH --nodes=1
-#SBATCH --cpus-per-task=4
-#SBATCH --time=360
-#SBATCH --mem=7000 # Memory pool for all cores (see also --mem-per-cpu)
-#SBATCH --output=arrayJob_%A_%a.out # File to which STDOUT will be written
-#SBATCH --error=arrayJob_%A_%a.err # File to which STDERR will be written
-#SBATCH --reservation=workshop
+## assumes star
 
-
-begin=`date +%s`
-
+start=`date +%s`
 echo $HOSTNAME
-echo "My SLURM_ARRAY_TASK_ID: " $SLURM_ARRAY_TASK_ID
 
-sample=`sed "${SLURM_ARRAY_TASK_ID}q;d" samples.txt`
-R1=${sample}.sickle.R1.fastq
-R2=${sample}.sickle.R2.fastq
+outpath='02-STAR_alignment'
+[[ -d ${outpath} ]] || mkdir ${outpath}
 
-mkdir ${sample}_star_alignment
-REFDIR=
-GTF=
+REF=""
+GTF=""
 
-module load star
+or sample in `cat samples.txt`
+do
+  [[ -d ${outpath}/${sample} ]] || mkdir ${outpath}/${sample}
+  echo "SAMPLE: ${sample}"
 
-STAR --runThreadN 4 \
---sjdbOverhang 99 \
---genomeDir $REFDIR \
---sjdbGTFtagExonParentGene gene_id \
---sjdbGTFfile $GTF \
---outSAMtype BAM Unsorted SortedByCoordinate \
---outReadsUnmapped Fastx \
---quantMode GeneCounts \
---outFileNamePrefix ${sample}_star_alignment/${sample}_ \
---readFilesIn $R1 $R2 \
-> ${sample}_star_alignment/${sample}_STAR.stdout 2> ${sample}_star_alignment/${sample}_STAR.stderr
+  call="STAR --runThreadN 8 \
+        --sjdbOverhang 99 \
+        --genomeDir $REF \
+        --sjdbGTFtagExonParentGene gene_id \
+        --sjdbGTFfile $GTF \
+        --outSAMtype BAM SortedByCoordinate \
+        --outReadsUnmapped Fastx \
+        --quantMode GeneCounts \
+        --outFileNamePrefix ${outpath}/${sample}/${sample}_ \
+        --readFilesCommand zcat \
+        --readFilesIn 01-HTS_Preproc/${sample}/${sample}_R1.fastq.gz 01-HTS_Preproc/${sample}/${sample}_R2.fastq.gz"
+
+  echo $call
+  eval $call
+done
 
 end=`date +%s`
-elapsed=`expr $end - $begin`
-echo Time taken: $elapsed
-
+runtime=$((end-start))
+echo $runtime

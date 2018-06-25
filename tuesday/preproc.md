@@ -559,8 +559,8 @@ slurm script for preprocessing using slurm task array and htstream
 
 shell script for preprocessing using bash loop and htstream.
 
-[hts_preproc.slurm](./hts_preproc.sh)
+[hts_preproc.sh](./hts_preproc.sh)
 
 R script to produce summary table, assumes exact htstream operations and order as described above.
 
-[summary_stats.R](./summary_stats.R)
+[summary_stats.R](./summarize_stats.R)

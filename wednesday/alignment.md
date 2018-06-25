@@ -238,3 +238,17 @@ And now you wait.
 
 The table that this script creates ("stats.txt") can be pulled to your laptop via 'scp', or WinSCP, etc., and imported into a spreadsheet. Are all samples behaving similarly? Discuss ...
 
+
+**17.** Scripts
+
+slurm script for mapping using slurm task array and star
+
+[star.slurm](./star.slurm)
+
+shell script for mapping using bash loop and star.
+
+[star.sh](./star.sh)
+
+shell script to produce summary mapping table
+
+[aln_stats.sh](./aln_stats.sh)
