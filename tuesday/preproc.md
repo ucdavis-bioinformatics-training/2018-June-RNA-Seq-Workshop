@@ -467,7 +467,7 @@ Note the patterns:
 
 ---
 
-**6\.** We can now run the preprocessing routine across all samples on the real data using a SLURM script that we should take a look at now.
+**6\.** We can now run the preprocessing routine across all samples on the real data using a SLURM script, [hts_preproc.slurm](./hts_preproc.slurm), that we should take a look at now.
 
     cd ~/rnaseq_example  # We'll run this from the main directory
     cp /share/biocore/workshops/2018_June_RNAseq/hts_preproc.slurm .

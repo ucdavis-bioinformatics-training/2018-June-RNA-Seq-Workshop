@@ -194,7 +194,7 @@ It will give you a warning about not having an index file. Click "Go" to create 
 
 ---
 
-**14\.** Ok, let's go back to the command-line. Now we are going to run all of the STAR alignments on the cluster. We will run the script from the base directory:
+**14\.** Ok, let's go back to the command-line. Now we are going to run all of the STAR alignments on the cluster. We will run the script, [star.slurm](./star.slurm) from the base directory:
 
     cd ~/rnaseq_example
 
@@ -230,7 +230,7 @@ And now you wait.
 
 ---
 
-**16\.** Once your jobs have finished successfully, use a script of ours to collect the alignment stats. Don't worry about the script's contents at the moment; you'll use very similar commands to create a counts table in the next section. For now:
+**16\.** Once your jobs have finished successfully, use a script of ours, [aln_stats.sh](aln_stats.sh) to collect the alignment stats. Don't worry about the script's contents at the moment; you'll use very similar commands to create a counts table in the next section. For now:
 
     cd ~/rnaseq_example/02-STAR_alignment/
     cp /share/biocore/workshops/2018_June_RNAseq/02-STAR_alignment/aln_stats.sh .
