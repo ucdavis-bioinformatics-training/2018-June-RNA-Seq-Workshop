@@ -550,3 +550,17 @@ Lets move this file to our computer, using scp or winSCP, or copy/paste from cat
 *Any problematic samples?*
 
 *Anything else worth discussing?*
+
+**11.** Scripts
+
+slurm script for preprocessing using slurm task array and htstream
+
+[hts_preproc.slurm](./hts_preproc.slurm)
+
+shell script for preprocessing using bash loop and htstream.
+
+[hts_preproc.slurm](./hts_preproc.sh)
+
+R script to produce summary table, assumes exact htstream operations and order as described above.
+
+[summary_stats.R](./summary_stats.R)
