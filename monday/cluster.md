@@ -40,6 +40,8 @@ So the script takes "I892_S88" and puts it into the variable "$1". We then copy 
 
 Now, after the variable section, we load the modules that we will be using for this job. Finally, we run the actual commands using the variable names we created earlier. "${sample}" gets replaced with the actual sample name when it runs. And then at the end we calculate and print out the elapsed time.
 
+(An alternative would be to run the 'non-slurm.sh' script once for each variable name, e.g. 'cat samples.txt | while read sp; do source non-slurm.sh $sp; done' ... which will run the command once for each sample, in turn).
+
 The stderr and stdout streams for each job get captured to files that use the job ID in the filename and typically end in ".err" and ".out". These files will be created in the directory that the script is run, unless otherwise specified.
 
 ---
