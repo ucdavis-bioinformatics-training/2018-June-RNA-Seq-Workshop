@@ -69,3 +69,4 @@ Other Talks
 [What is Bioinformatics](additional_lectures/What_is_Bioinformatics.pdf)
 [Transcript assembly](additional_lectures/June_2018_MB_RNASeq_Assembly.pdf)
 [Single Cell RNAseq](additional_lectures/stefania_sc.pdf)
+[Spacial Transcriptomics](additional_lectures/ST_Stefania_UCD_workshop_20180621_copy.pdf)
